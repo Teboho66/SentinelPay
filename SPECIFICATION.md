@@ -32,7 +32,7 @@ Financial institutions and FinTech platforms process millions of transactions pe
 
 2. **Model Staleness:** Static rule sets cannot adapt to emerging fraud patterns. Without a feedback loop, detection rates degrade over time as fraudsters adapt.
 
-3. **False Positive Cost:** Overly aggressive fraud rules block legitimate transactions, directly harming customer experience and revenue. In 2025, false positives cost the global payments industry an estimated $443 billion in declined legitimate sales.
+3. **False Positive Cost:** Overly aggressive fraud rules block legitimate transactions, directly harming customer experience and revenue. In 2025, false positives cost the global payments industry an estimated R443 billion in declined legitimate sales.
 
 4. **Explainability Deficit:** Regulators (under POPIA, PSD2, GDPR, and Basel III frameworks) now require that automated financial decisions be explainable and auditable. Black-box models alone are insufficient.
 
@@ -50,10 +50,10 @@ SentinelPay is scoped as a **fully-specified software system** designed for indi
 | **ML Component** | Pre-trained anomaly detection models (Isolation Forest, XGBoost) are available via scikit-learn and can be trained on synthetic transaction datasets (e.g., IEEE-CIS Fraud Detection dataset on Kaggle) |
 | **Infrastructure** | Docker Compose enables full local deployment of all services without cloud spend |
 | **Data** | IEEE-CIS Fraud Detection dataset (590k transactions) and PaySim synthetic mobile money dataset provide realistic training and testing data |
-| **Regulatory Layer** | Explainability via SHAP is a well-understood, implementable Python library — full regulatory simulation is out of scope but the architecture accommodates it |
+| **Regulatory Layer** | Explainability via SHAP is a well-understood, implementable Python library - full regulatory simulation is out of scope but the architecture accommodates it |
 | **Boundaries (Out of Scope)** | Production cloud deployment, real bank API integrations, licensed payment network access |
 
-The system is ambitious but tractable — it maps directly to skills covered in the programme (system design, distributed systems, ML integration, API design) and produces meaningful academic output at all specification and architecture levels.
+The system is ambitious but tractable - it maps directly to skills covered in the programme (system design, distributed systems, ML integration, API design) and produces meaningful academic output at all specification and architecture levels.
 
 ---
 
