@@ -15,7 +15,7 @@ In 2026, card-not-present fraud, identity spoofing, and AI-generated synthetic i
 
 - **Ingest** live transaction streams from payment processors, mobile wallets, and banking APIs via Kafka event pipelines
 - **Score** every transaction in real time using a multi-model ML ensemble (XGBoost + Isolation Forest + fine-tuned BERT for merchant text signals)
-- **Enforce** automated rule-based and ML-driven decisions: approve, flag for review, or block — with configurable thresholds per customer risk tier
+- **Enforce** automated rule-based and ML-driven decisions: approve, flag for review, or block - with configurable thresholds per customer risk tier
 - **Alert** customers and fraud analysts instantly via push notification, SMS, and a case management dashboard
 - **Learn** continuously through an MLOps feedback loop - confirmed fraud cases retrain and redeploy models with zero downtime
 - **Explain** every decision via SHAP-based explainability reports, satisfying regulatory requirements (POPIA, PSD2, GDPR)
