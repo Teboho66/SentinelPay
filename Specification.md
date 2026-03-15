@@ -132,7 +132,7 @@ The system is ambitious but tractable — it maps directly to skills covered in 
 **Flow:**
 1. Analyst logs into Case Management Dashboard
 2. Views queue of `HIGH`/`CRITICAL` risk cases
-3. Drills into case — views transaction details, SHAP explanation, account history
+3. Drills into case - views transaction details, SHAP explanation, account history
 4. Confirms fraud or dismisses case
 5. System updates fraud label and queues sample for model retraining
 

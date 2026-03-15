@@ -1,4 +1,4 @@
-# ARCHITECTURE.md — SentinelPay: Real-Time Fraud Detection & Prevention Engine
+# ARCHITECTURE.md - SentinelPay: Real-Time Fraud Detection & Prevention Engine
 
 > **C4 Architectural Diagrams** | All four levels: Context → Container → Component → Code
 > Notation: [Mermaid C4](https://mermaid.js.org/syntax/c4.html) | Model: [C4 Model by Simon Brown](https://c4model.com)
@@ -267,7 +267,7 @@ C4Component
 
 ---
 
-## Level 4 — Code Diagram
+## Level 4 - Code Diagram
 
 > **Scope:** Inside the **Ensemble Score Aggregator** component of the ML Scoring Service.
 > **Audience:** Developers implementing or reviewing the aggregator component.
@@ -434,12 +434,12 @@ classDiagram
 ```
 
 **Diagram Key:**
-- **`<<dataclass>>`** — A data-holding class with no behaviour beyond validation
-- **`<<interface>>`** — An abstract interface that scorers must implement
-- **`<<enumeration>>`** — A fixed set of named constants
-- **Solid arrow `-->`** — A dependency or association (one class holds a reference to another)
-- **Dashed arrow `..>`** — A usage dependency (one class uses another's instances temporarily)
-- **`<|..`** — Interface implementation (realization)
+- **`<<dataclass>>`** - A data-holding class with no behaviour beyond validation
+- **`<<interface>>`** - An abstract interface that scorers must implement
+- **`<<enumeration>>`** - A fixed set of named constants
+- **Solid arrow `-->`** - A dependency or association (one class holds a reference to another)
+- **Dashed arrow `..>`** - A usage dependency (one class uses another's instances temporarily)
+- **`<|..`** - Interface implementation (realization)
 
 ---
 
@@ -463,11 +463,11 @@ The following ADRs document the key architectural choices made for SentinelPay a
 
 **Status:** Accepted
 
-**Context:** A single ML model has coverage gaps — a tree model excels at tabular patterns but misses semantic signals; an anomaly detector works without labels but produces noisy scores.
+**Context:** A single ML model has coverage gaps - a tree model excels at tabular patterns but misses semantic signals; an anomaly detector works without labels but produces noisy scores.
 
 **Decision:** Use a weighted ensemble of three complementary models: XGBoost (tabular patterns), Isolation Forest (structural anomalies), DistilBERT (merchant text semantics).
 
-**Consequences:** Measurably lower false positive rate than any single model. Increased inference latency — mitigated by parallel execution of all three models. Requires maintaining three model training pipelines.
+**Consequences:** Measurably lower false positive rate than any single model. Increased inference latency - mitigated by parallel execution of all three models. Requires maintaining three model training pipelines.
 
 ---
 
@@ -495,4 +495,4 @@ The following ADRs document the key architectural choices made for SentinelPay a
 
 ---
 
-*SentinelPay ARCHITECTURE.md — Version 2.0 | March 2026 | Aligned with C4 Model Specification (Simon Brown) and Mermaid C4 Syntax*
+*SentinelPay ARCHITECTURE.md - Version 2.0 | March 2026 | Aligned with C4 Model Specification (Simon Brown) and Mermaid C4 Syntax*
