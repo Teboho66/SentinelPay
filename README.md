@@ -30,8 +30,7 @@ SentinelPay/
 ├── README.md               ← You are here
 ├── SPECIFICATION.md        ← Full system specification
 ├── ARCHITECTURE.md         ← C4 architectural diagrams (all 4 levels)
-└── docs/
-    └── diagrams/           ← Supporting architecture assets
+
 ```
 
 ---
