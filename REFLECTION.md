@@ -95,12 +95,12 @@ The Viewpoints framework (Finkelstein et al., 1992; later formalised by Nuseibeh
 
 ## References
 
-Sommerville, I. (2016). *Software Engineering* (10th ed.). Pearson Education.
-Wiegers, K. & Beatty, J. (2013). *Software Requirements* (3rd ed.). Microsoft Press.
-Robertson, S. & Robertson, J. (2012). *Mastering the Requirements Process: Getting Requirements Right* (3rd ed.). Addison-Wesley.
-IEEE Std 29148-2018. (2018). *Systems and Software Engineering - Life Cycle Processes - Requirements Engineering*. IEEE.
-Nuseibeh, B., Kramer, J. & Finkelstein, A. (1994). A framework for expressing the relationships between multiple views in requirements specification. *IEEE Transactions on Software Engineering*, 20(10), 760-773.
-Finkelstein, A., Gabbay, D., Hunter, A., Kramer, J. & Nuseibeh, B. (1994). Inconsistency handling in multiperspective specifications. *IEEE Transactions on Software Engineering*, 20(8), 569-578.
+- Sommerville, I. (2016). *Software Engineering* (10th ed.). Pearson Education.
+- Wiegers, K. & Beatty, J. (2013). *Software Requirements* (3rd ed.). Microsoft Press.
+- Robertson, S. & Robertson, J. (2012). *Mastering the Requirements Process: Getting Requirements Right* (3rd ed.). Addison-Wesley.
+- IEEE Std 29148-2018. (2018). *Systems and Software Engineering - Life Cycle Processes - Requirements Engineering*. IEEE.
+- Nuseibeh, B., Kramer, J. & Finkelstein, A. (1994). A framework for expressing the relationships between multiple views in requirements specification. *IEEE Transactions on Software Engineering*, 20(10), 760-773.
+- Finkelstein, A., Gabbay, D., Hunter, A., Kramer, J. & Nuseibeh, B. (1994). Inconsistency handling in multiperspective specifications. *IEEE Transactions on Software Engineering*, 20(8), 569-578.
 
 ---
 
