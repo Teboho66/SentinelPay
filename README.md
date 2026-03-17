@@ -72,13 +72,13 @@ SentinelPay/
 
 ---
 
-## 🎯 Domain
+## Domain
 
 **FinTech - Digital Payments & Financial Crime Prevention**
 
 ---
 
-## 📊 Requirements At a Glance
+## Requirements At a Glance
 
 | Category | Count |
 |---|---|
