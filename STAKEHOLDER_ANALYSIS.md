@@ -58,7 +58,7 @@ Eight stakeholders have been identified across three categories:
 
 ---
 
-## Stakeholder 4 — Compliance Officer
+## Stakeholder 4 - Compliance Officer
 
 | Attribute | Detail |
 |---|---|
@@ -110,7 +110,7 @@ Eight stakeholders have been identified across three categories:
 
 ---
 
-## Stakeholder 8 — Executive Leadership (CTO / CFO)
+## Stakeholder 8 - Executive Leadership (CTO / CFO)
 
 | Attribute | Detail |
 |---|---|
@@ -152,3 +152,4 @@ Identifying where stakeholder needs create tensions is critical for requirements
 ---
 
 *SentinelPay STAKEHOLDER_ANALYSIS.md - Version 1.0 | March 2026*
+*Assignment 4 - Building on Assignment 3 SentinelPay system*
