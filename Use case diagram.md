@@ -8,9 +8,11 @@
 
 ## 1. Use Case Diagram
 
+**System Boundary: SentinelPay - Real-Time Fraud Detection & Prevention Engine**
+
 ```mermaid
 graph TB
-    %% Actors - left side
+    %% Actors
     BC(["👤 Bank Customer"])
     FA(["👤 Fraud Analyst"])
     PA(["👤 Platform Administrator"])
@@ -19,22 +21,22 @@ graph TB
     PP(["👤 Payment Processor"])
     FR(["👤 Financial Regulator"])
 
-    %% System boundary
-    subgraph SentinelPay["🛡️ SentinelPay System"]
-        UC1["Submit Transaction"]
-        UC2["Validate Transaction Schema"]
-        UC3["Score Transaction for Fraud"]
-        UC4["Enforce Fraud Decision"]
-        UC5["Complete Step-Up Authentication"]
-        UC6["Receive Fraud Notification"]
-        UC7["Submit Transaction Dispute"]
-        UC8["Review and Resolve Fraud Case"]
-        UC9["Manage Detection Rules"]
-        UC10["Retrain Fraud Detection Model"]
-        UC11["Generate Audit Report"]
-        UC12["Monitor System Health"]
-        UC13["Tokenise PII Data"]
-        UC14["View SHAP Explainability Report"]
+    %% Use Cases inside system boundary
+    subgraph " "
+        UC1["UC1: Submit Transaction"]
+        UC2["UC2: Validate Transaction Schema"]
+        UC3["UC3: Score Transaction for Fraud"]
+        UC4["UC4: Enforce Fraud Decision"]
+        UC5["UC5: Complete Step-Up Authentication"]
+        UC6["UC6: Receive Fraud Notification"]
+        UC7["UC7: Submit Transaction Dispute"]
+        UC8["UC8: Review and Resolve Fraud Case"]
+        UC9["UC9: Manage Detection Rules"]
+        UC10["UC10: Retrain Fraud Detection Model"]
+        UC11["UC11: Generate Audit Report"]
+        UC12["UC12: Monitor System Health"]
+        UC13["UC13: Tokenise PII Data"]
+        UC14["UC14: View SHAP Explainability Report"]
     end
 
     %% Payment Processor interactions
@@ -97,16 +99,16 @@ The Fraud Analyst is the financial crime investigator who reviews cases flagged 
 The Platform Administrator manages the operational health of SentinelPay. They configure and manage detection rules (UC9) and monitor overall system health including service uptime, latency metrics, and Kafka consumer lag (UC12). Their concerns around zero-downtime deployments and rapid incident detection are addressed through UC12, which maps to NFR-D2 and NFR-P3 from the SRD.
 
 ### Actor 4 - Compliance Officer
-The Compliance Officer is responsible for ensuring SentinelPay operates within POPIA, FSCA, and GDPR regulatory bounds. They generate and review audit reports (UC11) and inspect SHAP explainability reports on demand to satisfy regulatory examination requests (UC14). The Compliance Officer is modelled as a generalisation of the Fraud Analyst because they share access to the same explainability and audit tools, but with a broader organisational mandate. This addresses FR-15 and FR-20 from the SRD.
+The Compliance Officer is responsible for ensuring SentinelPay operates within POPIA, FSCA, and GDPR regulatory bounds. They generate and review audit reports (UC11) and inspect SHAP explainability reports on demand to satisfy regulatory examination requests (UC14). The Compliance Officer is modelled as a generalisation of the Fraud Analyst because they share access to the same explainability and audit tools, but with a broader organisational mandate. This addresses FR-15 from the SRD.
 
 ### Actor 5 - ML Engineer
 The ML Engineer owns the fraud detection models. They trigger and manage the model retraining pipeline (UC10) and monitor system and model health metrics (UC12) to detect performance degradation early. UC10 includes UC3 (Score Transaction for Fraud) because every retraining cycle must validate new model versions by running scoring inference on the holdout dataset before promotion. This actor addresses FR-13 and FR-14 from the SRD.
 
 ### Actor 6 - Payment Processor
-The Payment Processor is the external system (e.g., Visa, PayShap) that submits transaction events to SentinelPay for fraud evaluation. It initiates UC1 (Submit Transaction), which automatically triggers UC2 (Validate Transaction Schema) and UC3 (Score Transaction for Fraud). The Payment Processor is not a human actor - it is a system actor representing the external integration point. This directly addresses FR-01 and FR-02 from the SRD.
+The Payment Processor is the external system (e.g., Visa, PayShap) that submits transaction events to SentinelPay for fraud evaluation. It initiates UC1 (Submit Transaction), which automatically triggers UC2 (Validate Transaction Schema) and UC3 (Score Transaction for Fraud). The Payment Processor is a system actor representing the external integration point. This directly addresses FR-01 and FR-02 from the SRD.
 
 ### Actor 7 - Financial Regulator
-The Financial Regulator (FSCA / SARB) is an external institutional actor that does not interact with SentinelPay in real time. Their interaction is limited to requesting audit reports (UC11) during regulatory examinations. Their inclusion as an actor is important because it makes the regulatory traceability explicit - UC11 exists specifically to satisfy FR-15 and FR-21 from the SRD and the Regulator's success metrics in STAKEHOLDER_ANALYSIS.md.
+The Financial Regulator (FSCA / SARB) is an external institutional actor that does not interact with SentinelPay in real time. Their interaction is limited to requesting audit reports (UC11) during regulatory examinations. Their inclusion as an actor makes the regulatory traceability explicit - UC11 exists specifically to satisfy FR-15 and the Regulator's success metrics in STAKEHOLDER_ANALYSIS.md.
 
 ---
 
@@ -119,7 +121,7 @@ Include relationships represent use cases that are always executed as part of an
 |---|---|---|
 | Score Transaction for Fraud (UC3) | Tokenise PII Data (UC13) | Every scoring operation requires PII to be tokenised first. Tokenisation is mandatory before any ML feature vector is built (FR-03). |
 | Enforce Fraud Decision (UC4) | Receive Fraud Notification (UC6) | Every SOFT_DECLINE or HARD_BLOCK decision always triggers a customer notification. Notification is inseparable from the decision (FR-11). |
-| Review and Resolve Fraud Case (UC8) | View SHAP Explainability Report (UC14) | An analyst cannot meaningfully review a case without the SHAP explanation. The report is a mandatory part of every case review (FR-10, FR-20). |
+| Review and Resolve Fraud Case (UC8) | View SHAP Explainability Report (UC14) | An analyst cannot meaningfully review a case without the SHAP explanation. The report is a mandatory part of every case review (FR-10). |
 | Retrain Fraud Detection Model (UC10) | Score Transaction for Fraud (UC3) | Model retraining always includes scoring inference on the holdout validation set before promotion. You cannot retrain without validating via scoring (FR-13). |
 
 ### Extend Relationships
@@ -128,8 +130,8 @@ Extend relationships represent use cases that are conditionally triggered - they
 | Extension Use Case | Base Use Case | Condition |
 |---|---|---|
 | Complete Step-Up Authentication (UC5) | Enforce Fraud Decision (UC4) | Only triggered when the fraud decision is SOFT_DECLINE, not APPROVE or HARD_BLOCK (FR-08). |
-| Submit Transaction Dispute (UC7) | Review and Resolve Fraud Case (UC8) | A dispute can trigger a case review, but most cases are generated automatically by the system. The dispute is a conditional path (FR-12). |
-| Generate Audit Report (UC11) | Score Transaction for Fraud (UC3) | Every scoring decision produces an audit record that can optionally be compiled into a formal report. The report generation is conditional, triggered on demand (FR-15). |
+| Submit Transaction Dispute (UC7) | Review and Resolve Fraud Case (UC8) | A dispute can trigger a case review, but most cases are generated automatically. The dispute is a conditional path (FR-12). |
+| Generate Audit Report (UC11) | Score Transaction for Fraud (UC3) | Every scoring decision produces an audit record that can optionally be compiled into a formal report on demand (FR-15). |
 
 ### Generalisation Relationship
 The Compliance Officer generalises the Fraud Analyst. This means the Compliance Officer can perform everything the Fraud Analyst can - reviewing cases (UC8) and viewing SHAP reports (UC14) - but additionally has exclusive access to formal regulatory audit report generation (UC11). This models the real-world relationship where compliance staff have a superset of analyst system permissions.
@@ -151,5 +153,3 @@ The Compliance Officer generalises the Fraud Analyst. This means the Compliance 
 
 ---
 
-*SentinelPay USE_CASE_DIAGRAM.md - Version 1.0 | March 2026*
-*Assignment 5 - Builds on Assignments 3 and 4*
