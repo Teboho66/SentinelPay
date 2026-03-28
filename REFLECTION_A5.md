@@ -2,7 +2,7 @@
 ## SentinelPay: Real-Time Fraud Detection & Prevention Engine
 
 > **Assignment 5 - Reflection**
-> Author: Teboho Nkosi | March 2026
+> Author: Teboho Mokoni 
 
 ---
 
