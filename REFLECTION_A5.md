@@ -6,7 +6,7 @@
 
 ---
 
-Going into this assignment I thought translating requirements into use cases would be the straightforward part - we already had 15 functional requirements from Assignment 4 with acceptance criteria, so surely the use cases just follow from those. That assumption was wrong pretty quickly.
+Going into this assignment I thought translating requirements into use cases would be the straightforward part - I already had 15 functional requirements from Assignment 4 with acceptance criteria, so surely the use cases just follow from those. That assumption was wrong pretty quickly.
 
 The first challenge I hit was figuring out the right level of abstraction for the use case diagram. My first draft had 20+ use cases and it was a mess - I had things like "Validate JWT Token" and "Query Redis Cache" as use cases, which are implementation details, not user interactions. A use case should describe what an actor wants to achieve, not how the system does it internally. Once I reframed every use case as a goal an actor is trying to accomplish - "Submit Transaction Dispute," "Review and Resolve Fraud Case" - the diagram cleaned up significantly. The key learning there is that use cases live at the user goal level, not the system mechanism level.
 
