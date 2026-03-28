@@ -1,7 +1,7 @@
 # 🛡️ SentinelPay - Real-Time Fraud Detection & Prevention Engine
 
 > **Postgraduate Software Engineering**
-> **Author:** Teboho Mokoni 
+> **Author:** Teboho Nkosi | **Year:** 2026
 
 ---
 
@@ -78,7 +78,7 @@ SentinelPay/
 
 ---
 
-## Requirements At a Glance
+## 📊 Requirements At a Glance
 
 | Category | Count |
 |---|---|
@@ -91,3 +91,12 @@ SentinelPay/
 ---
 
 *SentinelPay - Because every millisecond between a transaction and a fraud signal costs money.*
+
+### Assignment 5 - Use Case Modeling and Test Case Development
+
+| Document | Description |
+|---|---|
+| [USE_CASE_DIAGRAM.md](./USE_CASE_DIAGRAM.md) | UML use case diagram (Mermaid) with 7 actors, 14 use cases, and full written explanation of actors, relationships, and stakeholder alignment |
+| [USE_CASE_SPECIFICATIONS.md](./USE_CASE_SPECIFICATIONS.md) | 8 detailed use case specifications with description, preconditions, postconditions, basic flow, and alternative flows |
+| [TEST_CASES.md](./TEST_CASES.md) | 10 functional test cases + 2 NFR test scenarios (performance load test + security penetration test) in table format |
+| [REFLECTION_A5.md](./REFLECTION_A5.md) | Reflection on challenges translating requirements to use cases and test cases |
