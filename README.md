@@ -1,7 +1,7 @@
 # 🛡️ SentinelPay - Real-Time Fraud Detection & Prevention Engine
 
 > **Postgraduate Software Engineering**
-> **Author:** Teboho Nkosi | **Year:** 2026
+> **Author:** Teboho Mokoni
 
 ---
 
