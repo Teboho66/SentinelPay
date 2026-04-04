@@ -27,12 +27,26 @@ In 2026, card-not-present fraud, identity spoofing, and AI-generated synthetic i
 
 ```
 SentinelPay/
-├── README.md                   ← Project overview (you are here)
-├── SPECIFICATION.md            ← System specification (Assignment 3)
-├── ARCHITECTURE.md             ← C4 architectural diagrams - all 4 levels (Assignment 3)
-├── STAKEHOLDER_ANALYSIS.md     ← 8-stakeholder analysis with roles, concerns, pain points, metrics (Assignment 4)
-├── SRD.md                      ← System Requirements Document - 15 FRs + 18 NFRs (Assignment 4)
-└── REFLECTION.md               ← Requirements engineering reflection (Assignment 4)
+├── README.md                       ← Project overview (you are here)
+│
+├──── Assignment 3 ──
+├── SPECIFICATION.md                ← System specification
+├── ARCHITECTURE.md                 ← C4 architectural diagrams - all 4 levels
+│
+├── ── Assignment 4 ──
+├── STAKEHOLDER_ANALYSIS.md         ← 8-stakeholder analysis
+├── SRD.md                          ← System Requirements Document - 15 FRs + 18 NFRs
+├── REFLECTION.md                   ← Requirements engineering reflection
+│
+├── ── Assignment 5 ──
+├── USE_CASE_DIAGRAM.md             ← UML use case diagram (Mermaid) - 7 actors, 14 use cases
+├── USE_CASE_SPECIFICATIONS.md      ← 8 detailed use case specifications
+├── TEST_CASES.md                   ← 10 functional test cases + 2 NFR test scenarios
+├── REFLECTION_A5.md                ← Reflection on use case and test case development
+│
+├── ── Assignment 6 ──
+├── AGILE_PLANNING.md               ← User stories, product backlog, sprint plan
+├── REFLECTION_A6.md                ← Agile planning reflection
 ```
 
 ---
@@ -54,6 +68,21 @@ SentinelPay/
 | [SRD.md](./SRD.md) | System Requirements Document - 15 functional requirements with acceptance criteria + 18 non-functional requirements across 6 quality attribute categories |
 | [REFLECTION.md](./REFLECTION.md) | Reflection on challenges faced in balancing stakeholder needs during requirements elicitation |
 
+### Assignment 5 - Use Case Modeling and Test Case Development
+
+| Document | Description |
+|---|---|
+| [USE_CASE_DIAGRAM.md](./USE_CASE_DIAGRAM.md) | UML use case diagram (Mermaid) with 7 actors, 14 use cases, and full written explanation of actors, relationships, and stakeholder alignment |
+| [USE_CASE_SPECIFICATIONS.md](./USE_CASE_SPECIFICATIONS.md) | 8 detailed use case specifications with description, preconditions, postconditions, basic flow, and alternative flows |
+| [TEST_CASES.md](./TEST_CASES.md) | 10 functional test cases + 2 NFR test scenarios (performance load test + security penetration test) in table format |
+| [REFLECTION_A5.md](./REFLECTION_A5.md) | Reflection on challenges translating requirements to use cases and test cases |
+
+### Assignment 6 - Agile Planning
+
+| Document | Description |
+|---|---|
+| [AGILE_PLANNING.md](./AGILE_PLANNING.md) | 14 user stories, MoSCoW product backlog with Fibonacci story points, Sprint 1 plan with 27 tasks, and full traceability matrix |
+| [REFLECTION_A6.md](./REFLECTION_A6.md) | Reflection on challenges in Agile prioritisation, estimation, and planning as a solo developer |
 ---
 
 ## 🧱 Technology Stack
@@ -91,12 +120,3 @@ SentinelPay/
 ---
 
 *SentinelPay - Because every millisecond between a transaction and a fraud signal costs money.*
-
-### Assignment 5 - Use Case Modeling and Test Case Development
-
-| Document | Description |
-|---|---|
-| [USE_CASE_DIAGRAM.md](./USE_CASE_DIAGRAM.md) | UML use case diagram (Mermaid) with 7 actors, 14 use cases, and full written explanation of actors, relationships, and stakeholder alignment |
-| [USE_CASE_SPECIFICATIONS.md](./USE_CASE_SPECIFICATIONS.md) | 8 detailed use case specifications with description, preconditions, postconditions, basic flow, and alternative flows |
-| [TEST_CASES.md](./TEST_CASES.md) | 10 functional test cases + 2 NFR test scenarios (performance load test + security penetration test) in table format |
-| [REFLECTION_A5.md](./REFLECTION_A5.md) | Reflection on challenges translating requirements to use cases and test cases |
