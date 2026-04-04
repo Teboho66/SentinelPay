@@ -1,0 +1,19 @@
+# REFLECTION_A6.md - Reflection on Agile Planning
+## SentinelPay: Real-Time Fraud Detection & Prevention Engine
+
+> **Assignment 6 - Agile Reflection**
+> Author: Teboho Mokoni
+
+---
+
+The assignment brief says to use internal resistance as the source of stakeholder tension since I am the only stakeholder at this point. That framing turned out to be more accurate than I expected, because the challenges in this assignment were not technical - they were about making decisions under uncertainty when you are simultaneously the person who wants everything and the person who has to be realistic about what is achievable.
+
+The first challenge was prioritisation. When you know a system as well as I know SentinelPay at this point - having specified every requirement, drawn every use case, and written every test case - everything feels equally important. The PII tokenisation feels as urgent as the ML scoring, which feels as urgent as the audit trail. The MoSCoW framework forced me to ask a question I had been avoiding: what is the absolute minimum that makes this system meaningful? Not complete, not production-ready - meaningful. That question is uncomfortable when you have spent four assignments designing something sophisticated. Marking US-014 (configurable thresholds per account tier) as Won't-have for Sprint 1 felt wrong at first because I know exactly how important it is from the stakeholder analysis. But it is genuinely not needed to demonstrate that the pipeline works. That tension between what I know matters long-term and what delivers value now is real and persistent.
+
+The second challenge was effort estimation. I have never actually built a streaming ML scoring service before at this scale, so my estimates for US-004 (13 story points, approximately 35 hours of tasks) are educated guesses based on reading documentation and understanding the architecture. In a real Scrum team there would be planning poker, historical velocity data, and engineers who have built similar things before. As a solo developer estimating my own work, I had to be honest with myself that 13 points is probably optimistic for a story that involves training an XGBoost model, setting up MLflow, building three model loaders, implementing an ensemble aggregator, and hitting a 60ms latency target. The Fibonacci sequence helps because it forces you to acknowledge uncertainty - you cannot give something 7 points, so you either commit to 5 (confident) or 8 (uncertain). I chose 13 for US-004 which is effectively saying "I know this is a lot and I am not fully sure how long it will take."
+
+The third challenge was writing user stories that are genuinely small and independent when the underlying system is deeply event-driven and coupled through Kafka. In a Kafka pipeline, almost every service depends on the previous one having published an event. US-004 cannot run without US-001 being done first. This violated the "Independent" criterion of INVEST and required me to think carefully about how to sequence the sprint so that dependencies are resolved in order without blocking progress. The solution was to structure Sprint 1 tasks sequentially - infrastructure first, then ingestion, then enrichment, then scoring - which is not pure Agile but is the honest reality of building a streaming data pipeline as a single developer.
+
+The broader lesson is that Agile tools like story points and MoSCoW work best when they create productive constraints. The constraint of "33 points per sprint" forced trade-offs I would not have made if I had simply listed everything I wanted to build. Those trade-offs are where real product thinking happens.
+
+---
