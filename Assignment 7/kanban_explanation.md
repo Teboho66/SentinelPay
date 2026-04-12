@@ -2,8 +2,6 @@
 ## SentinelPay: Real-Time Fraud Detection & Prevention Engine
 
 
----
-
 ## 1. What is a Kanban Board?
 
 A Kanban board is a visual project management tool that represents the state of all active work in a system at a single glance. The word "Kanban" comes from Japanese, meaning "visual signal" or "card" - it originated in Toyota's manufacturing system in the 1940s as a way to control production flow and eliminate waste. In software development, the same principle applies: work items (tasks, user stories, bugs) are represented as cards that move across columns from left to right, where each column represents a stage in the development workflow.
@@ -17,7 +15,6 @@ The defining characteristics of a Kanban board are:
 
 For SentinelPay specifically, the Kanban board at `https://github.com/Teboho66/SentinelPay` in the Projects tab is the single source of truth for what is being worked on, what is blocked, and what is done at any point in the Sprint 1 delivery cycle.
 
----
 
 ## 2. How the SentinelPay Kanban Board Works
 
@@ -75,8 +72,6 @@ The WIP limits enforce a form of simplicity - by preventing the start of new wor
 **Sustainable pace**
 The board provides visibility into the real state of work. Unlike a status report that can be optimistic, the Kanban board shows exactly how many cards are in each stage. If six cards are stuck in Testing with the sprint ending in two days, that is visible immediately and action can be taken - deprioritise two stories, move them back to Sprint 2 Backlog, and focus on getting four done properly. This kind of real-time adjustment is only possible when workflow is visualised honestly.
 
----
-
 ## 3. Board Labels Used
 
 The following GitHub Issue labels are used on cards in the SentinelPay board to provide additional context at a glance:
@@ -91,7 +86,6 @@ The following GitHub Issue labels are used on cards in the SentinelPay board to 
 | `nfr` | Purple | Non-functional requirement story |
 | `blocked` | Dark red | Currently blocked - needs attention |
 
----
 
 ## 4. Kanban vs Scrum for SentinelPay
 
