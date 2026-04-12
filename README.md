@@ -47,6 +47,12 @@ SentinelPay/
 ├── ── Assignment 6 ──
 ├── AGILE_PLANNING.md               ← User stories, product backlog, sprint plan
 ├── REFLECTION_A6.md                ← Agile planning reflection
+│
+├── Assignment 7/
+│   ├── template_analysis.md            ← GitHub template comparison and justification
+│   ├── kanban_explanation.md           ← Kanban board definition and purpose
+│   ├── reflection.md                   ← Lessons learned from Kanban implementation
+│   └── screenshots/                    ← Board screenshots (kanban_board_full.png, issue_detail.png)
 ```
 
 ---
@@ -83,7 +89,37 @@ SentinelPay/
 |---|---|
 | [AGILE_PLANNING.md](./AGILE_PLANNING.md) | 14 user stories, MoSCoW product backlog with Fibonacci story points, Sprint 1 plan with 27 tasks, and full traceability matrix |
 | [REFLECTION_A6.md](./REFLECTION_A6.md) | Reflection on challenges in Agile prioritisation, estimation, and planning as a solo developer |
+
+### Assignment 7 - GitHub Kanban Board
+
+| Document | Description |
+|---|---|
+| [template_analysis.md](./Assignment%207/template_analysis.md) | Comparison of 4 GitHub project templates, justification for selecting Automated Kanban, and 7-column customisation plan |
+| [kanban_explanation.md](./Assignment%207/kanban_explanation.md) | Kanban board definition, workflow visualisation, WIP limits, and Agile principles alignment |
+| [reflection.md](./Assignment%207/reflection.md) | Lessons learned - GitHub Projects vs Trello vs Jira, WIP limit enforcement gaps, template customisation challenges |
 ---
+
+## 🗂️ GitHub Project Board
+
+The SentinelPay Sprint Board is managed using GitHub Projects with a customised Automated Kanban template.
+
+**Board:** [SentinelPay Sprint Board](https://github.com/Teboho66/SentinelPay/projects)
+
+### Board Customisation
+
+The default Automated Kanban template was extended with 4 additional columns to match the SentinelPay development workflow:
+
+| Column | Purpose | WIP Limit |
+|---|---|---|
+| Sprint 2 Backlog | Should-have and Could-have stories deferred from Sprint 1 | None |
+| Sprint 1 - To Do | Must-have stories committed for Sprint 1 delivery | None |
+| In Progress | Actively being developed | Max 2 |
+| Testing | Implementation complete, test cases being executed | Max 2 |
+| Blocked | Cannot proceed - dependency or blocker identified | None |
+| In Review | Complete, under final self-review | Max 1 |
+| Done | Meets Definition of Done from AGILE_PLANNING.md | None |
+
+**Why Automated Kanban:** GitHub's automation rules (auto-move on issue open, close, reopen, PR merge) keep the board accurate without manual updates - critical for a solo developer managing 27 sprint tasks across 14 user stories.
 
 ## 🧱 Technology Stack
 
@@ -120,3 +156,4 @@ SentinelPay/
 ---
 
 *SentinelPay - Because every millisecond between a transaction and a fraud signal costs money.*
+
