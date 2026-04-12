@@ -2,9 +2,7 @@
 ## SentinelPay: Real-Time Fraud Detection & Prevention Engine
 
 > **Assignment 7 - Reflection**
-> Author: Teboho Nkosi | April 2026
-
----
+> Author: Teboho Mokoni
 
 The first challenge in this assignment was understanding that GitHub's project templates are starting points, not finished solutions. When I opened the template selection screen I expected four clearly differentiated options that would each suit a different type of project. What I found was that three of the four templates (Basic Kanban, Automated Kanban, Team Planning) are structurally almost identical - all three have a To Do, In Progress, Done column structure - and the real differentiator is the automation layer. That realisation shifted the selection decision from "which columns do I want" to "how much do I want the board to maintain itself." For a solo developer that is an easy answer.
 
@@ -15,7 +13,5 @@ Comparing GitHub Projects to other tools is where the assignment became genuinel
 Jira is the more interesting comparison because it is the industry standard for Agile project management at scale. Jira has genuine WIP limit enforcement, configurable swimlanes, velocity charts, burndown charts, capacity planning, and deep integration with Confluence for documentation. GitHub Projects has none of those features at the same level of maturity. However, Jira costs money, requires setup and administration, and is significantly more complex to configure correctly. For an open-source or academic project hosted on GitHub, the zero-cost, zero-setup integration of GitHub Projects is a pragmatic choice that trades feature depth for frictionless access. The lesson is that tool selection is always a trade-off between capability and cost-of-adoption, and for SentinelPay at this stage, GitHub Projects wins on that trade-off even if Jira would win on raw features.
 
 The broader lesson is that the board is only as useful as the discipline applied to keeping it current. A beautifully structured seven-column Kanban board that is updated once a week is less useful than a simple three-column board updated daily. The automation in GitHub's Automated Kanban template is valuable precisely because it removes the dependency on developer discipline for the most common updates - opening and closing issues. That is the design insight worth carrying forward.
-
----
 
 *Word count: approximately 580 words*

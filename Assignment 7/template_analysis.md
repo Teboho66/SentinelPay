@@ -8,8 +8,6 @@
 
 GitHub Projects offers several pre-built templates designed to support different team workflows and project management styles. This document evaluates four of GitHub's available project templates against the specific needs of SentinelPay, selects the most appropriate one, and justifies that selection with reference to the Sprint 1 plan defined in Assignment 6.
 
----
-
 ## 2. Template Comparison Table
 
 | Feature | Basic Kanban | Automated Kanban | Bug Triage | Team Planning |
@@ -27,8 +25,6 @@ GitHub Projects offers several pre-built templates designed to support different
 | **Customisability** | High - simple base to build on | High - automation rules are editable | Medium - triage workflow is opinionated | High - backlog structure is flexible |
 | **Suitable for SentinelPay** | Partially - too simple for a multi-stage ML pipeline | Yes - automation aligns with Kafka-driven, event-based development workflow | No - SentinelPay is feature development, not primarily bug tracking | Partially - backlog is useful but lacks automation |
 
----
-
 ## 3. Template Descriptions
 
 ### 3.1 Basic Kanban
@@ -42,8 +38,6 @@ The Bug Triage template is designed specifically for defect management workflows
 
 ### 3.4 Team Planning
 The Team Planning template adds a Backlog column to the standard three-column layout, which is useful for distinguishing between work planned for a future sprint and work actively in progress. However, it lacks the automation of the Automated Kanban template, meaning all card movements are manual. For a solo developer managing 27 sprint tasks, the manual overhead is a real productivity cost.
-
----
 
 ## 4. Selected Template: Automated Kanban
 
@@ -64,8 +58,6 @@ SentinelPay is a solo project. Every minute spent manually updating a project bo
 
 **Reason 4 - Extensibility**
 The Automated Kanban template provides a clean three-column base that is easy to extend with custom columns. This document defines the customisation plan in detail, and the template's simplicity makes adding Testing, Blocked, and In Review columns straightforward without disrupting the existing automation rules.
-
----
 
 ## 5. Customisation Plan
 
