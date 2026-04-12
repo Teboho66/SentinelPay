@@ -1,0 +1,21 @@
+# reflection.md - Assignment 7 Reflection
+## SentinelPay: Real-Time Fraud Detection & Prevention Engine
+
+> **Assignment 7 - Reflection**
+> Author: Teboho Nkosi | April 2026
+
+---
+
+The first challenge in this assignment was understanding that GitHub's project templates are starting points, not finished solutions. When I opened the template selection screen I expected four clearly differentiated options that would each suit a different type of project. What I found was that three of the four templates (Basic Kanban, Automated Kanban, Team Planning) are structurally almost identical - all three have a To Do, In Progress, Done column structure - and the real differentiator is the automation layer. That realisation shifted the selection decision from "which columns do I want" to "how much do I want the board to maintain itself." For a solo developer that is an easy answer.
+
+The customisation challenge was more interesting. The Automated Kanban template gives you three columns and automation rules tied to issue state changes. Adding the Testing and Blocked columns to the board was straightforward on GitHub's UI. The harder decision was the WIP limits. GitHub's native project boards do not enforce WIP limits automatically - you have to apply them as a convention, not a technical constraint. In Jira, WIP limits can be configured as hard stops that prevent cards from being moved into a column that is at capacity. In GitHub Projects, the limit is visible only if you write it in the column description and rely on yourself to honour it. That is a meaningful functional gap that I had not anticipated. In practice, for a solo developer, a self-imposed limit that you can always override is arguably sufficient since there is no one else to hide the violation from. But in a team context this would be a real problem.
+
+Comparing GitHub Projects to other tools is where the assignment became genuinely interesting. I have used Trello before in group project settings and the comparison is instructive. Trello is more visually flexible - you can add card covers, custom backgrounds, power-ups for time tracking, and the drag-and-drop experience is smoother. But Trello is disconnected from the code. A Trello card has no native awareness of a pull request, a commit, or a branch. In GitHub Projects, the integration is the entire point - an issue card knows what branch it relates to, what commits have referenced it, and what the CI/CD status is. For SentinelPay, where the GitHub Actions CI/CD pipeline from the Docker Compose setup is directly connected to the repository, that integration matters in a way it would not for a Trello-based project.
+
+Jira is the more interesting comparison because it is the industry standard for Agile project management at scale. Jira has genuine WIP limit enforcement, configurable swimlanes, velocity charts, burndown charts, capacity planning, and deep integration with Confluence for documentation. GitHub Projects has none of those features at the same level of maturity. However, Jira costs money, requires setup and administration, and is significantly more complex to configure correctly. For an open-source or academic project hosted on GitHub, the zero-cost, zero-setup integration of GitHub Projects is a pragmatic choice that trades feature depth for frictionless access. The lesson is that tool selection is always a trade-off between capability and cost-of-adoption, and for SentinelPay at this stage, GitHub Projects wins on that trade-off even if Jira would win on raw features.
+
+The broader lesson is that the board is only as useful as the discipline applied to keeping it current. A beautifully structured seven-column Kanban board that is updated once a week is less useful than a simple three-column board updated daily. The automation in GitHub's Automated Kanban template is valuable precisely because it removes the dependency on developer discipline for the most common updates - opening and closing issues. That is the design insight worth carrying forward.
+
+---
+
+*Word count: approximately 580 words*
