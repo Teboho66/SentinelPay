@@ -6,7 +6,6 @@
 > Builds on: Assignment 4 (SRD.md), Assignment 5 (USE_CASE_SPECIFICATIONS.md), Assignment 6 (AGILE_PLANNING.md)
 > Version: 1.0 | April 2026
 
----
 
 ## Key Definitions (per Module 4, Unit 1)
 
@@ -14,8 +13,6 @@
 - **Transition:** A change from one state to another triggered by an event
 - **Event:** An occurrence that causes a state transition
 - **Guard Condition:** A boolean condition that must be true for a transition to fire
-
----
 
 ## Object 1 - Transaction
 
@@ -64,8 +61,6 @@ The three terminal decision states (Approved, SoftDeclined, HardBlocked) are gov
 - Scoring to Scored: FR-04 (ML Ensemble Fraud Scoring)
 - DecisionPending to Approved/SoftDeclined/HardBlocked: FR-07 (Automated Fraud Decision Enforcement)
 - SoftDeclined transitions: FR-08 (Step-Up Authentication)
-
----
 
 ## Object 2 - Fraud Case
 
@@ -192,8 +187,6 @@ The 30-day dispute window is a configurable system parameter. The guard conditio
 - UnderReview transitions: FR-10 (Analyst Case Review and Resolution)
 - Agile: US-007 (Customer disputes blocked transaction), T-019 in Sprint 1 backlog
 
----
-
 ## Object 5 - Audit Record
 
 ### Diagram
@@ -239,8 +232,6 @@ The Persisted to Tampered transition fires when the daily integrity check recomp
 - Persisted to Tampered: NFR-S4 (Fraud Decision Audit Log Integrity)
 - Agile: US-011 (Tamper-evident audit trail), T-021, T-022, T-023 in Sprint 1
 
----
-
 ## Object 6 - Step-Up Authentication Challenge
 
 ### Diagram
@@ -281,8 +272,6 @@ The 120-second TTL is a Redis-enforced guard condition. The OTP key is stored in
 - Pending to Completed: FR-08 (Step-Up Authentication for SOFT_DECLINE)
 - Expired/MaxAttemptsExceeded: FR-08 (challenge escalation to HARD_BLOCK)
 - Agile: US-005 (Step-up authentication story), T-019 (Sprint 1 task)
-
----
 
 ## Object 7 - Account Behavioural Profile
 
@@ -326,8 +315,6 @@ The Stale to Expired transition is governed by two conditions that must both be 
 - New/Building states: FR-05 (Behavioural Profile-Based Feature Enrichment - new account handling)
 - Active/Updated states: FR-05 (real-time velocity counter updates)
 - Stale/Expired: NFR-M3 (Feature Definition Version Control - data freshness)
-
----
 
 ## Object 8 - Kafka Consumer Group Offset
 
@@ -374,8 +361,6 @@ The Retrying to Processing guard condition `[retry attempt < max retries AND bac
 - Rebalancing: NFR-P1 (consumer group rebalancing within 10 seconds)
 - Lagging/AlertFired: NFR-O1 (Prometheus metrics and alerting), NFR-P3 (Recovery Time Objective)
 
----
-
 ## State Diagrams Traceability Matrix
 
 | Object | Key States | FR/NFR References | User Story | Sprint Task |
@@ -389,7 +374,4 @@ The Retrying to Processing guard condition `[retry attempt < max retries AND bac
 | Account Behavioural Profile | New, Building, Established, Active, Stale, Expired | FR-05, NFR-M3 | US-004 | T-011, T-012 |
 | Kafka Consumer Group Offset | Consuming, Processing, Committed, Retrying, Rebalancing, Lagging | FR-01, NFR-P1, NFR-O1 | US-001, US-012 | T-001, T-002 |
 
----
 
-*SentinelPay state_diagrams.md - Version 1.0 | April 2026*
-*Assignment 8 - Object State Modeling | Builds on Assignments 4, 5, and 6*

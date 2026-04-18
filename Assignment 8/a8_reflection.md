@@ -2,9 +2,7 @@
 ## SentinelPay: Real-Time Fraud Detection & Prevention Engine
 
 > **Assignment 8 - Reflection**
-> Author: Teboho Nkosi | April 2026
-
----
+> Author: Teboho Mokoni
 
 The central challenge in this assignment was granularity - deciding how much detail to include in each diagram without making it unreadable. The feedback from Assignment 5 ("use case diagrams are difficult to read") was directly in my mind throughout this work. I made a deliberate decision to give each object and each workflow its own separate diagram rather than combining multiple concerns into one. Eight state diagrams and eight activity diagrams totalling sixteen separate Mermaid blocks is more files to manage but each diagram is focused and readable in isolation.
 
@@ -18,4 +16,4 @@ The activity diagrams were more difficult to keep readable than the state diagra
 
 The real-time nature of SentinelPay made the guard conditions in the state diagrams particularly important. The 100ms end-to-end latency SLA from NFR-P1 means that every state transition in the Transaction lifecycle must complete within a fraction of that budget. Modelling the circuit breaker state in the Kafka Consumer Group Offset object, and the fallback scoring path in the ML Scoring workflow, reflects the system's designed resilience: the state machine never gets stuck in a state with no exit path, and every failure state has a defined transition that keeps the system operational.
 
----
+
