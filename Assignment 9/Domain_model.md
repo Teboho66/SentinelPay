@@ -1,4 +1,3 @@
-# domain_model.md - Domain Model
 ## SentinelPay: Real-Time Fraud Detection & Prevention Engine
 
 > **Assignment 9 - Domain Model**
