@@ -53,6 +53,17 @@ SentinelPay/
 │   ├── kanban_explanation.md           ← Kanban board definition and purpose
 │   ├── reflection.md                   ← Lessons learned from Kanban implementation
 │   └── screenshots/                    ← Board screenshots (kanban_board_full.png, issue_detail.png)
+│
+├── Assignment 8/
+│   ├── state_diagrams.md               <- 8 UML state transition diagrams with explanations
+│   ├── activity_diagrams.md            <- 8 UML activity diagrams with swimlanes
+│   └── a8_reflection.md               <- Reflection on state and activity modeling
+│
+├── Assignment 9/
+│   ├── domain_model.md                 <- Domain model - 7 entities with attributes, methods, business rules
+│   ├── class_diagram.md                <- Full Mermaid.js class diagram with UML relationships
+│   └── a9_reflection.md               <- Reflection on domain modeling and class diagram design
+│
 ```
 
 ---
@@ -97,6 +108,23 @@ SentinelPay/
 | [template_analysis.md](./Assignment%207/template_analysis.md) | Comparison of 4 GitHub project templates, justification for selecting Automated Kanban, and 7-column customisation plan |
 | [kanban_explanation.md](./Assignment%207/kanban_explanation.md) | Kanban board definition, workflow visualisation, WIP limits, and Agile principles alignment |
 | [reflection.md](./Assignment%207/reflection.md) | Lessons learned - GitHub Projects vs Trello vs Jira, WIP limit enforcement gaps, template customisation challenges |
+
+### Assignment 8 - State and Activity Modeling
+
+| Document | Description |
+|---|---|
+| [state_diagrams.md](./Assignment%208/state_diagrams.md) | 8 UML state transition diagrams (Transaction, Fraud Case, ML Model Version, Customer Dispute, Audit Record, Step-Up Auth, Account Profile, Kafka Offset) with guard conditions and FR mapping |
+| [activity_diagrams.md](./Assignment%208/activity_diagrams.md) | 8 UML activity diagrams with swimlanes, decision nodes, and parallel actions (ingestion, scoring, decision, step-up auth, case review, model retraining, dispute, audit report) |
+| [a8_reflection.md](./Assignment%208/a8_reflection.md) | Reflection on granularity decisions, aligning diagrams with Agile stories, and state vs activity diagram comparison |
+
+### Assignment 9 - Domain Model and Class Diagram
+
+| Document | Description |
+|---|---|
+| [domain_model.md](./Assignment%209/domain_model.md) | Domain model covering 7 core entities (Transaction, FraudCase, MLModel, AuditRecord, AccountProfile, CustomerDispute, StepUpChallenge) with attributes, methods, business rules, and entity relationships |
+| [class_diagram.md](./Assignment%209/class_diagram.md) | Full Mermaid.js UML class diagram with associations, aggregations, compositions, inheritance, and multiplicity across all domain entities |
+| [a9_reflection.md](./Assignment%209/a9_reflection.md) | Reflection on abstraction challenges, class diagram alignment with prior assignments, trade-offs, and OO design lessons |
+
 ---
 
 ## 🗂️ GitHub Project Board
@@ -135,7 +163,24 @@ The default Automated Kanban template was extended with 4 additional columns to 
 | Containerisation | Docker · Kubernetes (K8s) |
 | CI/CD | GitHub Actions |
 
----
+
+## Project Stats
+
+| Category | Count |
+|---|---|
+| Stakeholders identified | 8 |
+| Functional Requirements | 15 |
+| Non-Functional Requirements | 18 (across 6 categories) |
+| C4 Architecture Levels | 4 |
+| Use Cases | 14 |
+| Use Case Specifications | 8 |
+| Test Cases | 12 (10 functional + 2 NFR) |
+| User Stories | 14 |
+| Sprint 1 Tasks | 27 |
+| Kanban Board Columns | 7 |
+| State Transition Diagrams | 8 |
+| Activity Diagrams | 8 |
+| Domain Entities | 7 |
 
 ## Domain
 
@@ -156,4 +201,3 @@ The default Automated Kanban template was extended with 4 additional columns to 
 ---
 
 *SentinelPay - Because every millisecond between a transaction and a fraud signal costs money.*
-
