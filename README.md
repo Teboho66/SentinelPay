@@ -121,9 +121,9 @@ SentinelPay/
 
 | Document | Description |
 |---|---|
-| [domain_model.md](./Assignment%209/domain_model.md) | Domain model covering 7 core entities (Transaction, FraudCase, MLModel, AuditRecord, AccountProfile, CustomerDispute, StepUpChallenge) with attributes, methods, business rules, and entity relationships |
-| [class_diagram.md](./Assignment%209/class_diagram.md) | Full Mermaid.js UML class diagram with associations, aggregations, compositions, inheritance, and multiplicity across all domain entities |
-| [a9_reflection.md](./Assignment%209/a9_reflection.md) | Reflection on abstraction challenges, class diagram alignment with prior assignments, trade-offs, and OO design lessons |
+| [Domain_model.md](./Assignment%209/domain_model.md) | Domain model covering 7 core entities (Transaction, FraudCase, MLModel, AuditRecord, AccountProfile, CustomerDispute, StepUpChallenge) with attributes, methods, business rules, and entity relationships |
+| [Class_diagram.md](./Assignment%209/class_diagram.md) | Full Mermaid.js UML class diagram with associations, aggregations, compositions, inheritance, and multiplicity across all domain entities |
+| [A9_reflection.md](./Assignment%209/a9_reflection.md) | Reflection on abstraction challenges, class diagram alignment with prior assignments, trade-offs, and OO design lessons |
 
 ---
 
