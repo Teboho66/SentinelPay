@@ -19,9 +19,9 @@ for _p in ("../Assignment10", "../Assignment11", "."):
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from api.routes.transactions import router as transactions_router
-from api.routes.fraud_cases import router as fraud_cases_router
-from api.routes.ml_models import router as ml_models_router
+from handlers.routes.transactions import router as transactions_router
+from handlers.routes.fraud_cases import router as fraud_cases_router
+from handlers.routes.ml_models import router as ml_models_router
 
 app = FastAPI(
     title="SentinelPay Fraud Detection API",

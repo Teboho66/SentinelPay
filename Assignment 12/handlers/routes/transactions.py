@@ -1,6 +1,8 @@
 """
 SentinelPay – Assignment 12
-api/routes/transactions.py
+handlers/routes/transactions.py
+handlers/routes/fraud_cases.py
+handlers/routes/ml_models.py
 
 Transaction REST API endpoints.
 All business logic lives in TransactionService — routes only handle
@@ -17,11 +19,14 @@ for _p in ("../../Assignment10", "../../Assignment11", ".."):
     if _abs not in sys.path:
         sys.path.insert(0, _abs)
 
-from api.schemas import (
-    SubmitTransactionRequest, ApplyDecisionRequest,
-    TransactionResponse, ErrorResponse,
+from config.schemas import (
+    SubmitTransactionRequest,
+    ApplyDecisionRequest,
+    TransactionResponse,
+    ErrorResponse,
 )
-from api.dependencies import get_transaction_service
+
+from config.dependencies import get_transaction_service
 from services import (
     TransactionService, EntityNotFoundError,
     DuplicateEntityError, BusinessRuleViolationError,
