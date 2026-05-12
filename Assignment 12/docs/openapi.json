@@ -1,0 +1,1946 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SentinelPay Fraud Detection API",
+    "description": "Real-time fraud detection and prevention REST API. Implements the Transaction ingestion pipeline (FR-01\u2013FR-08), Fraud Case management (FR-09\u2013FR-10), and ML Model lifecycle (FR-13\u2013FR-14) from the SentinelPay System Requirements Document.\n\n**Author:** Teboho Mokoni  \n**Assignment:** 12 \u2013 Service Layer and REST API  \n**Stack:** Python 3.12 \u00b7 FastAPI \u00b7 In-memory repositories (A11)",
+    "contact": {
+      "name": "Teboho Mokoni",
+      "url": "https://github.com/Teboho66/SentinelPay"
+    },
+    "license": {
+      "name": "Academic project \u2014 CPUT Postgraduate Diploma"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/transactions": {
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Submit a transaction for fraud evaluation",
+        "description": "Accepts a transaction from the Payment Processor, validates the schema (FR-02), tokenises PII (BR-T2), and persists the transaction ready for ML scoring.",
+        "operationId": "submit_transaction_api_transactions_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transaction accepted and persisted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicate transaction_id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema validation failed (FR-02)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Fetch all transactions",
+        "description": "Returns all persisted transactions. Supports optional filtering by decision or risk_tier.",
+        "operationId": "get_all_transactions_api_transactions_get",
+        "parameters": [
+          {
+            "name": "decision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filter by FraudDecision",
+              "title": "Decision"
+            },
+            "description": "Filter by FraudDecision",
+            "example": "HARD_BLOCK"
+          },
+          {
+            "name": "risk_tier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filter by RiskTier",
+              "title": "Risk Tier"
+            },
+            "description": "Filter by RiskTier",
+            "example": "CRITICAL"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  },
+                  "title": "Response Get All Transactions Api Transactions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transactions/flagged": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get all HARD_BLOCK transactions",
+        "description": "FR-09: Returns all HARD_BLOCK transactions for the fraud case generation pipeline.",
+        "operationId": "get_flagged_transactions_api_transactions_flagged_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Flagged Transactions Api Transactions Flagged Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transactions/{transaction_id}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get a transaction by ID",
+        "operationId": "get_transaction_api_transactions__transaction_id__get",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Transaction Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Delete a transaction",
+        "operationId": "delete_transaction_api_transactions__transaction_id__delete",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Transaction Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transactions/{transaction_id}/decision": {
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Apply fraud decision to a transaction",
+        "description": "FR-07: Applies ML ensemble model scores, computes the composite fraud_score, and produces a FraudDecision (APPROVE / SOFT_DECLINE / HARD_BLOCK) using per-account-tier thresholds.",
+        "operationId": "apply_decision_api_transactions__transaction_id__decision_post",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Transaction Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyDecisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Decision applied successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Decision already applied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid model scores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fraud-cases": {
+      "post": {
+        "tags": [
+          "Fraud Cases"
+        ],
+        "summary": "Create a fraud investigation case",
+        "description": "FR-09: Creates a fraud case for a HARD_BLOCK transaction with HIGH or CRITICAL risk tier. Priority is automatically derived: P1 (\u22650.90), P2 (\u22650.75), P3 (<0.75). Enforces one case per transaction_id.",
+        "operationId": "create_fraud_case_api_fraud_cases_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFraudCaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Case created and added to analyst queue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FraudCaseResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Case already exists for this transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Risk tier must be HIGH or CRITICAL (FR-09)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Fraud Cases"
+        ],
+        "summary": "Get all fraud cases",
+        "description": "Returns all fraud cases. Filter by status or priority using query parameters.",
+        "operationId": "get_all_cases_api_fraud_cases_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Status"
+            },
+            "example": "OPEN"
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Priority"
+            },
+            "example": "P1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FraudCaseResponse"
+                  },
+                  "title": "Response Get All Cases Api Fraud Cases Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fraud-cases/queue": {
+      "get": {
+        "tags": [
+          "Fraud Cases"
+        ],
+        "summary": "Get analyst case queue",
+        "description": "FR-10: Returns all OPEN and IN_REVIEW cases sorted by priority (P1 first). SLA breach status is included in each case response.",
+        "operationId": "get_analyst_queue_api_fraud_cases_queue_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FraudCaseResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Analyst Queue Api Fraud Cases Queue Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fraud-cases/{case_id}": {
+      "get": {
+        "tags": [
+          "Fraud Cases"
+        ],
+        "summary": "Get a fraud case by ID",
+        "operationId": "get_case_api_fraud_cases__case_id__get",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FraudCaseResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Case not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Fraud Cases"
+        ],
+        "summary": "Delete a fraud case",
+        "description": "CONFIRMED cases cannot be deleted \u2014 they feed the retraining pipeline.",
+        "operationId": "delete_case_api_fraud_cases__case_id__delete",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Case not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "CONFIRMED cases cannot be deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fraud-cases/{case_id}/assign": {
+      "patch": {
+        "tags": [
+          "Fraud Cases"
+        ],
+        "summary": "Assign a case to a fraud analyst",
+        "description": "FR-10: Assigns an OPEN case to a named analyst. Moves case status from OPEN \u2192 IN_REVIEW.",
+        "operationId": "assign_to_analyst_api_fraud_cases__case_id__assign_patch",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignAnalystRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Case assigned to analyst",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FraudCaseResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Case not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Case is not in OPEN state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fraud-cases/{case_id}/resolve": {
+      "patch": {
+        "tags": [
+          "Fraud Cases"
+        ],
+        "summary": "Resolve a fraud case",
+        "description": "FR-10: Resolves a case as CONFIRMED or DISMISSED. CONFIRMED publishes a fraud label to the MLOps retraining pipeline (BR-FC3). DISMISSED requires a non-empty analyst note (BR-FC2).",
+        "operationId": "resolve_case_api_fraud_cases__case_id__resolve_patch",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveCaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Case resolved; fraud_label_payload present if CONFIRMED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResolveCaseResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Case not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Case must be IN_REVIEW to resolve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "DISMISSED requires a note (BR-FC2)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ml-models": {
+      "post": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Register a new ML model version",
+        "description": "FR-13: Registers a new model version in TRAINING stage. model_name must be one of: XGBOOST, ISOLATION_FOREST, DISTILBERT. Model ID is auto-generated as '{model_name_lower}-{version}'.",
+        "operationId": "register_model_api_ml_models_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterModelRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Model registered in TRAINING stage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLModelResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Model version already registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid model name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Get all registered ML models",
+        "description": "Returns all model versions. Filter by stage or model_name using query parameters.",
+        "operationId": "get_all_models_api_ml_models_get",
+        "parameters": [
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Stage"
+            },
+            "example": "PRODUCTION"
+          },
+          {
+            "name": "model_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Model Name"
+            },
+            "example": "XGBOOST"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MLModelResponse"
+                  },
+                  "title": "Response Get All Models Api Ml Models Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ml-models/production": {
+      "get": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Get all PRODUCTION models",
+        "description": "FR-14: Returns all models currently in PRODUCTION stage. Polled every 60 seconds by the Model Loader for hot-swap detection.",
+        "operationId": "get_production_models_api_ml_models_production_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MLModelResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Production Models Api Ml Models Production Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ml-models/{model_id}": {
+      "get": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Get a model by ID",
+        "operationId": "get_model_api_ml_models__model_id__get",
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLModelResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Delete a model version",
+        "description": "PRODUCTION models cannot be deleted. Promote a replacement first.",
+        "operationId": "delete_model_api_ml_models__model_id__delete",
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Model not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Cannot delete PRODUCTION model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ml-models/{model_id}/evaluate": {
+      "post": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Record evaluation metrics for a model",
+        "description": "FR-13: Records precision, recall, F1, and AUC-ROC from holdout-set evaluation. Returns meets_promotion_gate: true/false indicating readiness for PRODUCTION promotion. Gate: precision \u2265 0.85 AND recall \u2265 0.80 (BR-ML1).",
+        "operationId": "evaluate_model_api_ml_models__model_id__evaluate_post",
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateModelRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Metrics recorded; meets_promotion_gate indicates readiness",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluateModelResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Model not in TRAINING or STAGING stage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ml-models/{model_id}/promote": {
+      "patch": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Promote a model to the next lifecycle stage",
+        "description": "FR-13: Advances the model through TRAINING \u2192 STAGING \u2192 PRODUCTION \u2192 ARCHIVED. Promoting to PRODUCTION enforces BR-ML1 (precision \u2265 0.85 AND recall \u2265 0.80). Existing PRODUCTION model of the same type is automatically ARCHIVED (FR-13).",
+        "operationId": "promote_model_api_ml_models__model_id__promote_patch",
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromoteModelRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Model promoted to target stage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLModelResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid stage transition",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Promotion gate failed (BR-ML1)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ml-models/{model_id}/hot-swap": {
+      "patch": {
+        "tags": [
+          "ML Models"
+        ],
+        "summary": "Hot-swap model artifact in PRODUCTION",
+        "description": "FR-14: Reloads the model artifact for a PRODUCTION model without service restart. Only callable on PRODUCTION-stage models.",
+        "operationId": "hot_swap_api_ml_models__model_id__hot_swap_patch",
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HotSwapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Artifact path updated; hot-swap complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLModelResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Model must be in PRODUCTION stage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "API health check",
+        "description": "Returns 200 OK when the API is running.",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApplyDecisionRequest": {
+        "properties": {
+          "fraud_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Fraud Score",
+            "example": 0.87
+          },
+          "model_scores": {
+            "items": {
+              "$ref": "#/components/schemas/ModelScoreInput"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Model Scores"
+          },
+          "account_tier": {
+            "type": "string",
+            "title": "Account Tier",
+            "description": "One of: STANDARD, PREMIUM, BUSINESS",
+            "default": "STANDARD",
+            "example": "STANDARD"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fraud_score",
+          "model_scores"
+        ],
+        "title": "ApplyDecisionRequest",
+        "description": "POST /api/transactions/{id}/decision \u2014 apply ML ensemble scores and produce FraudDecision."
+      },
+      "AssignAnalystRequest": {
+        "properties": {
+          "analyst_id": {
+            "type": "string",
+            "title": "Analyst Id",
+            "description": "Analyst employee ID",
+            "example": "j.mokoena"
+          }
+        },
+        "type": "object",
+        "required": [
+          "analyst_id"
+        ],
+        "title": "AssignAnalystRequest",
+        "description": "PATCH /api/fraud-cases/{id}/assign \u2014 assign case to a fraud analyst."
+      },
+      "CreateFraudCaseRequest": {
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "title": "Transaction Id",
+            "example": "TXN-2026-001"
+          },
+          "account_id_token": {
+            "type": "string",
+            "title": "Account Id Token",
+            "example": "acc_token_abc123"
+          },
+          "fraud_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Fraud Score",
+            "example": 0.93
+          },
+          "risk_tier": {
+            "type": "string",
+            "title": "Risk Tier",
+            "description": "Must be HIGH or CRITICAL (FR-09)",
+            "example": "CRITICAL"
+          },
+          "shap_report_ref": {
+            "type": "string",
+            "title": "Shap Report Ref",
+            "default": "",
+            "example": "s3://shap-reports/TXN-2026-001.json"
+          }
+        },
+        "type": "object",
+        "required": [
+          "transaction_id",
+          "account_id_token",
+          "fraud_score",
+          "risk_tier"
+        ],
+        "title": "CreateFraudCaseRequest",
+        "description": "POST /api/fraud-cases \u2014 create a fraud investigation case."
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "status_code": {
+            "type": "integer",
+            "title": "Status Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error",
+          "detail",
+          "status_code"
+        ],
+        "title": "ErrorResponse"
+      },
+      "EvaluateModelRequest": {
+        "properties": {
+          "precision": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Precision",
+            "example": 0.91
+          },
+          "recall": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Recall",
+            "example": 0.87
+          },
+          "f1_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "F1 Score",
+            "example": 0.89
+          },
+          "auc_roc": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Auc Roc",
+            "example": 0.94
+          }
+        },
+        "type": "object",
+        "required": [
+          "precision",
+          "recall",
+          "f1_score",
+          "auc_roc"
+        ],
+        "title": "EvaluateModelRequest",
+        "description": "POST /api/ml-models/{id}/evaluate \u2014 record holdout-set evaluation metrics."
+      },
+      "EvaluateModelResponse": {
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/MLModelResponse"
+          },
+          "meets_promotion_gate": {
+            "type": "boolean",
+            "title": "Meets Promotion Gate"
+          },
+          "precision": {
+            "type": "number",
+            "title": "Precision"
+          },
+          "recall": {
+            "type": "number",
+            "title": "Recall"
+          },
+          "f1_score": {
+            "type": "number",
+            "title": "F1 Score"
+          },
+          "auc_roc": {
+            "type": "number",
+            "title": "Auc Roc"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model",
+          "meets_promotion_gate",
+          "precision",
+          "recall",
+          "f1_score",
+          "auc_roc"
+        ],
+        "title": "EvaluateModelResponse"
+      },
+      "FraudCaseResponse": {
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "title": "Case Id"
+          },
+          "transaction_id": {
+            "type": "string",
+            "title": "Transaction Id"
+          },
+          "account_id_token": {
+            "type": "string",
+            "title": "Account Id Token"
+          },
+          "fraud_score": {
+            "type": "number",
+            "title": "Fraud Score"
+          },
+          "risk_tier": {
+            "type": "string",
+            "title": "Risk Tier"
+          },
+          "priority": {
+            "type": "string",
+            "title": "Priority"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "assigned_analyst_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assigned Analyst Id"
+          },
+          "shap_report_ref": {
+            "type": "string",
+            "title": "Shap Report Ref"
+          },
+          "analyst_note": {
+            "type": "string",
+            "title": "Analyst Note"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "resolved_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved At"
+          },
+          "sla_breach_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Sla Breach At"
+          },
+          "is_breaching_sla": {
+            "type": "boolean",
+            "title": "Is Breaching Sla"
+          }
+        },
+        "type": "object",
+        "required": [
+          "case_id",
+          "transaction_id",
+          "account_id_token",
+          "fraud_score",
+          "risk_tier",
+          "priority",
+          "status",
+          "assigned_analyst_id",
+          "shap_report_ref",
+          "analyst_note",
+          "created_at",
+          "resolved_at",
+          "sla_breach_at",
+          "is_breaching_sla"
+        ],
+        "title": "FraudCaseResponse",
+        "description": "Response schema for FraudCase."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HotSwapRequest": {
+        "properties": {
+          "new_artifact_path": {
+            "type": "string",
+            "title": "New Artifact Path",
+            "example": "mlflow://models/xgboost/3.2-hotfix"
+          }
+        },
+        "type": "object",
+        "required": [
+          "new_artifact_path"
+        ],
+        "title": "HotSwapRequest",
+        "description": "PATCH /api/ml-models/{id}/hot-swap \u2014 reload artifact in PRODUCTION without restart."
+      },
+      "MLModelResponse": {
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "stage": {
+            "type": "string",
+            "title": "Stage"
+          },
+          "precision": {
+            "type": "number",
+            "title": "Precision"
+          },
+          "recall": {
+            "type": "number",
+            "title": "Recall"
+          },
+          "f1_score": {
+            "type": "number",
+            "title": "F1 Score"
+          },
+          "auc_roc": {
+            "type": "number",
+            "title": "Auc Roc"
+          },
+          "artifact_path": {
+            "type": "string",
+            "title": "Artifact Path"
+          },
+          "feature_schema_version": {
+            "type": "string",
+            "title": "Feature Schema Version"
+          },
+          "meets_promotion_gate": {
+            "type": "boolean",
+            "title": "Meets Promotion Gate"
+          },
+          "trained_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Trained At"
+          },
+          "promoted_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Promoted At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_id",
+          "model_name",
+          "version",
+          "stage",
+          "precision",
+          "recall",
+          "f1_score",
+          "auc_roc",
+          "artifact_path",
+          "feature_schema_version",
+          "meets_promotion_gate",
+          "trained_at",
+          "promoted_at"
+        ],
+        "title": "MLModelResponse",
+        "description": "Response schema for MLModel."
+      },
+      "ModelScoreInput": {
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "title": "Model Name",
+            "example": "XGBOOST"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "example": "3.1"
+          },
+          "raw_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Raw Score",
+            "example": 0.87
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "example": 0.91
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_name",
+          "model_version",
+          "raw_score",
+          "confidence"
+        ],
+        "title": "ModelScoreInput"
+      },
+      "PromoteModelRequest": {
+        "properties": {
+          "target_stage": {
+            "type": "string",
+            "title": "Target Stage",
+            "description": "One of: STAGING, PRODUCTION, ARCHIVED, REJECTED",
+            "example": "STAGING"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target_stage"
+        ],
+        "title": "PromoteModelRequest",
+        "description": "PATCH /api/ml-models/{id}/promote \u2014 advance model through lifecycle stages."
+      },
+      "RegisterModelRequest": {
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "title": "Model Name",
+            "description": "One of: XGBOOST, ISOLATION_FOREST, DISTILBERT",
+            "example": "XGBOOST"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "example": "3.2"
+          },
+          "artifact_path": {
+            "type": "string",
+            "title": "Artifact Path",
+            "example": "mlflow://models/xgboost/3.2"
+          },
+          "feature_schema_version": {
+            "type": "string",
+            "title": "Feature Schema Version",
+            "example": "tabular-v3"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_name",
+          "version",
+          "artifact_path",
+          "feature_schema_version"
+        ],
+        "title": "RegisterModelRequest",
+        "description": "POST /api/ml-models \u2014 register a new model version."
+      },
+      "ResolveCaseRequest": {
+        "properties": {
+          "resolution": {
+            "type": "string",
+            "title": "Resolution",
+            "description": "CONFIRMED or DISMISSED",
+            "example": "CONFIRMED"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note",
+            "default": "",
+            "example": "Velocity fraud pattern confirmed via geo analysis."
+          }
+        },
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "title": "ResolveCaseRequest",
+        "description": "PATCH /api/fraud-cases/{id}/resolve \u2014 resolve a case."
+      },
+      "ResolveCaseResponse": {
+        "properties": {
+          "case": {
+            "$ref": "#/components/schemas/FraudCaseResponse"
+          },
+          "fraud_label_payload": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fraud Label Payload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "case"
+        ],
+        "title": "ResolveCaseResponse"
+      },
+      "SubmitTransactionRequest": {
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "title": "Transaction Id",
+            "description": "Unique transaction identifier",
+            "example": "TXN-2026-001"
+          },
+          "account_id_token": {
+            "type": "string",
+            "title": "Account Id Token",
+            "description": "Tokenised account identifier",
+            "example": "acc_token_abc123"
+          },
+          "merchant_id": {
+            "type": "string",
+            "title": "Merchant Id",
+            "example": "MER-001"
+          },
+          "merchant_category_code": {
+            "type": "string",
+            "title": "Merchant Category Code",
+            "description": "ISO 18245 MCC",
+            "example": "5411"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Amount",
+            "description": "Transaction amount (BR-T1: Decimal precision)",
+            "example": 1500.0
+          },
+          "currency": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 3,
+            "title": "Currency",
+            "description": "ISO 4217 currency code",
+            "example": "ZAR"
+          },
+          "channel": {
+            "type": "string",
+            "title": "Channel",
+            "description": "One of: CNP_ONLINE, CNP_MOBILE, POS, ATM",
+            "example": "CNP_ONLINE"
+          },
+          "device_fingerprint_token": {
+            "type": "string",
+            "title": "Device Fingerprint Token",
+            "example": "dfp_token_xyz789"
+          },
+          "ip_address_hash": {
+            "type": "string",
+            "title": "Ip Address Hash",
+            "example": "a3f8bc912d"
+          },
+          "latitude": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "example": -33.9249
+          },
+          "longitude": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "example": 18.4241
+          },
+          "is_international": {
+            "type": "boolean",
+            "title": "Is International",
+            "default": false,
+            "example": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "transaction_id",
+          "account_id_token",
+          "merchant_id",
+          "merchant_category_code",
+          "amount",
+          "currency",
+          "channel",
+          "device_fingerprint_token",
+          "ip_address_hash",
+          "latitude",
+          "longitude"
+        ],
+        "title": "SubmitTransactionRequest",
+        "description": "POST /api/transactions \u2014 submit a new transaction for fraud evaluation."
+      },
+      "TransactionResponse": {
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "title": "Transaction Id"
+          },
+          "account_id_token": {
+            "type": "string",
+            "title": "Account Id Token"
+          },
+          "merchant_id": {
+            "type": "string",
+            "title": "Merchant Id"
+          },
+          "merchant_category_code": {
+            "type": "string",
+            "title": "Merchant Category Code"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "channel": {
+            "type": "string",
+            "title": "Channel"
+          },
+          "is_international": {
+            "type": "boolean",
+            "title": "Is International"
+          },
+          "fraud_score": {
+            "type": "number",
+            "title": "Fraud Score"
+          },
+          "risk_tier": {
+            "type": "string",
+            "title": "Risk Tier"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision"
+          },
+          "model_version_composite": {
+            "type": "string",
+            "title": "Model Version Composite"
+          },
+          "processing_ms": {
+            "type": "integer",
+            "title": "Processing Ms"
+          },
+          "pii_tokenised": {
+            "type": "boolean",
+            "title": "Pii Tokenised"
+          }
+        },
+        "type": "object",
+        "required": [
+          "transaction_id",
+          "account_id_token",
+          "merchant_id",
+          "merchant_category_code",
+          "amount",
+          "currency",
+          "channel",
+          "is_international",
+          "fraud_score",
+          "risk_tier",
+          "decision",
+          "model_version_composite",
+          "processing_ms",
+          "pii_tokenised"
+        ],
+        "title": "TransactionResponse",
+        "description": "Response schema for Transaction \u2014 safe to return (no raw PII)."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Transactions",
+      "description": "Submit transactions, apply ML ensemble fraud decisions, and query the transaction store. Maps to FR-01 through FR-08."
+    },
+    {
+      "name": "Fraud Cases",
+      "description": "Manage fraud investigation cases. Create cases for HARD_BLOCK transactions, assign to analysts, resolve with CONFIRMED/DISMISSED. Maps to FR-09 and FR-10."
+    },
+    {
+      "name": "ML Models",
+      "description": "Register, evaluate, and promote ML model versions through the TRAINING \u2192 STAGING \u2192 PRODUCTION lifecycle. Hot-swap artifacts without service restart. Maps to FR-13 and FR-14."
+    }
+  ]
+}
