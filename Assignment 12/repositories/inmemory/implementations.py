@@ -15,7 +15,7 @@ if _A10 not in sys.path:
 
 from typing import List, Optional
 
-from services.models import (
+from src.models import (
     Transaction, FraudCase, MLModel, AuditRecord,
     AccountProfile, CustomerDispute, StepUpChallenge,
     FraudDecision, RiskTier, CaseStatus, CasePriority,

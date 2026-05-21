@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "sentinelpay"
+version = "1.0.0"
+description = "Real-Time Fraud Detection & Prevention Engine"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Academic" }
+authors = [{ name = "Teboho Mokoni" }]
+keywords = ["fraud-detection", "fintech", "fastapi", "machine-learning"]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "Framework :: FastAPI",
+    "Topic :: Office/Business :: Financial",
+]
+dependencies = [
+    "fastapi>=0.115.5",
+    "uvicorn[standard]>=0.32.1",
+    "pydantic>=2.10.3",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.3.3", "pytest-cov>=6.0.0", "httpx>=0.28.0"]
+
+[project.scripts]
+sentinelpay = "Assignment 12.run:main"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "Assignment 10/tests",
+    "Assignment 11/tests",
+    "Assignment 12/tests",
+]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = [
+    "Assignment 10/src",
+    "Assignment 10/creational_patterns",
+    "Assignment 11/repositories",
+    "Assignment 11/factories",
+    "Assignment 12/services",
+    "Assignment 12/api",
+]
+omit = ["*/tests/*", "*/test_*"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 70
