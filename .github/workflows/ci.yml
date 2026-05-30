@@ -32,6 +32,10 @@ on:
   pull_request:
     branches: [main]          # Run CI on all PRs targeting main
 
+permissions:
+  contents: read
+  checks: write
+  
 # Cancel in-progress runs on the same branch when a new push arrives
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
