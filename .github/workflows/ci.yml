@@ -69,7 +69,7 @@ jobs:
                      "Assignment 12/services/" \
                      "Assignment 12/api/" \
           --select E,F,W \
-          --ignore E501,E402,W503 \
+          --ignore E501,E402 \
           --output-format github
 
 # ── Job: Test Assignment 10 ───────────────────────────────────────────────────
