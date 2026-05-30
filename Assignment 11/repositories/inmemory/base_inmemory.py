@@ -16,7 +16,7 @@ store is safe under the concurrent Kafka consumer threads SentinelPay runs.
 
 from __future__ import annotations
 import threading
-from typing import Generic, List, Optional, TypeVar
+from typing import List, Optional, TypeVar
 
 from repositories.base import Repository
 

@@ -31,7 +31,8 @@ Supported storage types
 """
 
 from __future__ import annotations
-import sys, os
+import sys
+import os
 
 _A11 = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if _A11 not in sys.path:

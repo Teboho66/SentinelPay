@@ -63,13 +63,13 @@ jobs:
       - name: Run ruff linter
         run: |
           ruff check "Assignment 10/src/" \
-                     "Assignment 10/creational_patterns/" \
+                     "Assignment 10/FraudRule/creational_patterns/" \
                      "Assignment 11/repositories/" \
                      "Assignment 11/factories/" \
                      "Assignment 12/services/" \
                      "Assignment 12/api/" \
           --select E,F,W \
-          --ignore E501,W503 \
+          --ignore E501,E402,W503 \
           --output-format github
 
 # ── Job: Test Assignment 10 ───────────────────────────────────────────────────
@@ -95,7 +95,7 @@ jobs:
         run: |
           python -m pytest tests/ \
             --cov=src \
-            --cov=creational_patterns \
+            --cov=FraudRule/creational_patterns \
             --cov-report=xml:coverage-a10.xml \
             --cov-report=term-missing \
             --tb=short \

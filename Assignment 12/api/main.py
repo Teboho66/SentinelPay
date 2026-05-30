@@ -10,7 +10,8 @@ OpenAPI docs auto-generated at:
 """
 
 from __future__ import annotations
-import sys, os
+import sys
+import os
 for _p in ("../Assignment10", "../Assignment11", "."):
     _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), _p))
     if _abs not in sys.path:

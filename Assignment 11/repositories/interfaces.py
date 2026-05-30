@@ -24,7 +24,8 @@ from typing import List, Optional
 from .base import Repository
 
 # ── Import domain entities from Assignment 10 ────────────────────────────────
-import sys, os
+import sys
+import os
 _A10 = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "Assignment10"))
 if _A10 not in sys.path:
     sys.path.insert(0, _A10)

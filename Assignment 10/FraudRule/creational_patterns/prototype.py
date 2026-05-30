@@ -20,7 +20,6 @@ Why Prototype here?
 """
 
 from __future__ import annotations
-import copy
 from src.models import FraudRule
 
 
