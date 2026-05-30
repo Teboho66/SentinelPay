@@ -35,7 +35,9 @@ on:
 permissions:
   contents: read
   checks: write
-  
+  pull-requests: write
+  issues: write
+
 # Cancel in-progress runs on the same branch when a new push arrives
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
