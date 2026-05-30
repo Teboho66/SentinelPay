@@ -92,6 +92,8 @@ jobs:
 
       - name: Run Assignment 10 tests
         working-directory: "Assignment 10"
+        env:
+          PYTHONPATH: ${{ github.workspace }}/Assignment 10:${{ github.workspace }}/Assignment 10/FraudRule
         run: |
           python -m pytest tests/ \
             --cov=src \
