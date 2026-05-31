@@ -97,7 +97,7 @@ class Transaction:
     @property
     def flagged(self) -> bool:
         return self._flagged
-    
+
     @property
     def decision(self):
         return getattr(self, "_decision", None)

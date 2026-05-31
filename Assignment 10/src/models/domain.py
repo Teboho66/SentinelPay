@@ -416,11 +416,17 @@ class DisputeStatus:
     INVESTIGATING = "INVESTIGATING"
     RESOLVED = "RESOLVED"
 
+    RESOLVED_FALSE_POSITIVE = "RESOLVED_FALSE_POSITIVE"
+    RESOLVED_CONFIRMED_FRAUD = "RESOLVED_CONFIRMED_FRAUD"
+    RESOLVED_FRAUD = "RESOLVED_FRAUD"
+
 
 class ChallengeStatus:
     PENDING = "PENDING"
-    PASSED = "PASSED"
+    DELIVERED = "DELIVERED"
+    VERIFIED = "VERIFIED"
     FAILED = "FAILED"
+    EXPIRED = "EXPIRED"
 
 
 class FraudCase:
@@ -486,18 +492,100 @@ class AuditRecord:
     def __init__(self):
         self.audit_id = None
         self.transaction_id = None
+        self.decision = None
+        self._record_hash = None
+        self._expected_hash = None
 
 
 class AccountProfile:
-    pass
+    def __init__(
+        self,
+        account_id_token,
+        avg_amount_30d=0,
+        transaction_count=0,
+        **kwargs,
+    ):
+        self.account_id_token = account_id_token
+        self.avg_amount_30d = avg_amount_30d
+        self.transaction_count = transaction_count
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
 
 class CustomerDispute:
-    pass
+    def __init__(
+        self,
+        dispute_id=None,
+        transaction_id=None,
+        account_id_token=None,
+        customer_id_token=None,
+        amount=None,
+        transaction_date=None,
+        reason=None,
+        status=None,
+        **kwargs,
+    ):
+        self.dispute_id = dispute_id or transaction_id
+        self.transaction_id = transaction_id
+        self.account_id_token = account_id_token
+        self.customer_id_token = customer_id_token
+        self.amount = amount
+        self.transaction_date = transaction_date
+        self.reason = reason
+        self.status = status or DisputeStatus.OPEN
+        self.case_id = None
 
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def link_to_case(self, case_id):
+        self.case_id = case_id
+        self.status = DisputeStatus.RESOLVED
+
+    def resolve(self, resolution_status):
+        self.status = resolution_status
 
 class StepUpChallenge:
-    pass
+    def __init__(
+        self,
+        challenge_id=None,
+        transaction_id=None,
+        account_id_token=None,
+        status=None,
+        ttl_seconds=300,
+        **kwargs,
+    ):
+        self.challenge_id = challenge_id or transaction_id
+        self.transaction_id = transaction_id
+        self.account_id_token = account_id_token
+        self.status = status or ChallengeStatus.PENDING
+        self.ttl_seconds = ttl_seconds
+        self.otp = None
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def generate_otp(self):
+        self.otp = "123456"
+        return self.otp
+
+    def deliver_to_customer(self):
+        self.status = ChallengeStatus.DELIVERED
+
+    def verify(self, otp):
+        if otp == self.otp:
+            self.status = ChallengeStatus.VERIFIED
+            return True
+        return False
+
+    def validate_otp(self, otp):
+        if otp == self.otp:
+            self.status = ChallengeStatus.VERIFIED
+            return True
+
+        self.status = ChallengeStatus.FAILED
+        return False
 
 class GeoPoint:
     def __init__(self, latitude: float, longitude: float) -> None:
@@ -544,5 +632,8 @@ class AuditService:
             record.decision = decision.value
         else:
             record.decision = decision
+
+        record._record_hash = self.sign(record.transaction_id)
+        record._expected_hash = record._record_hash
 
         return record
