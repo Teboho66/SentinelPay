@@ -22,10 +22,11 @@ class Transaction:
         self,
         amount: float,
         currency: str,
-        transaction_type: TransactionType,
-        merchant_id: str,
-        account_id: str,
+        transaction_type: TransactionType = TransactionType.ONLINE,
+        merchant_id: str = "",
+        account_id: str = "",
         transaction_id: Optional[str] = None,
+        **kwargs,
     ) -> None:
         if amount < 0:
             raise ValueError("Transaction amount cannot be negative.")
@@ -44,11 +45,22 @@ class Transaction:
         self._flagged: bool = False
         self._metadata: dict = {}
 
+        for key, value in kwargs.items():
+            setattr(self, f"_{key}", value)
+
     # ── Getters ──────────────────────────────────────────────────────────────
 
     @property
     def id(self) -> str:
         return self._id
+
+    @property
+    def transaction_id(self) -> str:
+        return self._id
+
+    @property
+    def account_id_token(self):
+        return getattr(self, "_account_id_token", None)
 
     @property
     def amount(self) -> float:
@@ -85,6 +97,24 @@ class Transaction:
     @property
     def flagged(self) -> bool:
         return self._flagged
+    
+    @property
+    def decision(self):
+        return getattr(self, "_decision", None)
+
+    @property
+    def risk_tier(self):
+        return getattr(self, "_risk_tier", None)
+
+
+    @property
+    def fraud_score(self):
+        return getattr(self, "_fraud_score", None)
+
+
+    @property
+    def model_version_composite(self):
+       return getattr(self, "_model_version_composite", None)
 
     @property
     def metadata(self) -> dict:

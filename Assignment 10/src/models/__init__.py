@@ -43,3 +43,22 @@ __all__ = [
     "NotificationChannel",
     "PaymentMethodType",
 ]
+
+from .domain import (
+    FraudCase,
+    MLModel,
+    AuditRecord,
+    AccountProfile,
+    CustomerDispute,
+    StepUpChallenge,
+    FraudDecision,
+    RiskTier,
+    CaseStatus,
+    CasePriority,
+    ModelName,
+    ModelStage,
+    DisputeStatus,
+    ChallengeStatus,
+)
+
+from .domain import GeoPoint, TransactionChannel, AuditService

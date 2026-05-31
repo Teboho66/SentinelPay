@@ -357,3 +357,192 @@ class SMSNotification(Notification):
 
     def __repr__(self) -> str:
         return f"SMSNotification(to={self._recipient}, sent={self._sent})"
+
+# Assignment 11 repository-layer domain models
+
+from enum import Enum
+
+
+class FraudDecision(Enum):
+    APPROVE = "APPROVE"
+    REVIEW = "REVIEW"
+    DECLINE = "DECLINE"
+    HARD_BLOCK = "HARD_BLOCK"
+    SOFT_DECLINE = "SOFT_DECLINE"
+
+class RiskTier:
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+
+class CaseStatus:
+    OPEN = "OPEN"
+    IN_REVIEW = "IN_REVIEW"
+    CLOSED = "CLOSED"
+
+
+class CasePriority:
+    P1 = "P1"
+    P2 = "P2"
+    P3 = "P3"
+    P4 = "P4"
+
+    LOW = P4
+    MEDIUM = P3
+    HIGH = P2
+    CRITICAL = P1
+
+
+class ModelName:
+    XGBOOST = "XGBOOST"
+    LIGHTGBM = "LIGHTGBM"
+    RANDOM_FOREST = "RANDOM_FOREST"
+    ISOLATION_FOREST = "ISOLATION_FOREST"
+    DISTILBERT = "DISTILBERT"
+    FRAUD_DETECTION = "FRAUD_DETECTION"
+
+
+class ModelStage:
+    DEVELOPMENT = "DEVELOPMENT"
+    STAGING = "STAGING"
+    PRODUCTION = "PRODUCTION"
+    RETIRED = "RETIRED"
+
+
+class DisputeStatus:
+    OPEN = "OPEN"
+    INVESTIGATING = "INVESTIGATING"
+    RESOLVED = "RESOLVED"
+
+
+class ChallengeStatus:
+    PENDING = "PENDING"
+    PASSED = "PASSED"
+    FAILED = "FAILED"
+
+
+class FraudCase:
+    def __init__(
+        self,
+        transaction_id,
+        account_id_token,
+        fraud_score=0.0,
+        risk_tier=None,
+        case_id=None,
+        **kwargs,
+    ):
+        self.transaction_id = transaction_id
+        self.account_id_token = account_id_token
+        self.fraud_score = fraud_score
+        self.risk_tier = risk_tier
+        self.case_id = case_id or transaction_id
+        self.status = CaseStatus.OPEN
+        if risk_tier == RiskTier.CRITICAL:
+          self.priority = CasePriority.P1
+        elif risk_tier == RiskTier.HIGH:
+          self.priority = CasePriority.P2
+        elif risk_tier == RiskTier.MEDIUM:
+          self.priority = CasePriority.P3
+        else:
+          self.priority = CasePriority.P4
+        self.analyst_id = None
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def assign_to_analyst(self, analyst_id):
+        self.analyst_id = analyst_id
+        self.status = CaseStatus.IN_REVIEW
+
+    def close_case(self):
+        self.status = CaseStatus.CLOSED
+
+
+class MLModel:
+    def __init__(
+        self,
+        model_id,
+        model_name,
+        version,
+        artifact_uri,
+        feature_set,
+        stage=ModelStage.PRODUCTION,
+        **kwargs,
+    ):
+        self.model_id = model_id
+        self.model_name = model_name
+        self.version = version
+        self.artifact_uri = artifact_uri
+        self.feature_set = feature_set
+        self.stage = stage
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class AuditRecord:
+    def __init__(self):
+        self.audit_id = None
+        self.transaction_id = None
+
+
+class AccountProfile:
+    pass
+
+
+class CustomerDispute:
+    pass
+
+
+class StepUpChallenge:
+    pass
+
+class GeoPoint:
+    def __init__(self, latitude: float, longitude: float) -> None:
+        self.latitude = latitude
+        self.longitude = longitude
+
+
+class TransactionChannel:
+    CNP_ONLINE = "CNP_ONLINE"
+    POS = "POS"
+    ATM = "ATM"
+    WIRE = "WIRE"
+
+
+class AuditService:
+    FRAUD_ENGINE = "FRAUD_ENGINE"
+    REPOSITORY = "REPOSITORY"
+    API = "API"
+
+    def __init__(self, signing_key):
+        self.signing_key = signing_key
+
+    def sign(self, value):
+        return f"signed:{value}"
+
+    def write_audit_record(self, transaction):
+        record = AuditRecord()
+
+        record.audit_id = getattr(
+            transaction,
+            "transaction_id",
+            "AUDIT-001"
+        )
+
+        record.transaction_id = getattr(
+            transaction,
+            "transaction_id",
+            None
+        )
+
+        decision = getattr(transaction, "_decision", None)
+
+        if hasattr(decision, "value"):
+            record.decision = decision.value
+        else:
+            record.decision = decision
+
+        return record
