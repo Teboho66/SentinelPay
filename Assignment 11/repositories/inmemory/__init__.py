@@ -121,16 +121,63 @@ class InMemoryAuditRecordRepository(InMemoryRepository):
         )
 
     def find_tampered(self, signing_key):
-        return []
-
+        return [
+           record for record in self.find_all()
+           if getattr(record, "_record_hash", None) != getattr(record, "_expected_hash", None)
+    ]
 
 class InMemoryAccountProfileRepository(InMemoryRepository):
-    pass
+
+    def find_new_accounts(self):
+        return [
+            profile for profile in self.find_all()
+            if getattr(profile, "transaction_count", 0) <= 3
+        ]
 
 
 class InMemoryCustomerDisputeRepository(InMemoryRepository):
-    pass
 
+    def find_by_id(self, dispute_id):
+        for dispute in self.find_all():
+            if getattr(dispute, "dispute_id", None) == dispute_id:
+                return dispute
+        return None
+
+    def find_by_transaction_id(self, transaction_id):
+        for dispute in self.find_all():
+            if getattr(dispute, "transaction_id", None) == transaction_id:
+                return dispute
+        return None
+
+    def find_open_disputes(self):
+        return [
+            dispute for dispute in self.find_all()
+            if "OPEN" in str(getattr(dispute, "status", ""))
+        ]
+
+    def find_by_status(self, status):
+        return [
+            dispute for dispute in self.find_all()
+            if getattr(dispute, "status", None) == status
+        ]
 
 class InMemoryStepUpChallengeRepository(InMemoryRepository):
-    pass
+
+    def find_by_transaction_id(self, transaction_id):
+        for challenge in self.find_all():
+            if getattr(challenge, "transaction_id", None) == transaction_id:
+                return challenge
+        return None
+
+    def find_by_status(self, status):
+        return [
+            challenge for challenge in self.find_all()
+            if getattr(challenge, "status", None) == status
+        ]
+
+    def find_expired(self):
+        return [
+           challenge for challenge in self.find_all()
+           if getattr(challenge, "ttl_seconds", 300) <= 0
+           and "VERIFIED" not in str(getattr(challenge, "status", ""))
+    ]
