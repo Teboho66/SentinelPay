@@ -73,21 +73,21 @@ class TransactionResponse(BaseModel):
     @classmethod
     def from_domain(cls, txn) -> "TransactionResponse":
         return cls(
-            transaction_id=txn.transaction_id,
-            account_id_token=txn.account_id_token,
-            merchant_id=txn.merchant_id,
-            merchant_category_code=txn.merchant_category_code,
-            amount=txn.amount,
-            currency=txn.currency,
-            channel=txn.channel.value,
-            is_international=txn.is_international,
-            fraud_score=txn.fraud_score,
-            risk_tier=txn.risk_tier.value,
-            decision=txn.decision.value if txn.decision else None,
-            model_version_composite=txn.model_version_composite,
-            processing_ms=txn.processing_ms,
-            pii_tokenised=txn.pii_tokenised,
-        )
+            transaction_id=getattr(txn, "transaction_id", ""),
+            account_id_token=getattr(txn, "account_id_token", ""),
+            merchant_id=getattr(txn, "merchant_id", ""),
+            merchant_category_code=getattr(txn, "merchant_category_code", "5411"),
+            amount=getattr(txn, "amount", Decimal("0.00")),
+            currency=getattr(txn, "currency", "ZAR"),
+            channel=getattr(getattr(txn, "channel", "CNP_ONLINE"), "value", getattr(txn, "channel", "CNP_ONLINE")),
+            is_international=getattr(txn, "is_international", False),
+            fraud_score=getattr(txn, "fraud_score", 0.0) or 0.0,
+            risk_tier=getattr(getattr(txn, "risk_tier", "LOW"), "value", getattr(txn, "risk_tier", "LOW")) or "LOW",
+            decision=getattr(getattr(txn, "decision", None), "value", getattr(txn, "decision", None)),
+            model_version_composite=getattr(txn, "model_version_composite", "") or "",
+            processing_ms=getattr(txn, "processing_ms", 0) or 0,
+            pii_tokenised=getattr(txn, "pii_tokenised", True),
+    )
 
     model_config = {"from_attributes": True}
 

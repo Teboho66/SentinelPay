@@ -10,8 +10,8 @@
 
 | Metric | Count |
 |---|---|
-| ⭐ Stars | **26** |
-| 🍴 Forks | **32** |
+| ⭐ Stars | **28** |
+| 🍴 Forks | **34** |
 
 > Screenshot the GitHub repo homepage showing these numbers and save as
 > `Assignment 14/docs/screenshots/voting_results.png`

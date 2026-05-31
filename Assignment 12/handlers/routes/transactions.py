@@ -27,9 +27,12 @@ from config.schemas import (
 )
 
 from config.dependencies import get_transaction_service
-from services import (
-    TransactionService, EntityNotFoundError,
-    DuplicateEntityError, BusinessRuleViolationError,
+from mapping.transaction_service import TransactionService
+
+from services.exceptions import (
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
     InvalidStateTransitionError,
 )
 

@@ -29,6 +29,9 @@ from .domain import (
     GeoPoint,
     TransactionChannel,
     AuditService,
+    ModelScore,
+    DecisionThresholds,
+    EvaluationMetrics,
 )
 from .enums import (
     TransactionStatus,
@@ -76,4 +79,7 @@ __all__ = [
     "AlertSeverity",
     "NotificationChannel",
     "PaymentMethodType",
+    "ModelScore",
+    "DecisionThresholds",
+    "EvaluationMetrics",
 ]

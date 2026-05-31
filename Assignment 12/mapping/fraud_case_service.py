@@ -30,7 +30,7 @@ from src.models import (
     CaseStatus, CasePriority,
 )
 from repositories.interfaces import FraudCaseRepository
-from .exceptions import (
+from services.exceptions import (
     EntityNotFoundError, DuplicateEntityError,
     BusinessRuleViolationError, InvalidStateTransitionError,
 )
@@ -67,7 +67,16 @@ class FraudCaseService:
         """
         # Validate risk tier
         try:
-            tier_enum = RiskTier[risk_tier.upper()]
+            # Validate risk tier
+            risk_tier_value = risk_tier.upper()
+
+            if hasattr(RiskTier, risk_tier_value):
+               tier_enum = getattr(RiskTier, risk_tier_value)
+            else:
+                raise BusinessRuleViolationError(
+                    "FR-09",
+                     f"Unknown risk tier '{risk_tier}'.",
+    )
         except KeyError:
             raise BusinessRuleViolationError(
                 "FR-09",

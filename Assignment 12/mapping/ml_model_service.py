@@ -28,7 +28,7 @@ from src.models import (
     MLModel, ModelName, ModelStage, EvaluationMetrics,
 )
 from repositories.interfaces import MLModelRepository
-from .exceptions import (
+from services.exceptions import (
     EntityNotFoundError, DuplicateEntityError,
     BusinessRuleViolationError, InvalidStateTransitionError,
     PromotionGateFailedError,

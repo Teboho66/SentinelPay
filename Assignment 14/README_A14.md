@@ -6,7 +6,7 @@
 |---|---|---|
 | `CONTRIBUTING.md` | Setup, coding standards, PR process | 40% |
 | `ROADMAP.md` | 7 phases of planned features with difficulty labels | 40% |
-| `VOTING_RESULTS.md` | 26 ⭐ stars, 32 🍴 forks | 40% |
+| `VOTING_RESULTS.md` | 28 ⭐ stars, 34 🍴 forks | 40% |
 | `REFLECTION.md` | 650-word reflection on collaboration | 20% |
 | `LICENSE` | MIT License (repo root) | 40% |
 | `docs/screenshots/` | Voting results screenshot | — |
@@ -43,8 +43,8 @@ To label them:
 
 ## Peer Engagement
 
-- **26 stars** received from classmates
-- **32 forks** received from classmates
+- **28 stars** received from classmates
+- **34 forks** received from classmates
 - Repo shared in class forum/WhatsApp group
 
 Screenshot your repo homepage showing the star/fork counts and save as:

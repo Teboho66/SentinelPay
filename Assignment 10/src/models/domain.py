@@ -405,9 +405,12 @@ class ModelName:
 
 
 class ModelStage:
+    TRAINING = "TRAINING"
     DEVELOPMENT = "DEVELOPMENT"
     STAGING = "STAGING"
     PRODUCTION = "PRODUCTION"
+    ARCHIVED = "ARCHIVED"
+    REJECTED = "REJECTED"
     RETIRED = "RETIRED"
 
 
@@ -465,7 +468,23 @@ class FraudCase:
     def close_case(self):
         self.status = CaseStatus.CLOSED
 
+class ModelScore:
+    def __init__(self, model_name, model_version, raw_score, confidence):
+        self.model_name = model_name
+        self.model_version = model_version
+        self.raw_score = raw_score
+        self.confidence = confidence
 
+
+class DecisionThresholds:
+    @staticmethod
+    def decide(fraud_score, account_tier="STANDARD"):
+        if fraud_score >= 0.90:
+            return FraudDecision.HARD_BLOCK, RiskTier.CRITICAL
+        if fraud_score >= 0.70:
+            return FraudDecision.REVIEW, RiskTier.HIGH
+        return FraudDecision.APPROVE, RiskTier.LOW
+    
 class MLModel:
     def __init__(
         self,
@@ -599,6 +618,12 @@ class TransactionChannel:
     ATM = "ATM"
     WIRE = "WIRE"
 
+class EvaluationMetrics:
+    def __init__(self, precision, recall, f1_score, auc_roc):
+        self.precision = precision
+        self.recall = recall
+        self.f1_score = f1_score
+        self.auc_roc = auc_roc
 
 class AuditService:
     FRAUD_ENGINE = "FRAUD_ENGINE"

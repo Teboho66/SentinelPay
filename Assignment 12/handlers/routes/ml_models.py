@@ -15,15 +15,18 @@ for _p in ("../../Assignment10", "../../Assignment11", ".."):
     if _abs not in sys.path:
         sys.path.insert(0, _abs)
 
-from api.schemas import (
+from config.schemas import (
     RegisterModelRequest, EvaluateModelRequest, PromoteModelRequest,
     HotSwapRequest, MLModelResponse, EvaluateModelResponse, ErrorResponse,
 )
-from api.dependencies import get_ml_model_service
-from services import (
-    MLModelService, EntityNotFoundError,
-    DuplicateEntityError, BusinessRuleViolationError,
-    InvalidStateTransitionError, PromotionGateFailedError,
+from config.dependencies import get_ml_model_service
+from mapping.transaction_service import TransactionService
+
+from services.exceptions import (
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
+    InvalidStateTransitionError,
 )
 
 router = APIRouter(prefix="/api/ml-models", tags=["ML Models"])

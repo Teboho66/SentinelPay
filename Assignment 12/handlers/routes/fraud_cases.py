@@ -15,14 +15,17 @@ for _p in ("../../Assignment10", "../../Assignment11", ".."):
     if _abs not in sys.path:
         sys.path.insert(0, _abs)
 
-from api.schemas import (
+from config.schemas import (
     CreateFraudCaseRequest, AssignAnalystRequest, ResolveCaseRequest,
     FraudCaseResponse, ResolveCaseResponse, ErrorResponse,
 )
-from api.dependencies import get_fraud_case_service
-from services import (
-    FraudCaseService, EntityNotFoundError,
-    DuplicateEntityError, BusinessRuleViolationError,
+from config.dependencies import get_fraud_case_service
+from mapping.transaction_service import TransactionService
+
+from services.exceptions import (
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
     InvalidStateTransitionError,
 )
 

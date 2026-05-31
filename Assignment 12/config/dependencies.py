@@ -22,7 +22,9 @@ from repositories.inmemory import (
     InMemoryFraudCaseRepository,
     InMemoryMLModelRepository,
 )
-from services import TransactionService, FraudCaseService, MLModelService
+from mapping.transaction_service import TransactionService
+from mapping.fraud_case_service import FraudCaseService
+from mapping.ml_model_service import MLModelService
 
 # ── Application-scoped repository singletons ──────────────────────────────────
 # In production these would be backed by PostgreSQL / Redis connections.
