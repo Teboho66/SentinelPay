@@ -9,11 +9,11 @@ Items marked ✅ are complete. Items marked 🔨 are in progress. Items marked �
 
 | Feature | Assignment |
 |---|---|
-| Domain model — 7 entities, 5 value objects, 9 enums | A9 |
+| Domain model - 7 entities, 5 value objects, 9 enums | A9 |
 | All six creational design patterns | A10 |
 | Repository layer with in-memory + factory pattern | A11 |
 | TransactionService, FraudCaseService, MLModelService | A12 |
-| REST API — 21 endpoints with OpenAPI docs | A12 |
+| REST API - 21 endpoints with OpenAPI docs | A12 |
 | GitHub Actions CI/CD pipeline | A13 |
 | Docker multi-stage build + GHCR publish | A13 |
 | Branch protection + PR workflow | A13 |
