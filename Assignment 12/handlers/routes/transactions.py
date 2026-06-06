@@ -13,7 +13,9 @@ from __future__ import annotations
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 
-import sys, os
+import sys
+import os
+
 for _p in ("../../Assignment10", "../../Assignment11", ".."):
     _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), _p))
     if _abs not in sys.path:
@@ -27,9 +29,12 @@ from config.schemas import (
 )
 
 from config.dependencies import get_transaction_service
-from services import (
-    TransactionService, EntityNotFoundError,
-    DuplicateEntityError, BusinessRuleViolationError,
+from mapping.transaction_service import TransactionService
+
+from services.exceptions import (
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
     InvalidStateTransitionError,
 )
 
@@ -60,7 +65,10 @@ def _handle_service_errors(exc: Exception) -> HTTPException:
     responses={
         201: {"description": "Transaction accepted and persisted"},
         409: {"model": ErrorResponse, "description": "Duplicate transaction_id"},
-        422: {"model": ErrorResponse, "description": "Schema validation failed (FR-02)"},
+        422: {
+            "model": ErrorResponse,
+            "description": "Schema validation failed (FR-02)",
+        },
     },
 )
 def submit_transaction(
@@ -94,7 +102,9 @@ def submit_transaction(
     description="Returns all persisted transactions. Supports optional filtering by decision or risk_tier.",
 )
 def get_all_transactions(
-    decision: str = Query(None, example="HARD_BLOCK", description="Filter by FraudDecision"),
+    decision: str = Query(
+        None, example="HARD_BLOCK", description="Filter by FraudDecision"
+    ),
     risk_tier: str = Query(None, example="CRITICAL", description="Filter by RiskTier"),
     service: TransactionService = Depends(get_transaction_service),
 ):
@@ -119,7 +129,9 @@ def get_all_transactions(
 def get_flagged_transactions(
     service: TransactionService = Depends(get_transaction_service),
 ):
-    return [TransactionResponse.from_domain(t) for t in service.get_flagged_transactions()]
+    return [
+        TransactionResponse.from_domain(t) for t in service.get_flagged_transactions()
+    ]
 
 
 @router.get(

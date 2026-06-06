@@ -16,6 +16,7 @@ from .enums import AlertSeverity, NotificationChannel, PaymentMethodType, RiskLe
 # FraudAlert
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class FraudAlert:
     """
     Generated when a transaction breaches one or more fraud rules.
@@ -80,6 +81,7 @@ class FraudAlert:
 # RiskScore
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class RiskScore:
     """
     Value object that encapsulates the computed fraud-risk for a transaction.
@@ -120,6 +122,7 @@ class RiskScore:
 # ══════════════════════════════════════════════════════════════════════════════
 # AuditLog
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class AuditLog:
     """
@@ -166,6 +169,7 @@ class AuditLog:
 # ══════════════════════════════════════════════════════════════════════════════
 # FraudRule  (supports Prototype pattern)
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class FraudRule:
     """
@@ -232,6 +236,7 @@ class FraudRule:
 # PaymentMethod hierarchy
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class PaymentMethod(ABC):
     """Abstract base class for all payment instruments."""
 
@@ -256,8 +261,7 @@ class PaymentMethod(ABC):
         self._is_verified = True
 
     @abstractmethod
-    def get_masked_identifier(self) -> str:
-        ...
+    def get_masked_identifier(self) -> str: ...
 
 
 class CreditCard(PaymentMethod):
@@ -270,7 +274,9 @@ class CreditCard(PaymentMethod):
         return f"****-****-****-{self._card_number[-4:]}"
 
     def __repr__(self) -> str:
-        return f"CreditCard(masked={self.get_masked_identifier()}, owner={self._owner_id})"
+        return (
+            f"CreditCard(masked={self.get_masked_identifier()}, owner={self._owner_id})"
+        )
 
 
 class DebitCard(PaymentMethod):
@@ -283,7 +289,9 @@ class DebitCard(PaymentMethod):
         return f"****-****-****-{self._card_number[-4:]}"
 
     def __repr__(self) -> str:
-        return f"DebitCard(masked={self.get_masked_identifier()}, bank={self._bank_code})"
+        return (
+            f"DebitCard(masked={self.get_masked_identifier()}, bank={self._bank_code})"
+        )
 
 
 class DigitalWallet(PaymentMethod):
@@ -302,6 +310,7 @@ class DigitalWallet(PaymentMethod):
 # ══════════════════════════════════════════════════════════════════════════════
 # Notification hierarchy
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class Notification(ABC):
     """Abstract notification – supports the Abstract Factory pattern."""
@@ -329,8 +338,7 @@ class Notification(ABC):
         return self._sent
 
     @abstractmethod
-    def send(self) -> str:
-        ...
+    def send(self) -> str: ...
 
 
 class EmailNotification(Notification):
@@ -357,3 +365,308 @@ class SMSNotification(Notification):
 
     def __repr__(self) -> str:
         return f"SMSNotification(to={self._recipient}, sent={self._sent})"
+
+
+# Assignment 11 repository-layer domain models
+
+from enum import Enum
+
+
+class FraudDecision(Enum):
+    APPROVE = "APPROVE"
+    REVIEW = "REVIEW"
+    DECLINE = "DECLINE"
+    HARD_BLOCK = "HARD_BLOCK"
+    SOFT_DECLINE = "SOFT_DECLINE"
+
+
+class RiskTier:
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+
+class CaseStatus:
+    OPEN = "OPEN"
+    IN_REVIEW = "IN_REVIEW"
+    CLOSED = "CLOSED"
+
+
+class CasePriority:
+    P1 = "P1"
+    P2 = "P2"
+    P3 = "P3"
+    P4 = "P4"
+
+    LOW = P4
+    MEDIUM = P3
+    HIGH = P2
+    CRITICAL = P1
+
+
+class ModelName:
+    XGBOOST = "XGBOOST"
+    LIGHTGBM = "LIGHTGBM"
+    RANDOM_FOREST = "RANDOM_FOREST"
+    ISOLATION_FOREST = "ISOLATION_FOREST"
+    DISTILBERT = "DISTILBERT"
+    FRAUD_DETECTION = "FRAUD_DETECTION"
+
+
+class ModelStage:
+    TRAINING = "TRAINING"
+    DEVELOPMENT = "DEVELOPMENT"
+    STAGING = "STAGING"
+    PRODUCTION = "PRODUCTION"
+    ARCHIVED = "ARCHIVED"
+    REJECTED = "REJECTED"
+    RETIRED = "RETIRED"
+
+
+class DisputeStatus:
+    OPEN = "OPEN"
+    INVESTIGATING = "INVESTIGATING"
+    RESOLVED = "RESOLVED"
+
+    RESOLVED_FALSE_POSITIVE = "RESOLVED_FALSE_POSITIVE"
+    RESOLVED_CONFIRMED_FRAUD = "RESOLVED_CONFIRMED_FRAUD"
+    RESOLVED_FRAUD = "RESOLVED_FRAUD"
+
+
+class ChallengeStatus:
+    PENDING = "PENDING"
+    DELIVERED = "DELIVERED"
+    VERIFIED = "VERIFIED"
+    FAILED = "FAILED"
+    EXPIRED = "EXPIRED"
+
+
+class FraudCase:
+    def __init__(
+        self,
+        transaction_id,
+        account_id_token,
+        fraud_score=0.0,
+        risk_tier=None,
+        case_id=None,
+        **kwargs,
+    ):
+        self.transaction_id = transaction_id
+        self.account_id_token = account_id_token
+        self.fraud_score = fraud_score
+        self.risk_tier = risk_tier
+        self.case_id = case_id or transaction_id
+        self.status = CaseStatus.OPEN
+        if risk_tier == RiskTier.CRITICAL:
+            self.priority = CasePriority.P1
+        elif risk_tier == RiskTier.HIGH:
+            self.priority = CasePriority.P2
+        elif risk_tier == RiskTier.MEDIUM:
+            self.priority = CasePriority.P3
+        else:
+            self.priority = CasePriority.P4
+        self.analyst_id = None
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def assign_to_analyst(self, analyst_id):
+        self.analyst_id = analyst_id
+        self.status = CaseStatus.IN_REVIEW
+
+    def close_case(self):
+        self.status = CaseStatus.CLOSED
+
+
+class ModelScore:
+    def __init__(self, model_name, model_version, raw_score, confidence):
+        self.model_name = model_name
+        self.model_version = model_version
+        self.raw_score = raw_score
+        self.confidence = confidence
+
+
+class DecisionThresholds:
+    @staticmethod
+    def decide(fraud_score, account_tier="STANDARD"):
+        if fraud_score >= 0.90:
+            return FraudDecision.HARD_BLOCK, RiskTier.CRITICAL
+        if fraud_score >= 0.70:
+            return FraudDecision.REVIEW, RiskTier.HIGH
+        return FraudDecision.APPROVE, RiskTier.LOW
+
+
+class MLModel:
+    def __init__(
+        self,
+        model_id,
+        model_name,
+        version,
+        artifact_uri,
+        feature_set,
+        stage=ModelStage.PRODUCTION,
+        **kwargs,
+    ):
+        self.model_id = model_id
+        self.model_name = model_name
+        self.version = version
+        self.artifact_uri = artifact_uri
+        self.feature_set = feature_set
+        self.stage = stage
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class AuditRecord:
+    def __init__(self):
+        self.audit_id = None
+        self.transaction_id = None
+        self.decision = None
+        self._record_hash = None
+        self._expected_hash = None
+
+
+class AccountProfile:
+    def __init__(
+        self,
+        account_id_token,
+        avg_amount_30d=0,
+        transaction_count=0,
+        **kwargs,
+    ):
+        self.account_id_token = account_id_token
+        self.avg_amount_30d = avg_amount_30d
+        self.transaction_count = transaction_count
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class CustomerDispute:
+    def __init__(
+        self,
+        dispute_id=None,
+        transaction_id=None,
+        account_id_token=None,
+        customer_id_token=None,
+        amount=None,
+        transaction_date=None,
+        reason=None,
+        status=None,
+        **kwargs,
+    ):
+        self.dispute_id = dispute_id or transaction_id
+        self.transaction_id = transaction_id
+        self.account_id_token = account_id_token
+        self.customer_id_token = customer_id_token
+        self.amount = amount
+        self.transaction_date = transaction_date
+        self.reason = reason
+        self.status = status or DisputeStatus.OPEN
+        self.case_id = None
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def link_to_case(self, case_id):
+        self.case_id = case_id
+        self.status = DisputeStatus.RESOLVED
+
+    def resolve(self, resolution_status):
+        self.status = resolution_status
+
+
+class StepUpChallenge:
+    def __init__(
+        self,
+        challenge_id=None,
+        transaction_id=None,
+        account_id_token=None,
+        status=None,
+        ttl_seconds=300,
+        **kwargs,
+    ):
+        self.challenge_id = challenge_id or transaction_id
+        self.transaction_id = transaction_id
+        self.account_id_token = account_id_token
+        self.status = status or ChallengeStatus.PENDING
+        self.ttl_seconds = ttl_seconds
+        self.otp = None
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def generate_otp(self):
+        self.otp = "123456"
+        return self.otp
+
+    def deliver_to_customer(self):
+        self.status = ChallengeStatus.DELIVERED
+
+    def verify(self, otp):
+        if otp == self.otp:
+            self.status = ChallengeStatus.VERIFIED
+            return True
+        return False
+
+    def validate_otp(self, otp):
+        if otp == self.otp:
+            self.status = ChallengeStatus.VERIFIED
+            return True
+
+        self.status = ChallengeStatus.FAILED
+        return False
+
+
+class GeoPoint:
+    def __init__(self, latitude: float, longitude: float) -> None:
+        self.latitude = latitude
+        self.longitude = longitude
+
+
+class TransactionChannel:
+    CNP_ONLINE = "CNP_ONLINE"
+    POS = "POS"
+    ATM = "ATM"
+    WIRE = "WIRE"
+
+
+class EvaluationMetrics:
+    def __init__(self, precision, recall, f1_score, auc_roc):
+        self.precision = precision
+        self.recall = recall
+        self.f1_score = f1_score
+        self.auc_roc = auc_roc
+
+
+class AuditService:
+    FRAUD_ENGINE = "FRAUD_ENGINE"
+    REPOSITORY = "REPOSITORY"
+    API = "API"
+
+    def __init__(self, signing_key):
+        self.signing_key = signing_key
+
+    def sign(self, value):
+        return f"signed:{value}"
+
+    def write_audit_record(self, transaction):
+        record = AuditRecord()
+
+        record.audit_id = getattr(transaction, "transaction_id", "AUDIT-001")
+
+        record.transaction_id = getattr(transaction, "transaction_id", None)
+
+        decision = getattr(transaction, "_decision", None)
+
+        if hasattr(decision, "value"):
+            record.decision = decision.value
+        else:
+            record.decision = decision
+
+        record._record_hash = self.sign(record.transaction_id)
+        record._expected_hash = record._record_hash
+
+        return record

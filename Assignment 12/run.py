@@ -6,14 +6,15 @@ subprocess inherits the correct paths.
 Run from inside Assignment 12/:
     python run.py
 """
+
 import os
 import sys
 import subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-A10  = os.path.join(REPO, "Assignment 10")
-A11  = os.path.join(REPO, "Assignment 11")
+A10 = os.path.join(REPO, "Assignment 10")
+A11 = os.path.join(REPO, "Assignment 11")
 
 # Build PYTHONPATH — propagates into every subprocess uvicorn spawns
 paths = [HERE, A10, A11]
@@ -27,11 +28,18 @@ for p in paths:
         sys.path.insert(0, p)
 
 if __name__ == "__main__":
-    subprocess.run([
-        sys.executable, "-m", "uvicorn",
-        "api.main:app",
-        "--host", "0.0.0.0",
-        "--port", "8000",
-        "--reload",
-        "--reload-dir", HERE,
-    ])
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "uvicorn",
+            "api.main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8000",
+            "--reload",
+            "--reload-dir",
+            HERE,
+        ]
+    )

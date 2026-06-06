@@ -62,7 +62,7 @@ class AuditLogger:
         """
         if cls._instance is None:
             with cls._lock:
-                if cls._instance is None:       # second check inside lock
+                if cls._instance is None:  # second check inside lock
                     cls._instance = cls.__new__(cls)
                     cls._instance._logs = []
                     cls._instance._created_at = datetime.utcnow()

@@ -8,7 +8,6 @@ Covers:
   - generate() returns a FraudAlert when score meets threshold
 """
 
-import pytest
 from creational_patterns.factory_method import (
     VelocityAlertGenerator,
     GeolocationAlertGenerator,
@@ -21,7 +20,6 @@ TXN_ID = "TXN-TEST-001"
 
 
 class TestVelocityAlertGenerator:
-
     def setup_method(self):
         self.generator = VelocityAlertGenerator()
 
@@ -55,7 +53,6 @@ class TestVelocityAlertGenerator:
 
 
 class TestGeolocationAlertGenerator:
-
     def setup_method(self):
         self.generator = GeolocationAlertGenerator()
 
@@ -79,7 +76,6 @@ class TestGeolocationAlertGenerator:
 
 
 class TestMLAlertGenerator:
-
     def setup_method(self):
         self.generator = MLAlertGenerator()
 

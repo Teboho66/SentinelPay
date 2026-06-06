@@ -22,11 +22,16 @@ from src.models import Transaction, TransactionType
 
 # ── Concrete sub-types ───────────────────────────────────────────────────────
 
+
 class OnlineTransaction(Transaction):
     """Transaction originating from a web/mobile channel."""
 
-    def __init__(self, amount: float, currency: str, merchant_id: str, account_id: str) -> None:
-        super().__init__(amount, currency, TransactionType.ONLINE, merchant_id, account_id)
+    def __init__(
+        self, amount: float, currency: str, merchant_id: str, account_id: str
+    ) -> None:
+        super().__init__(
+            amount, currency, TransactionType.ONLINE, merchant_id, account_id
+        )
         self.add_metadata("channel", "ONLINE")
         self.add_metadata("requires_3ds", True)
 
@@ -34,7 +39,9 @@ class OnlineTransaction(Transaction):
 class ATMTransaction(Transaction):
     """Cash withdrawal or deposit at an ATM."""
 
-    def __init__(self, amount: float, currency: str, merchant_id: str, account_id: str) -> None:
+    def __init__(
+        self, amount: float, currency: str, merchant_id: str, account_id: str
+    ) -> None:
         super().__init__(amount, currency, TransactionType.ATM, merchant_id, account_id)
         self.add_metadata("channel", "ATM")
         self.add_metadata("physical_card_required", True)
@@ -47,7 +54,9 @@ class ATMTransaction(Transaction):
 class POSTransaction(Transaction):
     """In-store point-of-sale transaction."""
 
-    def __init__(self, amount: float, currency: str, merchant_id: str, account_id: str) -> None:
+    def __init__(
+        self, amount: float, currency: str, merchant_id: str, account_id: str
+    ) -> None:
         super().__init__(amount, currency, TransactionType.POS, merchant_id, account_id)
         self.add_metadata("channel", "POS")
         self.add_metadata("contactless_eligible", amount <= 500.0)
@@ -56,13 +65,18 @@ class POSTransaction(Transaction):
 class WireTransferTransaction(Transaction):
     """International wire transfer."""
 
-    def __init__(self, amount: float, currency: str, merchant_id: str, account_id: str) -> None:
-        super().__init__(amount, currency, TransactionType.WIRE_TRANSFER, merchant_id, account_id)
+    def __init__(
+        self, amount: float, currency: str, merchant_id: str, account_id: str
+    ) -> None:
+        super().__init__(
+            amount, currency, TransactionType.WIRE_TRANSFER, merchant_id, account_id
+        )
         self.add_metadata("channel", "WIRE")
         self.add_metadata("cross_border", True)
 
 
 # ── Simple Factory ───────────────────────────────────────────────────────────
+
 
 class TransactionFactory:
     """

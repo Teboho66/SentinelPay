@@ -26,6 +26,7 @@ from src.models import FraudAlert, AlertSeverity
 
 # ── Creator (abstract) ───────────────────────────────────────────────────────
 
+
 class AlertGenerator(ABC):
     """
     Abstract Creator.
@@ -50,14 +51,14 @@ class AlertGenerator(ABC):
         ...
 
     @abstractmethod
-    def _should_alert(self, risk_score: float) -> bool:
-        ...
+    def _should_alert(self, risk_score: float) -> bool: ...
 
     def _log(self, alert: FraudAlert) -> None:
         print(f"[AlertGenerator] Created {alert!r}")
 
 
 # ── Concrete Creators ────────────────────────────────────────────────────────
+
 
 class VelocityAlertGenerator(AlertGenerator):
     """
