@@ -63,6 +63,7 @@ pytest
 
 **Repository:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System`  
 **PR Link:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20`  
+**Issue addressed:** `[#13] - [[US-013] Admin generates operational reports]`  
 **Issue addressed:** `#13 - [US-013] Admin generates operational reports`  
 **Branch:** `test/[description]`
 
@@ -98,23 +99,61 @@ The single warning was an existing Starlette/FastAPI test client deprecation war
 
 ---
 
-## PR #3
+## PR #3 - Manga Book Store OpenAPI and Swagger Documentation 📘✨
 
-**Repository:** `https://github.com/[classmate-3]/[repo]`  
-**PR Link:** `https://github.com/[classmate-3]/[repo]/pull/[number]`  
-**Issue addressed:** `#[issue-number] — [issue title]`  
-**Branch:** `feat/[description]`
+**Repository:** `https://github.com/Vanessa-Ndomba/manga-book-store-system`
+**PR Link:** `https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22`
+**Issue addressed:** `#12 - Add OpenAPI JSON + Swagger screenshot to docs/`
+**Branch:** `docs/openapi-swagger-evidence`
 
 ### What I changed
-_Describe the feature — e.g., "Implemented input validation on the POST /api/books
-endpoint using Pydantic, returning 422 with a clear error message for invalid fields."_
+
+For my third cross-project contribution, I worked on the **Manga Book Store System** repository. I selected **Issue #12**, which requested that the project’s OpenAPI JSON file and Swagger UI screenshot be saved inside the `docs/` folder.
+
+I added the following two files:
+
+```text
+docs/openapi.json
+docs/swagger-ui.png
+```
+
+The `openapi.json` file was generated directly from the FastAPI application. This file captures the current API specification, including the available Manga, Orders, Users, and root endpoints.
+
+The `swagger-ui.png` file provides a visual screenshot of the Swagger UI page. It shows the API documentation interface and makes it easier for contributors to quickly understand the available routes without needing to run the project first.
+
+This was a documentation-focused contribution. I did not change any business logic, services, repositories, schemas, routes, or tests.
 
 ### Why it was needed
-_e.g., "The endpoint accepted any payload without validation, which caused 500 errors
-on invalid input instead of a clear 422 response."_
+
+The issue requested API documentation evidence to be committed inside the `docs/` folder. Before this contribution, the repository had some screenshots, but the issue specifically asked for clearly named documentation files:
+
+```text
+docs/openapi.json
+docs/swagger-ui.png
+```
+
+Adding these files improves the project because API documentation is one of the first things future contributors look for when trying to understand a backend system. The OpenAPI JSON provides a machine-readable API contract, while the Swagger screenshot provides a human-readable visual reference.
+
+This makes the project more contributor-friendly and helps future developers understand the current backend structure more quickly.
 
 ### CI result
-_e.g., "CI passed — new validation tests added and passing."_
+
+I ran the available checks locally before submitting the pull request.
+
+Commands run:
+
+```bash
+python -m compileall api services repositories src
+pytest
+```
+
+Result:
+
+```text
+59 passed, 1 warning
+```
+
+The single warning was an existing Starlette/FastAPI test client deprecation warning and was unrelated to my documentation-only change.
 
 ---
 
@@ -146,19 +185,51 @@ git push origin fix/your-description
 
 ```
 ## Summary
-Brief description of what this PR does.
+
+Added the requested API documentation evidence to the `docs/` folder.
+
+This PR adds:
+
+* `docs/openapi.json`
+* `docs/swagger-ui.png`
+
+The OpenAPI JSON was generated from the FastAPI application, and the Swagger UI screenshot shows the current MangaBookStore API documentation page with the available Manga, Orders, Users, and root endpoints.
 
 ## Related Issue
-Closes #[issue-number]
+
+Closes #12
 
 ## Changes Made
-- [specific change 1]
-- [specific change 2]
+
+* Added `docs/openapi.json` containing the generated FastAPI OpenAPI specification.
+* Added `docs/swagger-ui.png` showing the Swagger UI page for the current API.
+* Kept the contribution documentation-only with no changes to business logic, routes, services, repositories, schemas, or tests.
 
 ## Testing
-- All existing tests pass
-- [any new tests added]
 
-## Screenshots (if applicable)
-[paste CI passing screenshot]
+All available checks pass locally.
+
+Commands run:
+
+```bash
+python -m compileall api services repositories src
+pytest
+```
+
+Result:
+
+```text
+59 passed, 1 warning
+```
+
+The warning is an existing Starlette/FastAPI test client deprecation warning and is unrelated to this documentation-only change.
+
+## Screenshots
+
+Swagger UI screenshot added in:
+
+```text
+docs/swagger-ui.png
+```
+
 ```
