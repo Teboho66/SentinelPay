@@ -37,8 +37,9 @@ What made it fork-friendly:
 
 | # | Classmate Repo | Issue | PR Link | Type | Status |
 |---|---|---|---|---|---|
-| 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 – API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #1 – Add API key request and response schemas](PASTE_PR_LINK_HERE) | `feature-request`, `REST API`, `good-first-issue` | ⏳ Submitted |
-| 2 | [repo link] | [issue link] | [PR link] | `good-first-issue` | 📝 Planned |
+
+| 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #1 - Add API key request and response schemas](PASTE_TAILORFIT_PR_LINK_HERE) | `feature-request`, `REST API`, `good-first-issue` | ⏳ Submitted |
+| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #2 - Document operational reports user story](PASTE_CLINICEASE_PR_LINK_HERE) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
 | 3 | [repo link] | [issue link] | [PR link] | `feature-request` | 📝 Planned |
 
 ---
@@ -47,12 +48,15 @@ What made it fork-friendly:
 
 | Metric | Count |
 |---|---:|
-| PRs submitted | 1 / 3 |
+
+| PRs submitted | 2 / 3 |
 | PRs merged | 0 / 3 - update after merges |
-| Repositories contributed to | 1 / 3 |
+| Repositories contributed to | 2 / 3 |
 | Feature-request PRs | 1 |
-| Local test suites passed | 1 |
+| Documentation / user-story PRs | 1 |
+| Local test suites passed | 2 |
 | TailorFit tests passed | 32 passed, 1 warning |
+| ClinicEase tests passed | 188 passed, 1 warning |
 | Stars received on SentinelPay | 28 |
 | Forks received on SentinelPay | 36 |
 
