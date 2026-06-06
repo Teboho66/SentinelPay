@@ -12,6 +12,7 @@
 | [PR #2](#pr-2--clinicease-operational-reports-documentation) | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
 | [PR #3](#pr-3) | [classmate-repo-3] | `feature-request` | 📝 Planned |
 
+
 > Update the Status column to ✅ Merged once each PR is accepted.
 > Add the direct GitHub PR link once submitted.
 
