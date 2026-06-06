@@ -34,6 +34,13 @@ testpaths = [
     "Assignment 11/tests",
     "Assignment 12/tests",
 ]
+pythonpath = [
+    "Assignment 10/FraudRule",
+    "Assignment 10",
+    "Assignment 10/src",
+    "Assignment 11",
+    "Assignment 12",
+]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
@@ -53,3 +60,10 @@ omit = ["*/tests/*", "*/test_*"]
 [tool.coverage.report]
 show_missing = true
 fail_under = 70
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+ignore = ["E402"]

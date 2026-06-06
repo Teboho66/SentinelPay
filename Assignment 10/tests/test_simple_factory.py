@@ -17,11 +17,10 @@ from creational_patterns.simple_factory import (
     POSTransaction,
     WireTransferTransaction,
 )
-from src.models import TransactionStatus, TransactionType
+from src.models import TransactionStatus
 
 
 class TestTransactionFactory:
-
     def test_creates_online_transaction(self):
         txn = TransactionFactory.create("ONLINE", 500.0, "ZAR", "MER-01", "ACC-01")
         assert isinstance(txn, OnlineTransaction)

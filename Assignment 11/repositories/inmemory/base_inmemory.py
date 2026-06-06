@@ -77,8 +77,16 @@ class InMemoryRepository(Repository[T, str]):
         Sub-classes override this when the ID property name differs from 'id'.
         """
         # Try common ID property names used across the SentinelPay domain
-        for attr in ("transaction_id", "case_id", "model_id", "audit_id",
-                     "account_id_token", "dispute_id", "challenge_id", "id"):
+        for attr in (
+            "transaction_id",
+            "case_id",
+            "model_id",
+            "audit_id",
+            "account_id_token",
+            "dispute_id",
+            "challenge_id",
+            "id",
+        ):
             val = getattr(entity, attr, None)
             if val is not None:
                 return str(val)

@@ -9,24 +9,32 @@ from __future__ import annotations
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 
-import sys, os
+import sys
+import os
+
 for _p in ("../../Assignment10", "../../Assignment11", ".."):
     _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), _p))
     if _abs not in sys.path:
         sys.path.insert(0, _abs)
 
 from config.schemas import (
-    RegisterModelRequest, EvaluateModelRequest, PromoteModelRequest,
-    HotSwapRequest, MLModelResponse, EvaluateModelResponse, ErrorResponse,
+    RegisterModelRequest,
+    EvaluateModelRequest,
+    PromoteModelRequest,
+    HotSwapRequest,
+    MLModelResponse,
+    EvaluateModelResponse,
+    ErrorResponse,
 )
 from config.dependencies import get_ml_model_service
-from mapping.transaction_service import TransactionService
+from mapping.ml_model_service import MLModelService
 
 from services.exceptions import (
     EntityNotFoundError,
     DuplicateEntityError,
     BusinessRuleViolationError,
     InvalidStateTransitionError,
+    PromotionGateFailedError,
 )
 
 router = APIRouter(prefix="/api/ml-models", tags=["ML Models"])
@@ -58,7 +66,10 @@ def _handle_service_errors(exc: Exception) -> HTTPException:
     ),
     responses={
         201: {"description": "Model registered in TRAINING stage"},
-        409: {"model": ErrorResponse, "description": "Model version already registered"},
+        409: {
+            "model": ErrorResponse,
+            "description": "Model version already registered",
+        },
         422: {"model": ErrorResponse, "description": "Invalid model name"},
     },
 )
@@ -142,9 +153,14 @@ def get_model(
         "Gate: precision ≥ 0.85 AND recall ≥ 0.80 (BR-ML1)."
     ),
     responses={
-        200: {"description": "Metrics recorded; meets_promotion_gate indicates readiness"},
+        200: {
+            "description": "Metrics recorded; meets_promotion_gate indicates readiness"
+        },
         404: {"model": ErrorResponse, "description": "Model not found"},
-        409: {"model": ErrorResponse, "description": "Model not in TRAINING or STAGING stage"},
+        409: {
+            "model": ErrorResponse,
+            "description": "Model not in TRAINING or STAGING stage",
+        },
     },
 )
 def evaluate_model(
@@ -211,7 +227,10 @@ def promote_model(
     responses={
         200: {"description": "Artifact path updated; hot-swap complete"},
         404: {"model": ErrorResponse, "description": "Model not found"},
-        409: {"model": ErrorResponse, "description": "Model must be in PRODUCTION stage"},
+        409: {
+            "model": ErrorResponse,
+            "description": "Model must be in PRODUCTION stage",
+        },
     },
 )
 def hot_swap(

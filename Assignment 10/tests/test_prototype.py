@@ -17,7 +17,6 @@ from src.models import FraudRule
 
 
 class TestFraudRuleCache:
-
     def setup_method(self):
         self.cache = FraudRuleCache()
         self.cache.load_defaults()

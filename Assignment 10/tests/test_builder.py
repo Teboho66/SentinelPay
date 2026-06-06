@@ -21,11 +21,11 @@ from src.models import (
     AlertSeverity,
     RiskScore,
     AuditLog,
-    RiskLevel,
 )
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
+
 
 @pytest.fixture
 def sample_transaction():
@@ -60,8 +60,8 @@ def sample_risk_score_low():
 
 # ── Tests ─────────────────────────────────────────────────────────────────────
 
-class TestFraudCaseBuilder:
 
+class TestFraudCaseBuilder:
     def test_full_build_returns_fraud_case(
         self, sample_transaction, sample_alert, sample_risk_score_critical
     ):

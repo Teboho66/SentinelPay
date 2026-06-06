@@ -27,7 +27,6 @@ def reset_singleton():
 
 
 class TestAuditLoggerSingleton:
-
     def test_get_instance_returns_audit_logger(self):
         logger = AuditLogger.get_instance()
         assert isinstance(logger, AuditLogger)
@@ -38,7 +37,7 @@ class TestAuditLoggerSingleton:
         assert a is b
 
     def test_direct_construction_raises_runtime_error(self):
-        AuditLogger.get_instance()          # create instance first
+        AuditLogger.get_instance()  # create instance first
         with pytest.raises(RuntimeError, match="Singleton"):
             AuditLogger()
 
@@ -59,7 +58,7 @@ class TestAuditLoggerSingleton:
         logger.log("CASE_OPENED", actor="analyst")
         logs = logger.get_logs()
         logs.clear()
-        assert logger.entry_count == 1    # internal list unaffected
+        assert logger.entry_count == 1  # internal list unaffected
 
     def test_log_entry_has_correct_action(self):
         logger = AuditLogger.get_instance()
@@ -104,7 +103,7 @@ class TestAuditLoggerSingleton:
         barrier = threading.Barrier(50)
 
         def write_logs():
-            barrier.wait()              # all threads start simultaneously
+            barrier.wait()  # all threads start simultaneously
             for i in range(10):
                 logger.log("CONCURRENT_TEST", actor="thread", details={"i": i})
 

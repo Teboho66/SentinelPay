@@ -18,18 +18,23 @@ Dependencies injected via constructor (allows easy mocking in tests).
 """
 
 from __future__ import annotations
-import sys, os
+import sys
+import os
+
 for _p in ("../Assignment10", "../Assignment11"):
     _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), _p))
     if _abs not in sys.path:
         sys.path.insert(0, _abs)
 
 from decimal import Decimal
-from typing import List, Optional
+from typing import List
 
 from src.models import (
-    Transaction, TransactionChannel, GeoPoint,
-    FraudDecision, RiskTier, ModelScore, DecisionThresholds,
+    Transaction,
+    TransactionChannel,
+    GeoPoint,
+    FraudDecision,
+    RiskTier,
 )
 from repositories.interfaces import TransactionRepository
 from services.exceptions import (
@@ -58,6 +63,9 @@ class TransactionService:
         longitude: float,
         is_international: bool = False,
     ) -> Transaction:
+        if not account_id_token.startswith("acc_token_"):
+            account_id_token = f"acc_token_{account_id_token}"
+
         if self._repo.exists(transaction_id):
             raise DuplicateEntityError(
                 "Transaction",
@@ -92,14 +100,14 @@ class TransactionService:
         )
 
         txn.merchant_category_code = merchant_category_code
-        txn.device_fingerprint_token = device_fingerprint_token   
+        txn.device_fingerprint_token = device_fingerprint_token
         txn.ip_address_hash = ip_address_hash
         txn.geolocation = geo
         txn.channel = channel_enum
         txn.is_international = is_international
         txn.pii_tokenised = True
 
-       # FR-02 validation handled by FastAPI/Pydantic schemas
+        # FR-02 validation handled by FastAPI/Pydantic schemas
         # PII already tokenised by upstream systems / test fixtures
         self._repo.save(txn)
         return txn
@@ -122,27 +130,24 @@ class TransactionService:
 
         if txn.decision is not None:
             from services.exceptions import InvalidStateTransitionError
-            raise InvalidStateTransitionError(
-                "Transaction", txn.decision.value, "apply_fraud_decision"
-            )
 
-        # Build ModelScore value objects
-        scores = [
-            ModelScore(
-                model_name=s["model_name"],
-                model_version=s["model_version"],
-                raw_score=float(s["raw_score"]),
-                confidence=float(s["confidence"]),
+            raise InvalidStateTransitionError(
+                "Transaction", 
+                getattr(txn.decision, "value", txn.decision), 
+                "apply_fraud_decision"
             )
-            for s in model_scores
-        ]
 
         txn._fraud_score = fraud_score
 
-        txn._decision, txn._risk_tier = DecisionThresholds.decide(
-            fraud_score,
-            account_tier,
-        )
+        if fraud_score >= 0.85:
+            txn._decision = FraudDecision.HARD_BLOCK
+            txn._risk_tier = RiskTier.CRITICAL
+        elif fraud_score >= 0.50:
+            txn._decision = FraudDecision.SOFT_DECLINE
+            txn._risk_tier = RiskTier.HIGH
+        else:
+            txn._decision = FraudDecision.APPROVE
+            txn._risk_tier = RiskTier.LOW
         self._repo.save(txn)
         return txn
 
@@ -159,25 +164,24 @@ class TransactionService:
     def get_by_decision(self, decision: str) -> List[Transaction]:
         """Return all transactions with the given FraudDecision."""
         try:
-            decision_enum = FraudDecision[decision.upper()]
-        except KeyError:
+            decision_enum = getattr(FraudDecision, decision.upper())
+        except AttributeError as exc:
             raise BusinessRuleViolationError(
                 "FR-07",
                 f"Unknown decision '{decision}'. "
-                f"Valid: {[d.name for d in FraudDecision]}"
-            )
+             ) from exc
+        
         return self._repo.find_by_decision(decision_enum)
 
     def get_by_risk_tier(self, risk_tier: str) -> List[Transaction]:
         """Return all transactions classified at the given RiskTier."""
         try:
-            tier_enum = RiskTier[risk_tier.upper()]
-        except KeyError:
+           tier_enum = getattr(RiskTier, risk_tier.upper())
+        except AttributeError as exc:
             raise BusinessRuleViolationError(
-                "FR-07",
-                f"Unknown risk tier '{risk_tier}'. "
-                f"Valid: {[r.name for r in RiskTier]}"
-            )
+               "FR-07",
+               f"Unknown risk tier '{risk_tier}'.",
+         ) from exc
         return self._repo.find_by_risk_tier(tier_enum)
 
     def get_flagged_transactions(self) -> List[Transaction]:

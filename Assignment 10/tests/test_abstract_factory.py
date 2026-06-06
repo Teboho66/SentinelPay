@@ -29,25 +29,32 @@ def sample_alert():
 
 
 class TestEmailNotificationFactory:
-
     def setup_method(self):
         self.factory = EmailNotificationFactory()
 
     def test_create_notification_returns_email_type(self, sample_alert):
-        notification = self.factory.create_notification(sample_alert, "analyst@sentinelpay.io")
+        notification = self.factory.create_notification(
+            sample_alert, "analyst@sentinelpay.io"
+        )
         assert isinstance(notification, EmailNotification)
 
     def test_send_marks_notification_as_sent(self, sample_alert):
-        notification = self.factory.create_notification(sample_alert, "analyst@sentinelpay.io")
+        notification = self.factory.create_notification(
+            sample_alert, "analyst@sentinelpay.io"
+        )
         notification.send()
         assert notification.sent is True
 
     def test_email_subject_contains_alert_type(self, sample_alert):
-        notification = self.factory.create_notification(sample_alert, "analyst@sentinelpay.io")
+        notification = self.factory.create_notification(
+            sample_alert, "analyst@sentinelpay.io"
+        )
         assert "VELOCITY_BREACH" in notification.subject
 
     def test_email_subject_contains_severity(self, sample_alert):
-        notification = self.factory.create_notification(sample_alert, "analyst@sentinelpay.io")
+        notification = self.factory.create_notification(
+            sample_alert, "analyst@sentinelpay.io"
+        )
         assert "HIGH" in notification.subject
 
     def test_create_summary_renders_email_format(self, sample_alert):
@@ -63,7 +70,6 @@ class TestEmailNotificationFactory:
 
 
 class TestSMSNotificationFactory:
-
     def setup_method(self):
         self.factory = SMSNotificationFactory()
 
@@ -87,7 +93,6 @@ class TestSMSNotificationFactory:
 
 
 class TestGetNotificationFactory:
-
     def test_returns_email_factory_for_email_channel(self):
         factory = get_notification_factory("EMAIL")
         assert isinstance(factory, EmailNotificationFactory)

@@ -12,6 +12,7 @@ OpenAPI docs auto-generated at:
 from __future__ import annotations
 import sys
 import os
+
 for _p in ("../Assignment10", "../Assignment11", "."):
     _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), _p))
     if _abs not in sys.path:
@@ -75,7 +76,11 @@ app.include_router(ml_models_router)
 @app.get("/health", tags=["Health"], summary="API health check")
 def health_check():
     """Returns 200 OK when the API is running."""
-    return {"status": "healthy", "service": "SentinelPay Fraud Detection API", "version": "1.0.0"}
+    return {
+        "status": "healthy",
+        "service": "SentinelPay Fraud Detection API",
+        "version": "1.0.0",
+    }
 
 
 # ── Root redirect ─────────────────────────────────────────────────────────────

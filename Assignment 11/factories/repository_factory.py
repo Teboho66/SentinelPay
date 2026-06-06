@@ -39,14 +39,21 @@ if _A11 not in sys.path:
     sys.path.insert(0, _A11)
 
 from repositories.interfaces import (
-    TransactionRepository, FraudCaseRepository, MLModelRepository,
-    AuditRecordRepository, AccountProfileRepository,
-    CustomerDisputeRepository, StepUpChallengeRepository,
+    TransactionRepository,
+    FraudCaseRepository,
+    MLModelRepository,
+    AuditRecordRepository,
+    AccountProfileRepository,
+    CustomerDisputeRepository,
+    StepUpChallengeRepository,
 )
 from repositories.inmemory import (
-    InMemoryTransactionRepository, InMemoryFraudCaseRepository,
-    InMemoryMLModelRepository, InMemoryAuditRecordRepository,
-    InMemoryAccountProfileRepository, InMemoryCustomerDisputeRepository,
+    InMemoryTransactionRepository,
+    InMemoryFraudCaseRepository,
+    InMemoryMLModelRepository,
+    InMemoryAuditRecordRepository,
+    InMemoryAccountProfileRepository,
+    InMemoryCustomerDisputeRepository,
     InMemoryStepUpChallengeRepository,
 )
 
@@ -54,8 +61,13 @@ from repositories.inmemory import (
 # ── Registry types ────────────────────────────────────────────────────────────
 
 _ENTITY_NAMES = {
-    "transaction", "fraudcase", "mlmodel", "auditrecord",
-    "accountprofile", "customerdispute", "stepupchallenge",
+    "transaction",
+    "fraudcase",
+    "mlmodel",
+    "auditrecord",
+    "accountprofile",
+    "customerdispute",
+    "stepupchallenge",
 }
 
 _STORAGE_TYPES = {"MEMORY", "FILESYSTEM", "DATABASE"}
@@ -75,13 +87,13 @@ class RepositoryFactory:
     # ── In-memory constructors ────────────────────────────────────────────────
 
     _MEMORY_MAP: dict[str, type] = {
-        "transaction":       InMemoryTransactionRepository,
-        "fraudcase":         InMemoryFraudCaseRepository,
-        "mlmodel":           InMemoryMLModelRepository,
-        "auditrecord":       InMemoryAuditRecordRepository,
-        "accountprofile":    InMemoryAccountProfileRepository,
-        "customerdispute":   InMemoryCustomerDisputeRepository,
-        "stepupchallenge":   InMemoryStepUpChallengeRepository,
+        "transaction": InMemoryTransactionRepository,
+        "fraudcase": InMemoryFraudCaseRepository,
+        "mlmodel": InMemoryMLModelRepository,
+        "auditrecord": InMemoryAuditRecordRepository,
+        "accountprofile": InMemoryAccountProfileRepository,
+        "customerdispute": InMemoryCustomerDisputeRepository,
+        "stepupchallenge": InMemoryStepUpChallengeRepository,
     }
 
     @staticmethod
@@ -117,11 +129,13 @@ class RepositoryFactory:
         if storage_key == "FILESYSTEM":
             # Stub — see stubs/filesystem_repository.py
             from stubs.filesystem_repository import FileSystemRepositoryStub
+
             return FileSystemRepositoryStub(entity_key)
 
         if storage_key == "DATABASE":
             # Stub — see stubs/database_repository.py
             from stubs.database_repository import DatabaseRepositoryStub
+
             return DatabaseRepositoryStub(entity_key)
 
         raise ValueError(
@@ -146,13 +160,19 @@ class RepositoryFactory:
         return RepositoryFactory.get("AuditRecord", storage_type)
 
     @staticmethod
-    def get_account_profile_repo(storage_type: str = "MEMORY") -> AccountProfileRepository:
+    def get_account_profile_repo(
+        storage_type: str = "MEMORY",
+    ) -> AccountProfileRepository:
         return RepositoryFactory.get("AccountProfile", storage_type)
 
     @staticmethod
-    def get_customer_dispute_repo(storage_type: str = "MEMORY") -> CustomerDisputeRepository:
+    def get_customer_dispute_repo(
+        storage_type: str = "MEMORY",
+    ) -> CustomerDisputeRepository:
         return RepositoryFactory.get("CustomerDispute", storage_type)
 
     @staticmethod
-    def get_step_up_challenge_repo(storage_type: str = "MEMORY") -> StepUpChallengeRepository:
+    def get_step_up_challenge_repo(
+        storage_type: str = "MEMORY",
+    ) -> StepUpChallengeRepository:
         return RepositoryFactory.get("StepUpChallenge", storage_type)

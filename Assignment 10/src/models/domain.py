@@ -16,6 +16,7 @@ from .enums import AlertSeverity, NotificationChannel, PaymentMethodType, RiskLe
 # FraudAlert
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class FraudAlert:
     """
     Generated when a transaction breaches one or more fraud rules.
@@ -80,6 +81,7 @@ class FraudAlert:
 # RiskScore
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class RiskScore:
     """
     Value object that encapsulates the computed fraud-risk for a transaction.
@@ -120,6 +122,7 @@ class RiskScore:
 # ══════════════════════════════════════════════════════════════════════════════
 # AuditLog
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class AuditLog:
     """
@@ -166,6 +169,7 @@ class AuditLog:
 # ══════════════════════════════════════════════════════════════════════════════
 # FraudRule  (supports Prototype pattern)
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class FraudRule:
     """
@@ -232,6 +236,7 @@ class FraudRule:
 # PaymentMethod hierarchy
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class PaymentMethod(ABC):
     """Abstract base class for all payment instruments."""
 
@@ -256,8 +261,7 @@ class PaymentMethod(ABC):
         self._is_verified = True
 
     @abstractmethod
-    def get_masked_identifier(self) -> str:
-        ...
+    def get_masked_identifier(self) -> str: ...
 
 
 class CreditCard(PaymentMethod):
@@ -270,7 +274,9 @@ class CreditCard(PaymentMethod):
         return f"****-****-****-{self._card_number[-4:]}"
 
     def __repr__(self) -> str:
-        return f"CreditCard(masked={self.get_masked_identifier()}, owner={self._owner_id})"
+        return (
+            f"CreditCard(masked={self.get_masked_identifier()}, owner={self._owner_id})"
+        )
 
 
 class DebitCard(PaymentMethod):
@@ -283,7 +289,9 @@ class DebitCard(PaymentMethod):
         return f"****-****-****-{self._card_number[-4:]}"
 
     def __repr__(self) -> str:
-        return f"DebitCard(masked={self.get_masked_identifier()}, bank={self._bank_code})"
+        return (
+            f"DebitCard(masked={self.get_masked_identifier()}, bank={self._bank_code})"
+        )
 
 
 class DigitalWallet(PaymentMethod):
@@ -302,6 +310,7 @@ class DigitalWallet(PaymentMethod):
 # ══════════════════════════════════════════════════════════════════════════════
 # Notification hierarchy
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class Notification(ABC):
     """Abstract notification – supports the Abstract Factory pattern."""
@@ -329,8 +338,7 @@ class Notification(ABC):
         return self._sent
 
     @abstractmethod
-    def send(self) -> str:
-        ...
+    def send(self) -> str: ...
 
 
 class EmailNotification(Notification):
@@ -358,6 +366,7 @@ class SMSNotification(Notification):
     def __repr__(self) -> str:
         return f"SMSNotification(to={self._recipient}, sent={self._sent})"
 
+
 # Assignment 11 repository-layer domain models
 
 from enum import Enum
@@ -369,6 +378,7 @@ class FraudDecision(Enum):
     DECLINE = "DECLINE"
     HARD_BLOCK = "HARD_BLOCK"
     SOFT_DECLINE = "SOFT_DECLINE"
+
 
 class RiskTier:
     LOW = "LOW"
@@ -449,13 +459,13 @@ class FraudCase:
         self.case_id = case_id or transaction_id
         self.status = CaseStatus.OPEN
         if risk_tier == RiskTier.CRITICAL:
-          self.priority = CasePriority.P1
+            self.priority = CasePriority.P1
         elif risk_tier == RiskTier.HIGH:
-          self.priority = CasePriority.P2
+            self.priority = CasePriority.P2
         elif risk_tier == RiskTier.MEDIUM:
-          self.priority = CasePriority.P3
+            self.priority = CasePriority.P3
         else:
-          self.priority = CasePriority.P4
+            self.priority = CasePriority.P4
         self.analyst_id = None
 
         for key, value in kwargs.items():
@@ -467,6 +477,7 @@ class FraudCase:
 
     def close_case(self):
         self.status = CaseStatus.CLOSED
+
 
 class ModelScore:
     def __init__(self, model_name, model_version, raw_score, confidence):
@@ -484,7 +495,8 @@ class DecisionThresholds:
         if fraud_score >= 0.70:
             return FraudDecision.REVIEW, RiskTier.HIGH
         return FraudDecision.APPROVE, RiskTier.LOW
-    
+
+
 class MLModel:
     def __init__(
         self,
@@ -565,6 +577,7 @@ class CustomerDispute:
     def resolve(self, resolution_status):
         self.status = resolution_status
 
+
 class StepUpChallenge:
     def __init__(
         self,
@@ -606,6 +619,7 @@ class StepUpChallenge:
         self.status = ChallengeStatus.FAILED
         return False
 
+
 class GeoPoint:
     def __init__(self, latitude: float, longitude: float) -> None:
         self.latitude = latitude
@@ -618,12 +632,14 @@ class TransactionChannel:
     ATM = "ATM"
     WIRE = "WIRE"
 
+
 class EvaluationMetrics:
     def __init__(self, precision, recall, f1_score, auc_roc):
         self.precision = precision
         self.recall = recall
         self.f1_score = f1_score
         self.auc_roc = auc_roc
+
 
 class AuditService:
     FRAUD_ENGINE = "FRAUD_ENGINE"
@@ -639,17 +655,9 @@ class AuditService:
     def write_audit_record(self, transaction):
         record = AuditRecord()
 
-        record.audit_id = getattr(
-            transaction,
-            "transaction_id",
-            "AUDIT-001"
-        )
+        record.audit_id = getattr(transaction, "transaction_id", "AUDIT-001")
 
-        record.transaction_id = getattr(
-            transaction,
-            "transaction_id",
-            None
-        )
+        record.transaction_id = getattr(transaction, "transaction_id", None)
 
         decision = getattr(transaction, "_decision", None)
 

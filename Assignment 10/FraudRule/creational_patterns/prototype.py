@@ -25,6 +25,7 @@ from src.models import FraudRule
 
 # ── Prototype Cache ──────────────────────────────────────────────────────────
 
+
 class FraudRuleCache:
     """
     Stores canonical FraudRule prototypes and returns deep copies on request.
@@ -52,31 +53,31 @@ class FraudRuleCache:
             FraudRule(
                 rule_id="HIGH_VELOCITY",
                 name="High Transaction Velocity",
-                threshold=10,           # more than 10 transactions in 5 min
+                threshold=10,  # more than 10 transactions in 5 min
                 action="FLAG",
             ),
             FraudRule(
                 rule_id="LARGE_AMOUNT",
                 name="Unusually Large Amount",
-                threshold=50_000.0,     # ZAR
+                threshold=50_000.0,  # ZAR
                 action="BLOCK",
             ),
             FraudRule(
                 rule_id="GEO_MISMATCH",
                 name="Geographic Mismatch",
-                threshold=5_000.0,      # km between consecutive transactions
+                threshold=5_000.0,  # km between consecutive transactions
                 action="FLAG",
             ),
             FraudRule(
                 rule_id="NEW_MERCHANT",
                 name="First Transaction With New Merchant",
-                threshold=1.0,          # boolean-style: 1 = first visit
+                threshold=1.0,  # boolean-style: 1 = first visit
                 action="REVIEW",
             ),
             FraudRule(
                 rule_id="ODD_HOURS",
                 name="Transaction During Odd Hours",
-                threshold=3.0,          # 00:00–03:00
+                threshold=3.0,  # 00:00–03:00
                 action="FLAG",
             ),
         ]

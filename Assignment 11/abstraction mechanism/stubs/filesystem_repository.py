@@ -100,14 +100,18 @@ class FileSystemRepositoryStub:
             if hasattr(entity, method):
                 return getattr(entity, method)()
         # Generic fallback — strips private underscore attributes
-        return {
-            k.lstrip("_"): str(v)
-            for k, v in vars(entity).items()
-        }
+        return {k.lstrip("_"): str(v) for k, v in vars(entity).items()}
 
     def _extract_id(self, entity: object) -> str:
-        for attr in ("transaction_id", "case_id", "model_id", "audit_id",
-                     "account_id_token", "dispute_id", "challenge_id"):
+        for attr in (
+            "transaction_id",
+            "case_id",
+            "model_id",
+            "audit_id",
+            "account_id_token",
+            "dispute_id",
+            "challenge_id",
+        ):
             val = getattr(entity, attr, None)
             if val is not None:
                 return str(val)

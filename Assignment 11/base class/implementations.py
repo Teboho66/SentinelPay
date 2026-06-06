@@ -8,23 +8,42 @@ only its entity-specific domain query methods.
 """
 
 from __future__ import annotations
-import sys, os
-_A10 = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "Assignment10"))
+import sys
+import os
+
+_A10 = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "..", "Assignment10")
+)
 if _A10 not in sys.path:
     sys.path.insert(0, _A10)
 
 from typing import List, Optional
 
 from src.models import (
-    Transaction, FraudCase, MLModel, AuditRecord,
-    AccountProfile, CustomerDispute, StepUpChallenge,
-    FraudDecision, RiskTier, CaseStatus, CasePriority,
-    ModelName, ModelStage, DisputeStatus, ChallengeStatus,
+    Transaction,
+    FraudCase,
+    MLModel,
+    AuditRecord,
+    AccountProfile,
+    CustomerDispute,
+    StepUpChallenge,
+    FraudDecision,
+    RiskTier,
+    CaseStatus,
+    CasePriority,
+    ModelName,
+    ModelStage,
+    DisputeStatus,
+    ChallengeStatus,
 )
 from repositories.interfaces import (
-    TransactionRepository, FraudCaseRepository, MLModelRepository,
-    AuditRecordRepository, AccountProfileRepository,
-    CustomerDisputeRepository, StepUpChallengeRepository,
+    TransactionRepository,
+    FraudCaseRepository,
+    MLModelRepository,
+    AuditRecordRepository,
+    AccountProfileRepository,
+    CustomerDisputeRepository,
+    StepUpChallengeRepository,
 )
 from .base_inmemory import InMemoryRepository
 
@@ -33,37 +52,35 @@ from .base_inmemory import InMemoryRepository
 # InMemoryTransactionRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
-class InMemoryTransactionRepository(InMemoryRepository[Transaction], TransactionRepository):
+
+class InMemoryTransactionRepository(
+    InMemoryRepository[Transaction], TransactionRepository
+):
     """
     HashMap-backed Transaction store.
     Primary key: transaction_id
     """
+
     def _get_id(self, entity: Transaction) -> str:
         return entity.transaction_id
-
 
     def find_by_account_id_token(self, account_id_token: str) -> List[Transaction]:
         """FR-05: retrieve all transactions for an account (velocity feature building)."""
         with self._lock:
             return [
-                t for t in self._storage.values()
+                t
+                for t in self._storage.values()
                 if t.account_id_token == account_id_token
             ]
 
     def find_by_decision(self, decision: FraudDecision) -> List[Transaction]:
         """UC11: filter transactions by fraud decision for audit reports."""
         with self._lock:
-            return [
-                t for t in self._storage.values()
-                if t.decision == decision
-            ]
+            return [t for t in self._storage.values() if t.decision == decision]
 
     def find_by_risk_tier(self, risk_tier: RiskTier) -> List[Transaction]:
         with self._lock:
-            return [
-                t for t in self._storage.values()
-                if t.risk_tier == risk_tier
-            ]
+            return [t for t in self._storage.values() if t.risk_tier == risk_tier]
 
     def find_flagged(self) -> List[Transaction]:
         """FR-09: return all HARD_BLOCK transactions for case generation pipeline."""
@@ -74,14 +91,15 @@ class InMemoryTransactionRepository(InMemoryRepository[Transaction], Transaction
 # InMemoryFraudCaseRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class InMemoryFraudCaseRepository(InMemoryRepository[FraudCase], FraudCaseRepository):
     """
     HashMap-backed FraudCase store.
     Primary key: case_id
     """
+
     def _get_id(self, entity: FraudCase) -> str:
         return entity.case_id
-
 
     def find_by_transaction_id(self, transaction_id: str) -> Optional[FraudCase]:
         """UC7: one FraudCase per Transaction (0..1 composition from A9 diagram)."""
@@ -105,15 +123,15 @@ class InMemoryFraudCaseRepository(InMemoryRepository[FraudCase], FraudCaseReposi
         """Return OPEN and IN_REVIEW cases for the analyst working queue."""
         with self._lock:
             return [
-                c for c in self._storage.values()
+                c
+                for c in self._storage.values()
                 if c.status in (CaseStatus.OPEN, CaseStatus.IN_REVIEW)
             ]
 
     def find_by_analyst_id(self, analyst_id: str) -> List[FraudCase]:
         with self._lock:
             return [
-                c for c in self._storage.values()
-                if c.assigned_analyst_id == analyst_id
+                c for c in self._storage.values() if c.assigned_analyst_id == analyst_id
             ]
 
 
@@ -121,14 +139,15 @@ class InMemoryFraudCaseRepository(InMemoryRepository[FraudCase], FraudCaseReposi
 # InMemoryMLModelRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class InMemoryMLModelRepository(InMemoryRepository[MLModel], MLModelRepository):
     """
     HashMap-backed MLModel store.
     Primary key: model_id
     """
+
     def _get_id(self, entity: MLModel) -> str:
         return entity.model_id
-
 
     def find_by_model_name(self, model_name: ModelName) -> List[MLModel]:
         """FR-13: find all versions of a specific model type."""
@@ -157,16 +176,19 @@ class InMemoryMLModelRepository(InMemoryRepository[MLModel], MLModelRepository):
 # InMemoryAuditRecordRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
-class InMemoryAuditRecordRepository(InMemoryRepository[AuditRecord], AuditRecordRepository):
+
+class InMemoryAuditRecordRepository(
+    InMemoryRepository[AuditRecord], AuditRecordRepository
+):
     """
     HashMap-backed AuditRecord store.
     Primary key: audit_id
     AuditRecords are immutable — save() is treated as append-only.
     BR-AR2: delete() raises RuntimeError to mirror the PostgreSQL role restriction.
     """
+
     def _get_id(self, entity: AuditRecord) -> str:
         return entity.audit_id
-
 
     def delete(self, entity_id: str) -> None:
         """
@@ -209,6 +231,7 @@ class InMemoryAuditRecordRepository(InMemoryRepository[AuditRecord], AuditRecord
 # InMemoryAccountProfileRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class InMemoryAccountProfileRepository(
     InMemoryRepository[AccountProfile], AccountProfileRepository
 ):
@@ -217,9 +240,9 @@ class InMemoryAccountProfileRepository(
     Primary key: account_id_token
     In production this is backed by Redis for sub-millisecond feature lookup.
     """
+
     def _get_id(self, entity: AccountProfile) -> str:
         return entity.account_id_token
-
 
     def find_new_accounts(self) -> List[AccountProfile]:
         """BR-AP1: accounts with < 10 transactions receive population-average baselines."""
@@ -228,15 +251,13 @@ class InMemoryAccountProfileRepository(
 
     def find_by_risk_tier_override(self, tier: RiskTier) -> List[AccountProfile]:
         with self._lock:
-            return [
-                p for p in self._storage.values()
-                if p.risk_tier_override == tier
-            ]
+            return [p for p in self._storage.values() if p.risk_tier_override == tier]
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # InMemoryCustomerDisputeRepository
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class InMemoryCustomerDisputeRepository(
     InMemoryRepository[CustomerDispute], CustomerDisputeRepository
@@ -245,9 +266,9 @@ class InMemoryCustomerDisputeRepository(
     HashMap-backed CustomerDispute store.
     Primary key: dispute_id
     """
+
     def _get_id(self, entity: CustomerDispute) -> str:
         return entity.dispute_id
-
 
     def find_by_transaction_id(self, transaction_id: str) -> Optional[CustomerDispute]:
         """
@@ -268,14 +289,18 @@ class InMemoryCustomerDisputeRepository(
         """Analyst dashboard: all disputes requiring action."""
         with self._lock:
             return [
-                d for d in self._storage.values()
+                d
+                for d in self._storage.values()
                 if d.status in (DisputeStatus.OPEN, DisputeStatus.UNDER_REVIEW)
             ]
 
-    def find_by_customer_id_token(self, customer_id_token: str) -> List[CustomerDispute]:
+    def find_by_customer_id_token(
+        self, customer_id_token: str
+    ) -> List[CustomerDispute]:
         with self._lock:
             return [
-                d for d in self._storage.values()
+                d
+                for d in self._storage.values()
                 if d._customer_id_token == customer_id_token
             ]
 
@@ -284,6 +309,7 @@ class InMemoryCustomerDisputeRepository(
 # InMemoryStepUpChallengeRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class InMemoryStepUpChallengeRepository(
     InMemoryRepository[StepUpChallenge], StepUpChallengeRepository
 ):
@@ -291,9 +317,9 @@ class InMemoryStepUpChallengeRepository(
     HashMap-backed StepUpChallenge store.
     Primary key: challenge_id
     """
+
     def _get_id(self, entity: StepUpChallenge) -> str:
         return entity.challenge_id
-
 
     def find_by_transaction_id(self, transaction_id: str) -> Optional[StepUpChallenge]:
         """FR-08: Step-Up Auth API looks up the active OTP challenge by transaction."""
@@ -314,7 +340,8 @@ class InMemoryStepUpChallengeRepository(
         """
         with self._lock:
             return [
-                c for c in self._storage.values()
+                c
+                for c in self._storage.values()
                 if c.status in (ChallengeStatus.GENERATED, ChallengeStatus.DELIVERED)
                 and c.is_expired()
             ]

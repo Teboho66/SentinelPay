@@ -106,15 +106,13 @@ class Transaction:
     def risk_tier(self):
         return getattr(self, "_risk_tier", None)
 
-
     @property
     def fraud_score(self):
         return getattr(self, "_fraud_score", None)
 
-
     @property
     def model_version_composite(self):
-       return getattr(self, "_model_version_composite", None)
+        return getattr(self, "_model_version_composite", None)
 
     @property
     def metadata(self) -> dict:
