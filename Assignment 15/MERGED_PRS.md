@@ -6,11 +6,11 @@
 
 ## Summary
 
-| PR | Repository | Type | Status | 
-|---|---|---|---|---|
+| PR | Repository | Type | Status |
+|---|---|---|---|
 | [PR #1](#pr-1--tailorfit-api-key-schemas) | [TailorFit](https://github.com/znxos/TailorFit) | `feature-request`, `REST API`, `good-first-issue` | ⏳ Submitted |
-| [PR #2](#pr-2) | [classmate-repo-2] | `good-first-issue` | ⏳ Submitted | +10 |
-| [PR #3](#pr-3) | [classmate-repo-3] | `feature-request` | ⏳ Submitted | +10 +5 bonus |
+| [PR #2](#pr-2--clinicease-operational-reports-documentation) | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
+| [PR #3](#pr-3) | [classmate-repo-3] | `feature-request` | 📝 Planned |
 
 > Update the Status column to ✅ Merged once each PR is accepted.
 > Add the direct GitHub PR link once submitted.
@@ -60,20 +60,40 @@ pytest
 
 ## PR #2
 
-**Repository:** `https://github.com/[classmate-2]/[repo]`  
-**PR Link:** `https://github.com/[classmate-2]/[repo]/pull/[number]`  
-**Issue addressed:** `#[issue-number] — [issue title]`  
+**Repository:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System`  
+**PR Link:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20`  
+**Issue addressed:** `#13 - [US-013] Admin generates operational reports`  
 **Branch:** `test/[description]`
 
 ### What I changed
-_Describe the change — e.g., "Added 5 unit tests for the UserService class
-covering the edge cases listed in the issue."_
+I added a detailed documentation file for **US-013: Admin generates operational reports**.
+
+The new file is located at:
+
+```text
+docs/user-stories/US-013-operational-reports.md
 
 ### Why it was needed
-_e.g., "The UserService had 0% test coverage. The issue asked for basic CRUD tests."_
+The issue already had a user story and acceptance criteria, but the implementation details needed more depth so future contributors could build the feature with less confusion.
+
+Operational reports are important because clinic administrators need a reliable way to monitor clinic performance. The documentation now explains how reports should calculate appointment totals, no-show rates, appointments per doctor, and no-data scenarios. It also explains how the feature could later support CSV and PDF downloads.
+
+This makes the user story more complete, easier to implement, easier to test, and easier for the maintainer to review in future development work.
 
 ### CI result
-_e.g., "CI passed — 5 new tests added, 0 failures."_
+CI result
+
+All existing checks passed locally.
+
+Commands run:
+
+python -m compileall api services repositories src
+pytest
+
+Result:
+188 passed, 1 warning
+
+The single warning was an existing Starlette/FastAPI test client deprecation warning and was unrelated to my documentation-only change.
 
 ---
 
