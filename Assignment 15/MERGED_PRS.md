@@ -64,6 +64,7 @@ pytest
 **Repository:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System`  
 **PR Link:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20`  
 **Issue addressed:** `[#13] - [[US-013] Admin generates operational reports]`  
+**Issue addressed:** `#13 - [US-013] Admin generates operational reports`  
 **Branch:** `test/[description]`
 
 ### What I changed
