@@ -8,9 +8,10 @@
 
 | PR | Repository | Type | Status |
 |---|---|---|---|
-| [PR #1](#pr-1--tailorfit-api-key-schemas) | [TailorFit](https://github.com/znxos/TailorFit) | `feature-request`, `REST API`, `good-first-issue` | ⏳ Submitted |
+| [PR #1](#pr-1--tailorfit-api-key-schemas) | [TailorFit](https://github.com/znxos/TailorFit) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
 | [PR #2](#pr-2--clinicease-operational-reports-documentation) | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
-| [PR #3](#pr-3) | [classmate-repo-3] | `feature-request` | 📝 Planned |
+| [PR #3](#pr-3--manga-book-store-openapi-and-swagger-documentation) | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
+| [PR #4](#pr-4--carwash-field-level-validation-error-responses) | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | `validation`, `REST API`, `testing`, `backend` | ⏳ Submitted |
 
 
 > Update the Status column to ✅ Merged once each PR is accepted.
@@ -24,6 +25,7 @@
 **PR Link:** `https://github.com/znxos/TailorFit/pull/44`  
 **Issue addressed:** `#40 - API Parameters - 4`  
 **Branch:** `feature/api-key-schemas`
+**Status:** ✅ Merged  
 
 ### What I changed
 
@@ -105,6 +107,7 @@ The single warning was an existing Starlette/FastAPI test client deprecation war
 **PR Link:** `https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22`
 **Issue addressed:** `#12 - Add OpenAPI JSON + Swagger screenshot to docs/`
 **Branch:** `docs/openapi-swagger-evidence`
+**Status:** ✅ Merged  
 
 ### What I changed
 
@@ -154,6 +157,56 @@ Result:
 ```
 
 The single warning was an existing Starlette/FastAPI test client deprecation warning and was unrelated to my documentation-only change.
+
+---
+
+## PR #4 - Carwash Field-Level Validation Error Responses
+
+**Repository:** `https://github.com/ongeziwe17/carwash-booking-queue-system`  
+**PR Link:** `https://github.com/ongeziwe17/carwash-booking-queue-system/pull/78`  
+**Issue addressed:** `#76 - Contr-005: Improve validation error responses with field-level messages`  
+**Branch:** `feature/field-level-validation-errors`  
+**Status:** ⏳ Submitted  
+
+### What I changed
+
+Improved request validation error handling in the Spring Boot API.
+
+The change adds a dedicated handler for `MethodArgumentNotValidException` so validation failures return clearer field-level messages instead of relying on the generic bad-request handler.
+
+I also updated booking request validation by adding validation annotations to `CreateBookingRequest`, including `@NotBlank`, `@NotNull`, and `@Future`.
+
+In `BookingController`, I enabled validation by adding `@Valid` to booking create and update request bodies.
+
+I also added an integration test that sends an invalid booking request and verifies that the API returns HTTP `400` with field-level validation details in the response body.
+
+### Why it was needed
+
+Closes #76
+
+The existing global exception handler grouped `MethodArgumentNotValidException` with other bad-request exceptions and returned `ex.getMessage()`. This made validation errors harder for API consumers to understand.
+
+The new response is clearer because it identifies which fields failed validation and explains why.
+
+### CI result
+
+All tests passed locally after switching the Codespace to Java 21.
+
+Commands run:
+
+```bash
+java -version
+javac -version
+./mvnw test
+
+Result:
+
+Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+
+Evidenc:
+Screenshot evidence should be saved under:
+Assignment 15/docs/screenshots/fourth-peer-contribution/
 
 ---
 
