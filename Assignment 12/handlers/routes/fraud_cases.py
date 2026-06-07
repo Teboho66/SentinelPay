@@ -27,6 +27,7 @@ from config.schemas import (
 )
 from config.dependencies import get_fraud_case_service
 from mapping.fraud_case_service import FraudCaseService
+from api.metrics import fraud_cases_total
 
 from services.exceptions import (
     EntityNotFoundError,
@@ -84,6 +85,9 @@ def create_fraud_case(
             risk_tier=body.risk_tier,
             shap_report_ref=body.shap_report_ref,
         )
+        # ── Increment metrics ──
+        fraud_cases_total.inc()
+        
         return FraudCaseResponse.from_domain(case)
     except Exception as e:
         raise _handle_service_errors(e)

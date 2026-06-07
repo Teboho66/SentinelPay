@@ -20,10 +20,12 @@ for _p in ("../Assignment10", "../Assignment11", "."):
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from handlers.routes.transactions import router as transactions_router
 from handlers.routes.fraud_cases import router as fraud_cases_router
 from handlers.routes.ml_models import router as ml_models_router
+from api.metrics import transactions_total, fraud_decisions_total, fraud_cases_total
 
 app = FastAPI(
     title="SentinelPay Fraud Detection API",
@@ -70,6 +72,10 @@ app = FastAPI(
 app.include_router(transactions_router)
 app.include_router(fraud_cases_router)
 app.include_router(ml_models_router)
+
+
+# ── Prometheus instrumentation ─────────────────────────────────────────────────
+Instrumentator().instrument(app).expose(app)
 
 
 # ── Health check ──────────────────────────────────────────────────────────────

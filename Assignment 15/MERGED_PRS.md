@@ -13,7 +13,6 @@
 | [PR #3](#pr-3--manga-book-store-openapi-and-swagger-documentation) | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
 | [PR #4](#pr-4--carwash-field-level-validation-error-responses) | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | `validation`, `REST API`, `testing`, `backend` | ✅ Merged |
 
-
 > Update the Status column to ✅ Merged once each PR is accepted.
 > Add the direct GitHub PR link once submitted.
 
