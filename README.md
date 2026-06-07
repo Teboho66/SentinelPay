@@ -9,9 +9,12 @@
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 > **Postgraduate Software Engineering**
+
 > **Author:** Teboho Mokoni
+
 > **Domain:** FinTech - Digital Payments & Financial Crime Prevention
-> **Peer engagement:** ⭐ 28 stars · 🍴 36 forks · 3 merged external PRs
+
+> **Peer engagement:** ⭐ 28 stars · 🍴 36 forks · 4 merged external PRs
 ---
 
 ## What is SentinelPay?
