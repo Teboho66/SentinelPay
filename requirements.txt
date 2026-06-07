@@ -1,4 +1,4 @@
-# SentinelPay – Python dependencies
+# SentinelPay - Python dependencies
 # Used by CI/CD pipeline and local development
 
 # Web framework
@@ -9,7 +9,7 @@ prometheus-fastapi-instrumentator
 # Testing
 pytest==8.3.3
 pytest-cov==6.0.0
-httpx==0.28.0          # FastAPI TestClient
+httpx==0.28.0
 
 # Pydantic (FastAPI dependency)
 pydantic==2.10.3
