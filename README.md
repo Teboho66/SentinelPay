@@ -188,16 +188,6 @@ The default Automated Kanban template was extended with 4 additional columns to 
 
 ---
 
-## 📊 Requirements At a Glance
 
-| Category | Count |
-|---|---|
-| Stakeholders identified | 8 |
-| Functional Requirements | 15 |
-| Non-Functional Requirements | 18 (across 6 categories) |
-| C4 Architecture Levels | 4 |
-| Architecture Decision Records | 4 |
-
----
 
 *SentinelPay - Because every millisecond between a transaction and a fraud signal costs money.*
