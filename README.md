@@ -9,9 +9,12 @@
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 > **Postgraduate Software Engineering**
+
 > **Author:** Teboho Mokoni
+
 > **Domain:** FinTech - Digital Payments & Financial Crime Prevention
-> **Peer engagement:** ⭐ 28 stars · 🍴 36 forks · 3 merged external PRs
+
+> **Peer engagement:** ⭐ 28 stars · 🍴 37 forks · 4 merged external PRs
 ---
 
 ## What is SentinelPay?
@@ -211,7 +214,7 @@ SentinelPay/
 ├── CONTRIBUTING.md             ← Contributor guide (setup, standards, PR process)
 ├── ROADMAP.md                  ← 7 phases of planned features
 ├── LICENSE                     ← MIT License
-├── VOTING_RESULTS.md           ← 28 ⭐ stars, 36 🍴 forks
+├── VOTING_RESULTS.md           ← 28 ⭐ stars, 37 🍴 forks
 ├── Assignment 14/
 │   ├── REFLECTION.md           ← 650-word reflection on open-source collaboration
 │   └── docs/screenshots/       ← voting_results.png
@@ -444,7 +447,7 @@ docker compose down -v
 | Tests passing | 288 |
 | CI/CD pipeline jobs | 8 |
 | GitHub ⭐ Stars | 28 |
-| GitHub 🍴 Forks | 36 |
+| GitHub 🍴 Forks | 37 |
 | External PRs merged | 3 |
 
 ## Domain
@@ -480,7 +483,7 @@ docker compose down -v
 | A11 | Repository layer | 67 tests |
 | A12 | Service layer + REST API | 21 endpoints · 116 tests |
 | A13 | CI/CD pipeline + branch protection | ci.yml · Dockerfile |
-| A14 | Open-source readiness | CONTRIBUTING.md · 28★ · 36🍴 |
+| A14 | Open-source readiness | CONTRIBUTING.md · 28★ · 37🍴 |
 | A15 | Cross-project contributions | 3 merged PRs |
 
 ---

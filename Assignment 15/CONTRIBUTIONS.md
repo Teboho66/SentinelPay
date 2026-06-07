@@ -8,18 +8,18 @@
 
 ## Quick Links
 
-| Deliverable | File | Status |
-|---|---|---|
-| Contribution Plan | [CONTRIBUTION_PLAN.md](./CONTRIBUTION_PLAN.md) | ✅ Complete |
-| Pull Requests submitted | [MERGED_PRS.md](./MERGED_PRS.md) | ✅ Updated - 4 merged |
-| Reflection | [REFLECTION.md](./REFLECTION.md) | ✅ Complete |
-| Evidence Screenshots | [docs/screenshots](./docs/screenshots) | ✅ Updated with PR evidence |
+| Deliverable             | File                                           | Status                     |
+| ----------------------- | ---------------------------------------------- | -------------------------- |
+| Contribution Plan       | [CONTRIBUTION_PLAN.md](./CONTRIBUTION_PLAN.md) | ✅ Complete                 |
+| Pull Requests submitted | [MERGED_PRS.md](./MERGED_PRS.md)               | ✅ Updated - 5 merged       |
+| Reflection              | [REFLECTION.md](./REFLECTION.md)               | ✅ Complete                 |
+| Evidence Screenshots    | [docs/screenshots](./docs/screenshots)         | ✅ Updated with PR evidence |
 
 ---
 
 ## My Repository as a Contribution Target ⭐
 
-SentinelPay received **28 ⭐ stars** and **36 🍴 forks** from classmates in Assignment 14, making it one of the most engaged-with projects in the cohort.
+SentinelPay received **28 ⭐ stars** and **37 🍴 forks** from classmates in Assignment 14, making it one of the most engaged-with projects in the cohort.
 
 What made SentinelPay fork-friendly:
 
@@ -32,50 +32,38 @@ What made SentinelPay fork-friendly:
 
 This helped SentinelPay become more than just my own project. It became a contribution target that other classmates could understand, fork, test, and improve.
 
-* Live Swagger UI at `/docs`, so contributors can explore the API without reading every source file first.
-* 288 passing tests, giving contributors confidence that changes can be verified quickly.
-* `CONTRIBUTING.md` with step-by-step setup instructions from a clean clone.
-* `ROADMAP.md` with labelled tasks that classmates could pick up safely.
-* MIT License, removing legal barriers to contribution.
-* A modular structure that separates models, services, repositories, API routes, and tests.
-
-This helped SentinelPay become more than just my own project. It became a contribution target that other classmates could understand, fork, test, and improve.
+---
 
 ## Contributions Made to Peers' Repositories 🤝
 
-| # | Classmate Repo | Issue | PR Link | Type | Status |
-|---|---|---|---|---|---|
-| 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #44 - Add API key request and response schemas](https://github.com/znxos/TailorFit/pull/44) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
-| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ✅ Merged |
-| 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12) | [PR #22 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
-| 4 | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | [Issue #76 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/issues/76) | [PR #4 - Improve validation error responses with field-level messages](PASTE_CARWASH_PR_LINK_HERE) | `validation`, `REST API`, `testing`, `backend` | ✅ Merged |
+| # | Classmate Repo                                                                                                                          | Issue                                                                                                                                            | PR Link                                                                                                                                      | Type                                                    | Status   |
+| - | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------- |
+| 1 | [TailorFit](https://github.com/znxos/TailorFit)                                                                                         | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40)                                                                   | [PR #44 - Add API key request and response schemas](https://github.com/znxos/TailorFit/pull/44)                                              | `feature-request`, `REST API`, `good-first-issue`       | ✅ Merged |
+| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13)    | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have`            | ✅ Merged |
+| 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system)                                                    | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12)                | [PR #22 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22)                     | `documentation`, `OpenAPI`, `Swagger`                   | ✅ Merged |
+| 4 | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system)                                              | [Issue #76 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/issues/76) | [PR #78 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/pull/78)  | `validation`, `REST API`, `testing`, `backend`          | ✅ Merged |
+| 5 | [CampusFind1](https://github.com/MissDidiza/campusfind1)                                                                                | [Issue #1 - Add pagination to list endpoints](https://github.com/MissDidiza/campusfind1/issues/1)                                                | [PR #PUT_NUMBER_HERE - Add pagination to list endpoints](https://github.com/MissDidiza/campusfind1/pull/11)                                                      | `good-first-issue`, `REST API`, `pagination`, `testing` | ✅ Merged |
 
 ---
 
 ## Contribution Stats 📊
 
-| Metric                         |                       Count |
-| ------------------------------ | --------------------------: |
-| PRs submitted                  |                       4 / 4 |
-| PRs merged                     |                       4 / 4 |
-| Repositories contributed to    |                       4 / 4 |
-| Feature-request PRs            |                           1 |
-| Documentation / user-story PRs |                           2 |
-| Local test suites passed       |                           3 |
-| Local test suites passed       |                           4 |
-| TailorFit tests passed         |        32 passed, 1 warning |
-| ClinicEase tests passed        |       188 passed, 1 warning |
-| Manga Book Store tests passed  |        59 passed, 1 warning |
+| Metric                             |                          Count |
+| ---------------------------------- | -----------------------------: |
+| PRs submitted                      |                          5 / 5 |
+| PRs merged                         |                          5 / 5 |
+| Repositories contributed to        |                          5 / 5 |
+| Feature-request PRs                |                              1 |
+| Documentation / user-story PRs     |                              2 |
+| API / backend improvement PRs      |                              2 |
+| Local test suites passed           |                              5 |
+| TailorFit tests passed             |           32 passed, 1 warning |
+| ClinicEase tests passed            |          188 passed, 1 warning |
+| Manga Book Store tests passed      |           59 passed, 1 warning |
 | Carwash Booking Queue tests passed | 58 tests passed, BUILD SUCCESS |
-| Stars received on SentinelPay  |                          28 |
-| Forks received on SentinelPay  |                          36 |
-
-| # | Classmate Repo | Issue | PR Link | Type | Status |
-|---|---|---|---|---|---|
-| 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #44 - Add API key request and response schemas](https://github.com/znxos/TailorFit/pull/44) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
-| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ✅ Merged |
-| 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12) | [PR #22 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
-| 4 | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | [Issue #76 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/issues/76) | [PR #PUT_NUMBER_HERE - Improve validation error responses with field-level messages](PASTE_CARWASH_PR_LINK_HERE) | `validation`, `REST API`, `testing`, `backend` | ✅ Merged |
+| CampusFind1 tests passed           |       123 passed, 443 warnings |
+| Stars received on SentinelPay      |                             28 |
+| Forks received on SentinelPay      |                             37 |
 
 ---
 
@@ -102,6 +90,7 @@ pytest
 ```
 
 Result:
+
 ```text
 32 passed, 1 warning
 ```
@@ -166,6 +155,7 @@ Result:
 ```text
 59 passed, 1 warning
 ```
+
 ---
 
 ## PR #4 - Carwash Field-Level Validation Error Responses 🚗🧼
@@ -182,8 +172,9 @@ I also updated booking request validation by adding validation annotations to `C
 @NotBlank
 @NotNull
 @Future
+```
 
-Then I enabled request validation in BookingController by adding @Valid to the booking create and update request bodies.
+Then I enabled request validation in `BookingController` by adding `@Valid` to the booking create and update request bodies.
 
 Finally, I added an integration test to confirm that an invalid booking request returns HTTP 400 and includes field-level validation details in the response body.
 
@@ -191,24 +182,74 @@ This contribution was more technical than my earlier documentation contributions
 
 Before submitting the PR, I ran the full Maven test suite locally:
 
+```bash
 ./mvnw test
+```
 
 Result:
 
+```text
 Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
 BUILD SUCCESS
+```
 
 A setup issue occurred at first because the Codespace was using Java 11 while the project requires Java 21. After installing and switching to Java 21, the full test suite passed successfully.
 
 ---
 
+## PR #5 - CampusFind1 Pagination for List Endpoints 📄
+
+For my fifth contribution, I worked on the **CampusFind1** repository. I selected **Issue #1 - Add pagination to list endpoints**, which was labelled as a good first issue.
+
+The existing FastAPI list endpoints returned full result sets. I improved the API by adding pagination support through `page` and `limit` query parameters.
+
+I updated list endpoints for:
+
+```text
+Users
+Reports
+Matches
+```
+
+The change allows API clients to request smaller result sets instead of always receiving every record. This improves API usability and prepares the project for larger datasets.
+
+This was a focused backend contribution. I did not change service logic, repository logic, domain models, or unrelated files.
+
+I also added API tests to verify:
+
+```text
+Paginated users endpoint
+Paginated reports endpoint
+Invalid pagination values
+```
+
+Before submitting the PR, I installed the local test dependencies manually because the repository did not include a requirements file:
+
+```bash
+pip install fastapi uvicorn httpx pytest pydantic
+python -m compileall api services repositories src
+pytest
+```
+
+Result:
+
+```text
+123 passed, 443 warnings
+```
+
+The warnings were existing deprecation warnings and were unrelated to my pagination change.
+
+---
+
 ## Evidence Screenshots Checklist 🖼️
 
-| Screenshot Range | Repository       | Evidence Covered                                                                      |
-| ---------------- | ---------------- | ------------------------------------------------------------------------------------- |
-| 01 - 08          | TailorFit        | Issue, comment, branch, tests, PR, files changed, CI, merge                           |
-| 09 - 17          | ClinicEase       | Issue, comment, branch, tests, PR, files changed, CI, merge                           |
-| 18 - 27          | Manga Book Store | Issue, comment, branch, OpenAPI JSON, Swagger UI, tests, PR, files changed, CI, merge |
+| Screenshot Range | Repository                   | Evidence Covered                                                                      |
+| ---------------- | ---------------------------- | ------------------------------------------------------------------------------------- |
+| 01 - 08          | TailorFit                    | Issue, comment, branch, tests, PR, files changed, CI, merge                           |
+| 09 - 17          | ClinicEase                   | Issue, comment, branch, tests, PR, files changed, CI, merge                           |
+| 18 - 27          | Manga Book Store             | Issue, comment, branch, OpenAPI JSON, Swagger UI, tests, PR, files changed, CI, merge |
+| 28 - 37          | Carwash Booking Queue System | Issue, comment, branch, Java setup, code changes, tests, PR, files changed, CI, merge |
+| 38 - 46          | CampusFind1                  | Issue, comment, branch, pagination changes, tests, PR, files changed, CI, merge       |
 
 ---
 
