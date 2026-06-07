@@ -34,9 +34,9 @@ WORKDIR /home/sentinelpay/app
 COPY --from=builder /install /usr/local
 
 # Copy source code
-COPY --chown=sentinelpay:sentinelpay "Assignment 10/" ./Assignment10/
-COPY --chown=sentinelpay:sentinelpay "Assignment 11/" ./Assignment11/
-COPY --chown=sentinelpay:sentinelpay "Assignment 12/" ./Assignment12/
+COPY --chown=sentinelpay:sentinelpay ["Assignment 10/", "./Assignment10/"]
+COPY --chown=sentinelpay:sentinelpay ["Assignment 11/", "./Assignment11/"]
+COPY --chown=sentinelpay:sentinelpay ["Assignment 12/", "./Assignment12/"]
 
 # Set PYTHONPATH so all packages resolve correctly
 ENV PYTHONPATH="/home/sentinelpay/app/Assignment12:/home/sentinelpay/app/Assignment10:/home/sentinelpay/app/Assignment11"
