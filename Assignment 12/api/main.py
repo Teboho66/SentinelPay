@@ -25,7 +25,6 @@ from prometheus_fastapi_instrumentator import Instrumentator
 from handlers.routes.transactions import router as transactions_router
 from handlers.routes.fraud_cases import router as fraud_cases_router
 from handlers.routes.ml_models import router as ml_models_router
-from api.metrics import transactions_total, fraud_decisions_total, fraud_cases_total
 
 app = FastAPI(
     title="SentinelPay Fraud Detection API",
