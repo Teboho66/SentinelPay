@@ -101,10 +101,11 @@ This contribution strengthened my Assignment 15 portfolio because it shows I can
 
 ## Final Contribution Plan Outcome
 
-| PR    | Repository       | Focus                               | Local Result          |
-| ----- | ---------------- | ----------------------------------- | --------------------- |
-| PR #1 | TailorFit        | API key schemas                     | 32 passed, 1 warning  |
-| PR #2 | ClinicEase       | Operational reports documentation   | 188 passed, 1 warning |
-| PR #3 | Manga Book Store | OpenAPI JSON and Swagger screenshot | 59 passed, 1 warning  |
+| PR | Repository | Focus | Local Result | Final Status |
+|---|---|---|---|---|
+| PR #1 | TailorFit | API key schemas | 32 passed, 1 warning | ✅ Merged |
+| PR #2 | ClinicEase | Operational reports documentation | 188 passed, 1 warning | ✅ Merged |
+| PR #3 | Manga Book Store | OpenAPI JSON and Swagger screenshot | 59 passed, 1 warning | ✅ Merged |
+| PR #4 | Carwash Booking Queue System | Field-level validation error responses | 58 tests passed, BUILD SUCCESS | ✅ Merged |
 
 This plan helped me complete all three required cross-project contributions while keeping each change professional, safe, and easy for maintainers to review.

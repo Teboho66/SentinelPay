@@ -1,8 +1,17 @@
 # 🛡️ SentinelPay - Real-Time Fraud Detection & Prevention Engine
 
+[![CI/CD](https://github.com/Teboho66/SentinelPay/actions/workflows/ci.yml/badge.svg)](https://github.com/Teboho66/SentinelPay/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-288%20passing-brightgreen)](https://github.com/Teboho66/SentinelPay/actions)
+[![Stars](https://img.shields.io/github/stars/Teboho66/SentinelPay?style=social)](https://github.com/Teboho66/SentinelPay/stargazers)
+[![Forks](https://img.shields.io/github/forks/Teboho66/SentinelPay?style=social)](https://github.com/Teboho66/SentinelPay/network/members)
+[![Python](https://img.shields.io/badge/python-3.12-blue)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688)](https://fastapi.tiangolo.com)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+
 > **Postgraduate Software Engineering**
 > **Author:** Teboho Mokoni
-
+> **Domain:** FinTech - Digital Payments & Financial Crime Prevention
+> **Peer engagement:** ⭐ 28 stars · 🍴 36 forks · 3 merged external PRs
 ---
 
 ## What is SentinelPay?
@@ -23,47 +32,204 @@ In 2026, card-not-present fraud, identity spoofing, and AI-generated synthetic i
 
 ---
 
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+| Tool | Version |
+|---|---|
+| Python | 3.12+ |
+| Git | 2.40+ |
+| Docker (optional) | 24.0+ |
+
+### Local Setup
+
+```bash
+# Clone
+git clone https://github.com/Teboho66/SentinelPay.git
+cd SentinelPay
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start the API
+cd "Assignment 12"
+python run.py
+```
+
+**Swagger UI:** http://localhost:8000/docs
+**Health check:** http://localhost:8000/health
+
+### Docker
+
+```bash
+docker compose up
+```
+
+---
+
+## 🧪 Running Tests
+
+```bash
+# Assignment 10 - Domain models + creational patterns (105 tests)
+cd "Assignment 10"
+PYTHONPATH="FraudRule:src:." pytest tests/ -v
+
+# Assignment 11 - Repository layer (67 tests)
+cd "Assignment 11"
+PYTHONPATH="../Assignment 10:." pytest tests/ -v
+
+# Assignment 12 - Service layer + REST API (116 tests)
+cd "Assignment 12"
+PYTHONPATH=".:../Assignment 10:../Assignment 11" pytest tests/ -v
+```
+
+**Total: 288 tests - 0 failures**
+
+---
+
+## 📡 API Reference
+
+The full API is documented at `/docs` (Swagger UI) and `/redoc`.
+
+### Transactions `/api/transactions`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/transactions` | Submit transaction for fraud evaluation |
+| `GET` | `/api/transactions` | Get all transactions |
+| `GET` | `/api/transactions/flagged` | Get all HARD_BLOCK transactions |
+| `GET` | `/api/transactions/{id}` | Get transaction by ID |
+| `POST` | `/api/transactions/{id}/decision` | Apply ML ensemble fraud decision |
+| `DELETE` | `/api/transactions/{id}` | Delete transaction |
+
+### Fraud Cases `/api/fraud-cases`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/fraud-cases` | Create investigation case (HIGH/CRITICAL only) |
+| `GET` | `/api/fraud-cases` | Get all cases |
+| `GET` | `/api/fraud-cases/queue` | Analyst queue sorted P1→P2→P3 |
+| `GET` | `/api/fraud-cases/{id}` | Get case by ID |
+| `PATCH` | `/api/fraud-cases/{id}/assign` | Assign to analyst |
+| `PATCH` | `/api/fraud-cases/{id}/resolve` | Resolve CONFIRMED / DISMISSED |
+| `DELETE` | `/api/fraud-cases/{id}` | Delete dismissed case |
+
+### ML Models `/api/ml-models`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/ml-models` | Register new model version |
+| `GET` | `/api/ml-models` | Get all models |
+| `GET` | `/api/ml-models/production` | Get PRODUCTION models |
+| `GET` | `/api/ml-models/{id}` | Get model by ID |
+| `POST` | `/api/ml-models/{id}/evaluate` | Record evaluation metrics |
+| `PATCH` | `/api/ml-models/{id}/promote` | Promote through lifecycle |
+| `PATCH` | `/api/ml-models/{id}/hot-swap` | Reload artifact without restart |
+| `DELETE` | `/api/ml-models/{id}` | Delete non-PRODUCTION model |
+
+---
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, coding standards, and PR process.
+
+1. Fork this repo
+2. Pick a [`good-first-issue`](https://github.com/Teboho66/SentinelPay/issues?q=label%3Agood-first-issue)
+3. Create a branch, make your change, write tests
+4. Open a PR linking to the issue
+
+See [ROADMAP.md](ROADMAP.md) for planned features across 7 phases.
+
 ## 📁 Repository Structure
 
 ```
 SentinelPay/
-├── README.md                       ← Project overview (you are here)
 │
-├──── Assignment 3 ──
-├── SPECIFICATION.md                ← System specification
-├── ARCHITECTURE.md                 ← C4 architectural diagrams - all 4 levels
+├── ── Assignments 3–9 (Specification, Architecture, Planning, Modeling) ──
 │
-├── ── Assignment 4 ──
-├── STAKEHOLDER_ANALYSIS.md         ← 8-stakeholder analysis
-├── SRD.md                          ← System Requirements Document - 15 FRs + 18 NFRs
-├── REFLECTION.md                   ← Requirements engineering reflection
+├── Assignment 3/               ← System specification + C4 architecture
+├── Assignment 4/               ← Stakeholder analysis + SRD (15 FR + 18 NFR)
+├── Assignment 5/               ← Use case modeling + test cases
+├── Assignment 6/               ← Agile planning (14 stories, Sprint 1)
+├── Assignment 7/               ← GitHub Kanban board
+├── Assignment 8/               ← State + activity diagrams (8 each)
+├── Assignment 9/               ← Domain model + Mermaid class diagram
 │
-├── ── Assignment 5 ──
-├── USE_CASE_DIAGRAM.md             ← UML use case diagram (Mermaid) - 7 actors, 14 use cases
-├── USE_CASE_SPECIFICATIONS.md      ← 8 detailed use case specifications
-├── TEST_CASES.md                   ← 10 functional test cases + 2 NFR test scenarios
-├── REFLECTION_A5.md                ← Reflection on use case and test case development
+├── ── Assignment 10 — Domain Code + Creational Patterns ──
 │
-├── ── Assignment 6 ──
-├── AGILE_PLANNING.md               ← User stories, product backlog, sprint plan
-├── REFLECTION_A6.md                ← Agile planning reflection
+├── Assignment 10/
+│   ├── src/models/             ← Transaction, Account, FraudAlert, RiskScore,
+│   │                              AuditLog, FraudRule, PaymentMethod, Notification
+│   ├── FraudRule/
+│   │   └── creational_patterns/← Simple Factory, Factory Method, Abstract Factory,
+│   │                              Builder, Prototype, Singleton
+│   └── tests/                  ← 105 tests
 │
-├── Assignment 7/
-│   ├── template_analysis.md            ← GitHub template comparison and justification
-│   ├── kanban_explanation.md           ← Kanban board definition and purpose
-│   ├── reflection.md                   ← Lessons learned from Kanban implementation
-│   └── screenshots/                    ← Board screenshots (kanban_board_full.png, issue_detail.png)
+├── ── Assignment 11 — Repository Layer ──
 │
-├── Assignment 8/
-│   ├── state_diagrams.md               <- 8 UML state transition diagrams with explanations
-│   ├── activity_diagrams.md            <- 8 UML activity diagrams with swimlanes
-│   └── a8_reflection.md               <- Reflection on state and activity modeling
+├── Assignment 11/
+│   ├── repositories/           ← Generic Repository[T,ID] + 7 entity interfaces
+│   ├── repositories/inmemory/  ← HashMap implementations
+│   ├── factories/              ← RepositoryFactory (MEMORY/FILESYSTEM/DATABASE)
+│   ├── stubs/                  ← FileSystem + Database future backends
+│   └── tests/                  ← 67 tests
 │
-├── Assignment 9/
-│   ├── domain_model.md                 <- Domain model - 7 entities with attributes, methods, business rules
-│   ├── class_diagram.md                <- Full Mermaid.js class diagram with UML relationships
-│   └── a9_reflection.md               <- Reflection on domain modeling and class diagram design
+├── ── Assignment 12 — Service Layer + REST API ──
 │
+├── Assignment 12/
+│   ├── mapping/                ← TransactionService, FraudCaseService,
+│   │                              MLModelService (business logic)
+│   ├── handlers/routes/        ← FastAPI route handlers
+│   ├── config/                 ← Pydantic schemas + dependency injection
+│   ├── api/                    ← FastAPI app entry point
+│   ├── repositories/           ← Local repo copies for A12
+│   ├── services/exceptions.py  ← Domain exceptions → HTTP status codes
+│   ├── docs/openapi.json       ← OpenAPI 3.1 spec
+│   ├── run.py                  ← Server startup script
+│   └── tests/                  ← 116 tests (service unit + API integration)
+│
+├── ── Assignment 13 — CI/CD Pipeline ──
+│
+├── .github/workflows/ci.yml    ← GitHub Actions: lint + 3 test jobs + wheel + Docker
+├── Dockerfile                  ← Multi-stage Docker build
+├── docker-compose.yml          ← Local stack with API
+├── requirements.txt            ← Python dependencies
+├── pyproject.toml              ← Package config + wheel build
+├── Assignment 13/
+│   ├── Protection.md           ← Branch protection rules + justification
+│   └── docs/screenshots/       ← Branch protection, CI passing, PR blocked,
+│                                  Swagger UI screenshots
+│
+├── ── Assignment 14 — Open-Source Readiness ──
+│
+├── CONTRIBUTING.md             ← Contributor guide (setup, standards, PR process)
+├── ROADMAP.md                  ← 7 phases of planned features
+├── LICENSE                     ← MIT License
+├── VOTING_RESULTS.md           ← 28 ⭐ stars, 36 🍴 forks
+├── Assignment 14/
+│   ├── REFLECTION.md           ← 650-word reflection on open-source collaboration
+│   └── docs/screenshots/       ← voting_results.png
+│
+├── ── Assignment 15 — Cross-Project Contributions ──
+│
+├── Assignment 15/
+│   ├── CONTRIBUTIONS.md        ← Main submission file
+│   ├── CONTRIBUTION_PLAN.md    ← Strategy + selected issues
+│   ├── MERGED_PRS.md           ← 3 merged PRs across 4 repos
+│   ├── REFLECTION.md           ← Collaboration lessons learned
+│   └── docs/screenshots/
+│       ├── first-peer-contribution/   ← TailorFit — PR merged ✅
+│       ├── second-peer-contribution/  ← ClinicEase — PR opened
+│       ├── third-peer-contribution/   ← Manga project — PR merged ✅
+│       └── forth-peer-contribution/   ← CarWash — PR merged ✅
+│
+└── README.md                   ← This file
 ```
 
 ---
@@ -149,19 +315,67 @@ The default Automated Kanban template was extended with 4 additional columns to 
 
 **Why Automated Kanban:** GitHub's automation rules (auto-move on issue open, close, reopen, PR merge) keep the board accurate without manual updates - critical for a solo developer managing 27 sprint tasks across 14 user stories.
 
+## ⚙️ CI/CD Pipeline
+
+Every push to any branch triggers CI. Merging to `main` triggers CD.
+
+```
+Push to any branch
+        │
+        ▼
+┌─────────────────────────────┐
+│  CI  (runs on every branch) │
+│  lint      → ruff checks    │
+│  test-a10  → 105 tests      │
+│  test-a11  → 67 tests       │
+│  test-a12  → 116 tests      │
+└─────────────────────────────┘
+        │ merge to main only
+        ▼
+┌─────────────────────────────┐
+│  CD  (main branch only)     │
+│  build  → Python wheel      │
+│  docker → GHCR image        │
+│  release → GitHub Release   │
+└─────────────────────────────┘
+```
+
+**Branch protection on `main`:**
+- 1 approving review required
+- All 4 CI status checks must be green
+- Direct pushes blocked
+- Linear history enforced
+
+---
+
+## 🌍 Open-Source Contributions (Assignment 15)
+
+Contributions made to 4 classmate repositories:
+
+| Project | Issue | PR | Status |
+|---|---|---|---|
+| TailorFit | good-first-issue #40 | Submitted | ✅ Merged |
+| ClinicEase | Issue #13 | Submitted | 🔍 In Review |
+| Manga Project | Issue #12 | Submitted | ✅ Merged |
+| CarWash | Issue #76 | Submitted | ✅ Merged |
+
+**3 out of 4 PRs merged.** Screenshots of each contribution are in `Assignment 15/docs/screenshots/`.
+
 ## 🧱 Technology Stack
 
 | Layer | Technology |
 |---|---|
-| Event Streaming | Apache Kafka 3.x |
-| ML Inference | Python 3.12 · XGBoost 2.x · HuggingFace Transformers · Isolation Forest |
-| API Gateway | Kong Gateway 3.x |
-| Backend Services | Java 21 (Spring Boot 3) · Python 3.12 (FastAPI) |
-| Database | PostgreSQL 16 · Redis 7 · Apache Cassandra 4.x |
-| MLOps | MLflow 2.x · Apache Airflow 2.x |
-| Observability | Prometheus · Grafana · OpenTelemetry |
-| Containerisation | Docker · Kubernetes (K8s) |
+| API Framework | Python 3.12 · FastAPI 0.115 |
+| Data Validation | Pydantic 2.x |
+| Testing | pytest · pytest-cov · httpx |
+| Containerisation | Docker · Docker Compose |
 | CI/CD | GitHub Actions |
+| Container Registry | GitHub Container Registry (GHCR) |
+| ML (planned) | XGBoost · Isolation Forest · DistilBERT |
+| Streaming (planned) | Apache Kafka 3.x |
+| Database (planned) | PostgreSQL 16 · Redis 7 · Cassandra |
+| MLOps (planned) | MLflow · Apache Airflow |
+| Observability (planned) | Prometheus · Grafana · OpenTelemetry |
 
 ## 🐳 Local Full-Stack Development with Docker
 
@@ -221,19 +435,17 @@ docker compose down -v
 
 | Category | Count |
 |---|---|
-| Stakeholders identified | 8 |
+| Assignments completed | A3–A15 |
 | Functional Requirements | 15 |
-| Non-Functional Requirements | 18 (across 6 categories) |
-| C4 Architecture Levels | 4 |
-| Use Cases | 14 |
-| Use Case Specifications | 8 |
-| Test Cases | 12 (10 functional + 2 NFR) |
-| User Stories | 14 |
-| Sprint 1 Tasks | 27 |
-| Kanban Board Columns | 7 |
-| State Transition Diagrams | 8 |
-| Activity Diagrams | 8 |
-| Domain Entities | 7 |
+| Non-Functional Requirements | 18 |
+| Domain entities | 7 |
+| Creational patterns | 6 |
+| REST API endpoints | 21 |
+| Tests passing | 288 |
+| CI/CD pipeline jobs | 8 |
+| GitHub ⭐ Stars | 28 |
+| GitHub 🍴 Forks | 36 |
+| External PRs merged | 3 |
 
 ## Domain
 
@@ -250,6 +462,26 @@ docker compose down -v
 | Non-Functional Requirements | 18 (across 6 categories) |
 | C4 Architecture Levels | 4 |
 | Architecture Decision Records | 4 |
+
+---
+
+## 📄 Assignment Index
+
+| # | Focus | Key Deliverable |
+|---|---|---|
+| A3 | System specification + C4 architecture | ARCHITECTURE.md |
+| A4 | Stakeholder analysis + requirements | SRD.md — 15 FR + 18 NFR |
+| A5 | Use case modeling + test cases | USE_CASE_SPECIFICATIONS.md |
+| A6 | Agile planning | AGILE_PLANNING.md — 14 stories |
+| A7 | GitHub Kanban board | Sprint Board — 7 columns |
+| A8 | State + activity diagrams | 8 state + 8 activity diagrams |
+| A9 | Domain model + class diagram | Class_diagram.md |
+| A10 | Domain code + 6 creational patterns | 105 tests |
+| A11 | Repository layer | 67 tests |
+| A12 | Service layer + REST API | 21 endpoints · 116 tests |
+| A13 | CI/CD pipeline + branch protection | ci.yml · Dockerfile |
+| A14 | Open-source readiness | CONTRIBUTING.md · 28★ · 36🍴 |
+| A15 | Cross-project contributions | 3 merged PRs |
 
 ---
 

@@ -11,7 +11,7 @@
 | Deliverable | File | Status |
 |---|---|---|
 | Contribution Plan | [CONTRIBUTION_PLAN.md](./CONTRIBUTION_PLAN.md) | ✅ Complete |
-| Pull Requests submitted | [MERGED_PRS.md](./MERGED_PRS.md) | ✅ Updated - 3 merged, 1 submitted |
+| Pull Requests submitted | [MERGED_PRS.md](./MERGED_PRS.md) | ✅ Updated - 4 merged |
 | Reflection | [REFLECTION.md](./REFLECTION.md) | ✅ Complete |
 | Evidence Screenshots | [docs/screenshots](./docs/screenshots) | ✅ Updated with PR evidence |
 
@@ -46,7 +46,7 @@ This helped SentinelPay become more than just my own project. It became a contri
 | # | Classmate Repo | Issue | PR Link | Type | Status |
 |---|---|---|---|---|---|
 | 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #44 - Add API key request and response schemas](https://github.com/znxos/TailorFit/pull/44) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
-| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
+| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ✅ Merged |
 | 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12) | [PR #22 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
 | 4 | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | [Issue #76 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/issues/76) | [PR #4 - Improve validation error responses with field-level messages](PASTE_CARWASH_PR_LINK_HERE) | `validation`, `REST API`, `testing`, `backend` | ✅ Merged |
 
@@ -57,7 +57,7 @@ This helped SentinelPay become more than just my own project. It became a contri
 | Metric                         |                       Count |
 | ------------------------------ | --------------------------: |
 | PRs submitted                  |                       4 / 4 |
-| PRs merged                     | 3 / 4 - update after merges |
+| PRs merged                     |                       4 / 4 |
 | Repositories contributed to    |                       4 / 4 |
 | Feature-request PRs            |                           1 |
 | Documentation / user-story PRs |                           2 |
@@ -73,7 +73,7 @@ This helped SentinelPay become more than just my own project. It became a contri
 | # | Classmate Repo | Issue | PR Link | Type | Status |
 |---|---|---|---|---|---|
 | 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #44 - Add API key request and response schemas](https://github.com/znxos/TailorFit/pull/44) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
-| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
+| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ✅ Merged |
 | 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12) | [PR #22 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
 | 4 | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | [Issue #76 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/issues/76) | [PR #PUT_NUMBER_HERE - Improve validation error responses with field-level messages](PASTE_CARWASH_PR_LINK_HERE) | `validation`, `REST API`, `testing`, `backend` | ✅ Merged |
 
