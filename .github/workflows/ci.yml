@@ -226,7 +226,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install fastapi uvicorn httpx pytest pytest-cov pydantic
+        run: pip install fastapi uvicorn httpx pytest pytest-cov pydantic prometheus-fastapi-instrumentator
 
       - name: Run Assignment 12 tests
         working-directory: "Assignment 12"
