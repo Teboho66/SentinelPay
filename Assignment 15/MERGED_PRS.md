@@ -107,7 +107,6 @@ The single warning was an existing Starlette/FastAPI test client deprecation war
 **PR Link:** `https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22`
 **Issue addressed:** `#12 - Add OpenAPI JSON + Swagger screenshot to docs/`
 **Branch:** `docs/openapi-swagger-evidence`
-**Status:** ✅ Merged  
 
 ### What I changed
 
@@ -157,56 +156,6 @@ Result:
 ```
 
 The single warning was an existing Starlette/FastAPI test client deprecation warning and was unrelated to my documentation-only change.
-
----
-
-## PR #4 - Carwash Field-Level Validation Error Responses
-
-**Repository:** `https://github.com/ongeziwe17/carwash-booking-queue-system`  
-**PR Link:** `https://github.com/ongeziwe17/carwash-booking-queue-system/pull/78`  
-**Issue addressed:** `#76 - Contr-005: Improve validation error responses with field-level messages`  
-**Branch:** `feature/field-level-validation-errors`  
-**Status:** ⏳ Submitted  
-
-### What I changed
-
-Improved request validation error handling in the Spring Boot API.
-
-The change adds a dedicated handler for `MethodArgumentNotValidException` so validation failures return clearer field-level messages instead of relying on the generic bad-request handler.
-
-I also updated booking request validation by adding validation annotations to `CreateBookingRequest`, including `@NotBlank`, `@NotNull`, and `@Future`.
-
-In `BookingController`, I enabled validation by adding `@Valid` to booking create and update request bodies.
-
-I also added an integration test that sends an invalid booking request and verifies that the API returns HTTP `400` with field-level validation details in the response body.
-
-### Why it was needed
-
-Closes #76
-
-The existing global exception handler grouped `MethodArgumentNotValidException` with other bad-request exceptions and returned `ex.getMessage()`. This made validation errors harder for API consumers to understand.
-
-The new response is clearer because it identifies which fields failed validation and explains why.
-
-### CI result
-
-All tests passed locally after switching the Codespace to Java 21.
-
-Commands run:
-
-```bash
-java -version
-javac -version
-./mvnw test
-
-Result:
-
-Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
-BUILD SUCCESS
-
-Evidenc:
-Screenshot evidence should be saved under:
-Assignment 15/docs/screenshots/fourth-peer-contribution/
 
 ---
 
