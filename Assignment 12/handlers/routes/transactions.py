@@ -30,6 +30,7 @@ from config.schemas import (
 
 from config.dependencies import get_transaction_service
 from mapping.transaction_service import TransactionService
+from api.metrics import transactions_total, fraud_decisions_total
 
 from services.exceptions import (
     EntityNotFoundError,
@@ -90,6 +91,10 @@ def submit_transaction(
             longitude=body.longitude,
             is_international=body.is_international,
         )
+        # ── Increment metrics ──
+        transactions_total.labels(channel=body.channel).inc()
+        fraud_decisions_total.labels(decision_type=txn.fraud_decision.value).inc()
+        
         return TransactionResponse.from_domain(txn)
     except Exception as e:
         raise _handle_service_errors(e)
