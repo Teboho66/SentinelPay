@@ -8,12 +8,12 @@
 
 ## Quick Links
 
-| Deliverable             | File                                           | Status                |
-| ----------------------- | ---------------------------------------------- | --------------------- |
-| Contribution Plan       | [CONTRIBUTION_PLAN.md](./CONTRIBUTION_PLAN.md) | ✅ Complete            |
-| Pull Requests submitted | [MERGED_PRS.md](./MERGED_PRS.md)               | ⏳ Update after merges |
-| Reflection              | [REFLECTION.md](./REFLECTION.md)               | ✅ Complete            |
-| Evidence Screenshots    | [docs/screenshots](./docs/screenshots)         | ✅ In progress         |
+| Deliverable | File | Status |
+|---|---|---|
+| Contribution Plan | [CONTRIBUTION_PLAN.md](./CONTRIBUTION_PLAN.md) | ✅ Complete |
+| Pull Requests submitted | [MERGED_PRS.md](./MERGED_PRS.md) | ✅ Updated - 3 merged, 1 submitted |
+| Reflection | [REFLECTION.md](./REFLECTION.md) | ✅ Complete |
+| Evidence Screenshots | [docs/screenshots](./docs/screenshots) | ✅ Updated with PR evidence |
 
 ---
 
@@ -32,22 +32,16 @@ What made SentinelPay fork-friendly:
 
 This helped SentinelPay become more than just my own project. It became a contribution target that other classmates could understand, fork, test, and improve.
 
-* Live Swagger UI at `/docs`, so contributors can explore the API without reading every source file first.
-* 288 passing tests, giving contributors confidence that changes can be verified quickly.
-* `CONTRIBUTING.md` with step-by-step setup instructions from a clean clone.
-* `ROADMAP.md` with labelled tasks that classmates could pick up safely.
-* MIT License, removing legal barriers to contribution.
-* A modular structure that separates models, services, repositories, API routes, and tests.
-
-This helped SentinelPay become more than just my own project. It became a contribution target that other classmates could understand, fork, test, and improve.
+---
 
 ## Contributions Made to Peers' Repositories 🤝
 
-| # | Classmate Repo                                                                                                                          | Issue                                                                                                                                         | PR Link                                                                                                                 | Type                                              | Status      |
-| - | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------- |
-| 1 | [TailorFit](https://github.com/znxos/TailorFit)                                                                                         | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40)                                                                | [PR #1 - Add API key request and response schemas](PASTE_TAILORFIT_PR_LINK_HERE)                                        | `feature-request`, `REST API`, `good-first-issue` | ⏳ Submitted |
-| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #2 - Document operational reports user story](PASTE_CLINICEASE_PR_LINK_HERE)                                        | `user-story`, `documentation`, `should-have`      | ⏳ Submitted |
-| 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system)                                                    | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12)             | [PR #3 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22) | `documentation`, `OpenAPI`, `Swagger`             | ⏳ Submitted |
+| # | Classmate Repo | Issue | PR Link | Type | Status |
+|---|---|---|---|---|---|
+| 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #44 - Add API key request and response schemas](https://github.com/znxos/TailorFit/pull/44) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
+| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
+| 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12) | [PR #22 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
+| 4 | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | [Issue #76 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/issues/76) | [PR #4 - Improve validation error responses with field-level messages](PASTE_CARWASH_PR_LINK_HERE) | `validation`, `REST API`, `testing`, `backend` | ✅ Merged |
 
 ---
 
@@ -55,23 +49,26 @@ This helped SentinelPay become more than just my own project. It became a contri
 
 | Metric                         |                       Count |
 | ------------------------------ | --------------------------: |
-| PRs submitted                  |                       3 / 3 |
-| PRs merged                     | 0 / 3 - update after merges |
-| Repositories contributed to    |                       3 / 3 |
+| PRs submitted                  |                       4 / 4 |
+| PRs merged                     | 3 / 4 - update after merges |
+| Repositories contributed to    |                       4 / 4 |
 | Feature-request PRs            |                           1 |
 | Documentation / user-story PRs |                           2 |
 | Local test suites passed       |                           3 |
+| Local test suites passed       |                           4 |
 | TailorFit tests passed         |        32 passed, 1 warning |
 | ClinicEase tests passed        |       188 passed, 1 warning |
 | Manga Book Store tests passed  |        59 passed, 1 warning |
+| Carwash Booking Queue tests passed | 58 tests passed, BUILD SUCCESS |
 | Stars received on SentinelPay  |                          28 |
 | Forks received on SentinelPay  |                          36 |
 
 | # | Classmate Repo | Issue | PR Link | Type | Status |
 |---|---|---|---|---|---|
-| 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #1 - Add API key request and response schemas](PASTE_TAILORFIT_PR_LINK_HERE) | `feature-request`, `REST API`, `good-first-issue` | ⏳ Submitted |
-| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #2 - Document operational reports user story](PASTE_CLINICEASE_PR_LINK_HERE) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
-| 3 | [repo link] | [issue link] | [PR link] | `feature-request` | 📝 Planned |
+| 1 | [TailorFit](https://github.com/znxos/TailorFit) | [Issue #40 - API Parameters - 4](https://github.com/znxos/TailorFit/issues/40) | [PR #44 - Add API key request and response schemas](https://github.com/znxos/TailorFit/pull/44) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
+| 2 | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | [Issue #13 - Admin generates operational reports](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/issues/13) | [PR #20 - Document operational reports user story](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
+| 3 | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | [Issue #12 - Add OpenAPI JSON + Swagger screenshot to docs/](https://github.com/Vanessa-Ndomba/manga-book-store-system/issues/12) | [PR #22 - Add OpenAPI JSON and Swagger UI screenshot](https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
+| 4 | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | [Issue #76 - Improve validation error responses with field-level messages](https://github.com/ongeziwe17/carwash-booking-queue-system/issues/76) | [PR #PUT_NUMBER_HERE - Improve validation error responses with field-level messages](PASTE_CARWASH_PR_LINK_HERE) | `validation`, `REST API`, `testing`, `backend` | ✅ Merged |
 
 ---
 
@@ -101,19 +98,6 @@ Result:
 ```text
 32 passed, 1 warning
 ```
-| Metric | Count |
-|---|---:|
-
-| PRs submitted | 2 / 3 |
-| PRs merged | 0 / 3 - update after merges |
-| Repositories contributed to | 2 / 3 |
-| Feature-request PRs | 1 |
-| Documentation / user-story PRs | 1 |
-| Local test suites passed | 2 |
-| TailorFit tests passed | 32 passed, 1 warning |
-| ClinicEase tests passed | 188 passed, 1 warning |
-| Stars received on SentinelPay | 28 |
-| Forks received on SentinelPay | 36 |
 
 ---
 
@@ -175,6 +159,39 @@ Result:
 ```text
 59 passed, 1 warning
 ```
+---
+
+## PR #4 - Carwash Field-Level Validation Error Responses 🚗🧼
+
+For my fourth contribution, I worked on the **Carwash Booking Queue System** repository. I selected **Issue #76 - Contr-005: Improve validation error responses with field-level messages**.
+
+This was a backend API quality improvement in a Spring Boot project. The issue explained that validation errors were being grouped together with other bad-request exceptions. Because of that, API consumers received less readable error messages that did not clearly identify which request fields were invalid.
+
+I improved this by adding a dedicated `MethodArgumentNotValidException` handler in the global API exception handler. The new handler builds a clearer validation message that includes field names and readable validation reasons.
+
+I also updated booking request validation by adding validation annotations to `CreateBookingRequest`, including:
+
+```text
+@NotBlank
+@NotNull
+@Future
+
+Then I enabled request validation in BookingController by adding @Valid to the booking create and update request bodies.
+
+Finally, I added an integration test to confirm that an invalid booking request returns HTTP 400 and includes field-level validation details in the response body.
+
+This contribution was more technical than my earlier documentation contributions because it required understanding the Spring Boot exception handling flow, request DTO validation, controller validation activation, and integration testing with MockMvc.
+
+Before submitting the PR, I ran the full Maven test suite locally:
+
+./mvnw test
+
+Result:
+
+Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+
+A setup issue occurred at first because the Codespace was using Java 11 while the project requires Java 21. After installing and switching to Java 21, the full test suite passed successfully.
 
 ---
 

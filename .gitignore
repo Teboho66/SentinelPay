@@ -1,2 +1,7 @@
-.env
-*.env
+
+# Python generated files
+__pycache__/
+*.py[cod]
+.coverage
+.pytest_cache/
+htmlcov/
