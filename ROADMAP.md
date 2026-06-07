@@ -110,3 +110,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and PR instructions.
 ---
 
 *Last updated: May 2026 | SentinelPay — Teboho Mokoni*
+
