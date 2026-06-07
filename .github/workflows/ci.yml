@@ -78,11 +78,34 @@ jobs:
           --ignore E501,E402 \
           --output-format github
 
+# ── Job: Validate Docker Compose File ─────────────────────────────────────────────────────────────────
+  compose-validate:
+    name: "Validate Docker Compose"
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check docker-compose.yml exists
+        run: test -f docker-compose.yml
+
+      - name: Create temporary .env file
+        run: |
+          cat > .env <<EOF
+          POSTGRES_DB=sentinelpay
+          POSTGRES_USER=sentinelpay
+          POSTGRES_PASSWORD=sentinelpay
+          EOF
+
+      - name: Validate docker-compose.yml
+        run: docker compose -f docker-compose.yml config
+
 # ── Job: Test Assignment 10 ───────────────────────────────────────────────────
   test-a10:
     name: "Test A10 — Domain Models & Creational Patterns"
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, compose-validate]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -136,7 +159,7 @@ jobs:
   test-a11:
     name: "Test A11 — Repository Layer"
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, compose-validate]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -191,7 +214,7 @@ jobs:
   test-a12:
     name: "Test A12 — Service Layer & REST API"
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, compose-validate]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

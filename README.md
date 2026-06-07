@@ -163,6 +163,59 @@ The default Automated Kanban template was extended with 4 additional columns to 
 | Containerisation | Docker · Kubernetes (K8s) |
 | CI/CD | GitHub Actions |
 
+## 🐳 Local Full-Stack Development with Docker
+
+Run the SentinelPay FastAPI service together with PostgreSQL and Redis using Docker Compose from the repository root. The API currently uses in-memory repositories, but the local infrastructure is available for contributors working on database- and cache-backed features.
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Start the full stack
+
+```bash
+docker compose up --build
+```
+
+Docker Compose starts these local services:
+
+| Service | Host URL / Port | Purpose |
+|---|---|---|
+| API | <http://localhost:8000> | SentinelPay FastAPI application |
+| PostgreSQL | `localhost:5432` | Local relational database |
+| Redis | `localhost:6379` | Local cache / message broker dependency |
+
+Default local connection settings are configured in `docker-compose.yml`:
+
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | `postgresql://sentinelpay:sentinelpay@postgres:5432/sentinelpay` |
+| `POSTGRES_DB` | `sentinelpay` |
+| `POSTGRES_USER` | `sentinelpay` |
+| `POSTGRES_PASSWORD` | `sentinelpay` |
+| `POSTGRES_HOST` | `postgres` |
+| `POSTGRES_PORT` | `5432` |
+| `REDIS_URL` | `redis://redis:6379/0` |
+| `REDIS_HOST` | `redis` |
+| `REDIS_PORT` | `6379` |
+
+The API waits for PostgreSQL and Redis health checks before starting. Once the stack is running, open:
+
+- API health check: <http://localhost:8000/health>
+- Swagger UI: <http://localhost:8000/docs>
+
+To stop the stack and keep local data volumes:
+
+```bash
+docker compose down
+```
+
+To stop the stack and remove local PostgreSQL/Redis volumes:
+
+```bash
+docker compose down -v
+```
 
 ## Project Stats
 
