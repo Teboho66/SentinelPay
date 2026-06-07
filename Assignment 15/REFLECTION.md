@@ -28,7 +28,7 @@ Another challenge was environment setup. Some repositories did not include a req
 
 ## How Peer Feedback Improved My Own Repository
 
-Having SentinelPay receive 28 stars and 36 forks taught me what was unclear in my own documentation. When contributors fork a repository, they try to run it. The questions they would have asked — how to install dependencies, which Python version to use, how to run the API tests, and how to start the server — are exactly the gaps I found when improving my own setup documentation.
+Having SentinelPay receive 28 stars and 37 forks taught me what was unclear in my own documentation. When contributors fork a repository, they try to run it. The questions they would have asked — how to install dependencies, which Python version to use, how to run the API tests, and how to start the server — are exactly the gaps I found when improving my own setup documentation.
 
 The CI pipeline fixes I made in earlier assignments also became more important during Assignment 15. Broken import paths, missing dependencies, and unclear working-directory assumptions are the kinds of issues that appear when someone clones a project fresh. I had been running some tests from folders where paths happened to resolve correctly, but a contributor running from the repository root would hit those problems immediately.
 

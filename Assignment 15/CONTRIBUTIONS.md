@@ -19,7 +19,7 @@
 
 ## My Repository as a Contribution Target ⭐
 
-SentinelPay received **28 ⭐ stars** and **36 🍴 forks** from classmates in Assignment 14, making it one of the most engaged-with projects in the cohort.
+SentinelPay received **28 ⭐ stars** and **37 🍴 forks** from classmates in Assignment 14, making it one of the most engaged-with projects in the cohort.
 
 What made SentinelPay fork-friendly:
 
@@ -63,7 +63,7 @@ This helped SentinelPay become more than just my own project. It became a contri
 | Carwash Booking Queue tests passed | 58 tests passed, BUILD SUCCESS |
 | CampusFind1 tests passed           |       123 passed, 443 warnings |
 | Stars received on SentinelPay      |                             28 |
-| Forks received on SentinelPay      |                             36 |
+| Forks received on SentinelPay      |                             37 |
 
 ---
 
