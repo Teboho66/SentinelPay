@@ -51,7 +51,7 @@ to their patterns, not the other way around.
 
 ## How Peer Feedback Improved My Own Repository
 
-Having 32 people fork SentinelPay taught me what was unclear in my own
+Having 36 people fork SentinelPay taught me what was unclear in my own
 documentation. When contributors fork a repo, they try to run it. The
 questions they would have asked - How do I install the dependencies? Which
 Python version? How do I run just the API tests? - are exactly the gaps I
@@ -62,7 +62,7 @@ process. The broken import paths (`../Assignment10` vs `../Assignment 10`)
 would only be noticed by someone trying to clone and run the project fresh.
 I had been running tests from within the folder where the paths happened to
 resolve. A contributor running from the repo root would have hit this
-immediately. The 32 forks effectively gave me 32 code reviewers who stress-
+immediately. The 36 forks effectively gave me 32 code reviewers who stress-
 tested my setup instructions without saying a word.
 
 ---

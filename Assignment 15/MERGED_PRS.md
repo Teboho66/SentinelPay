@@ -8,9 +8,10 @@
 
 | PR | Repository | Type | Status |
 |---|---|---|---|
-| [PR #1](#pr-1--tailorfit-api-key-schemas) | [TailorFit](https://github.com/znxos/TailorFit) | `feature-request`, `REST API`, `good-first-issue` | ⏳ Submitted |
+| [PR #1](#pr-1--tailorfit-api-key-schemas) | [TailorFit](https://github.com/znxos/TailorFit) | `feature-request`, `REST API`, `good-first-issue` | ✅ Merged |
 | [PR #2](#pr-2--clinicease-operational-reports-documentation) | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | `user-story`, `documentation`, `should-have` | ⏳ Submitted |
-| [PR #3](#pr-3) | [classmate-repo-3] | `feature-request` | 📝 Planned |
+| [PR #3](#pr-3--manga-book-store-openapi-and-swagger-documentation) | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system) | `documentation`, `OpenAPI`, `Swagger` | ✅ Merged |
+| [PR #4](#pr-4--carwash-field-level-validation-error-responses) | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system) | `validation`, `REST API`, `testing`, `backend` | ⏳ Submitted |
 
 
 > Update the Status column to ✅ Merged once each PR is accepted.
@@ -24,6 +25,7 @@
 **PR Link:** `https://github.com/znxos/TailorFit/pull/44`  
 **Issue addressed:** `#40 - API Parameters - 4`  
 **Branch:** `feature/api-key-schemas`
+**Status:** ✅ Merged  
 
 ### What I changed
 

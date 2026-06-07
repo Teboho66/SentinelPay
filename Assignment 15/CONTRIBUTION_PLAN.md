@@ -60,6 +60,11 @@ I selected ClinicEase because the issue had a meaningful healthcare administrati
 
 I selected Manga Book Store because the issue was clear, scoped, and documentation-focused. I generated the OpenAPI JSON from the FastAPI app and saved a Swagger UI screenshot using the exact filenames requested by the issue.
 
+I selected the Carwash Booking Queue System because this issue was more technical than my earlier documentation-focused contributions. It required backend API work in a Spring Boot project, specifically around validation error handling.
+
+The original problem was that `MethodArgumentNotValidException` was grouped together with other bad-request exceptions. This meant validation failures returned less readable messages using `ex.getMessage()`. My approach was to separate validation failures into a dedicated handler, return clearer field-level messages, apply validation annotations to booking requests, and add an integration test that confirms the response body contains invalid field names.
+
+This contribution strengthened my Assignment 15 portfolio because it shows I can contribute beyond documentation by improving API usability, validation behaviour, and test coverage in a Java/Spring Boot codebase.
 ---
 
 ## Contribution Priority

@@ -32,7 +32,14 @@ What made SentinelPay fork-friendly:
 
 This helped SentinelPay become more than just my own project. It became a contribution target that other classmates could understand, fork, test, and improve.
 
----
+* Live Swagger UI at `/docs`, so contributors can explore the API without reading every source file first.
+* 288 passing tests, giving contributors confidence that changes can be verified quickly.
+* `CONTRIBUTING.md` with step-by-step setup instructions from a clean clone.
+* `ROADMAP.md` with labelled tasks that classmates could pick up safely.
+* MIT License, removing legal barriers to contribution.
+* A modular structure that separates models, services, repositories, API routes, and tests.
+
+This helped SentinelPay become more than just my own project. It became a contribution target that other classmates could understand, fork, test, and improve.
 
 ## Contributions Made to Peers' Repositories 🤝
 
