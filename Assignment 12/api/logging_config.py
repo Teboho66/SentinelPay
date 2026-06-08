@@ -1,5 +1,4 @@
 import structlog
-import logging
 import sys
 
 def configure_logging():

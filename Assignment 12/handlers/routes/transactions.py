@@ -103,7 +103,7 @@ def submit_transaction(
         )
         # ── Increment metrics ──
         transactions_total.labels(channel=body.channel).inc()
-        
+
         return TransactionResponse.from_domain(txn)
     except Exception as e:
         raise _handle_service_errors(e)
