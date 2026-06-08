@@ -14,7 +14,7 @@
 
 > **Domain:** FinTech - Digital Payments & Financial Crime Prevention
 
-> **Peer engagement:** ⭐ 28 stars · 🍴 37 forks · 4 merged external PRs
+> **Peer engagement:** ⭐ 28 stars · 🍴 37 forks · 5 merged external PRs
 ---
 
 ## What is SentinelPay?
