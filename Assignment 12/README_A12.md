@@ -2,43 +2,73 @@
 
 ## Overview
 
-This assignment builds the service and API layers on top of the domain model (A10)
-and repository layer (A11). Three entities are fully implemented end-to-end:
-**Transaction**, **FraudCase**, and **MLModel** — chosen because they cover the
-complete fraud detection pipeline from transaction ingestion through analyst
-case resolution and ML model lifecycle management.
+Assignment 12 implements the **service layer** and **REST API layer** for SentinelPay on top of:
+
+* Assignment 10 domain models
+* Assignment 11 repository interfaces and in-memory repositories
+
+The implementation covers three main entities end-to-end:
+
+* **Transaction**
+* **FraudCase**
+* **MLModel**
+
+Together, these entities represent the fraud detection workflow from transaction submission, to fraud decisioning, to analyst case handling, and finally to ML model lifecycle management.
+
+All Assignment 12 tests pass:
+
+```bash
+116 passed
+```
 
 ---
 
 ## Directory Structure
 
-```
+```text
 Assignment 12/
-├── services/
-│   ├── exceptions.py            ← Domain exceptions → HTTP status code mapping
-│   ├── transaction_service.py   ← TransactionService (FR-01–FR-08)
-│   ├── fraud_case_service.py    ← FraudCaseService (FR-09–FR-10)
-│   └── ml_model_service.py      ← MLModelService (FR-13–FR-14)
-│
 ├── api/
-│   ├── main.py                  ← FastAPI app, router registration, OpenAPI config
-│   ├── schemas.py               ← Pydantic request/response models (18 schemas)
-│   ├── dependencies.py          ← DI wiring: repos → services → route handlers
+│   ├── __init__.py
+│   ├── dependencies.py          # Compatibility re-export for dependency wiring
+│   └── main.py                  # FastAPI app, router registration, OpenAPI config
+│
+├── config/
+│   ├── dependencies.py          # Repository and service dependency injection
+│   └── schemas.py               # Pydantic request/response models
+│
+├── handlers/
 │   └── routes/
-│       ├── transactions.py      ← 6 Transaction endpoints
-│       ├── fraud_cases.py       ← 7 FraudCase endpoints
-│       └── ml_models.py         ← 8 MLModel endpoints
+│       ├── transactions.py      # Transaction REST endpoints
+│       ├── fraud_cases.py       # FraudCase REST endpoints
+│       └── ml_models.py         # MLModel REST endpoints
+│
+├── mapping/
+│   ├── transaction_service.py   # TransactionService business logic
+│   ├── fraud_case_service.py    # FraudCaseService business logic
+│   └── ml_model_service.py      # MLModelService business logic
+│
+├── repositories/
+│   ├── interfaces.py
+│   ├── base.py
+│   ├── implementations.py
+│   └── inmemory/
+│       ├── base_inmemory.py
+│       └── implementations.py
+│
+├── services/
+│   ├── __init__.py
+│   └── exceptions.py            # Domain/service exceptions
 │
 ├── tests/
-│   ├── services/
-│   │   ├── test_transaction_service.py   ← 20 service unit tests
-│   │   ├── test_fraud_case_service.py    ← 27 service unit tests
-│   │   └── test_ml_model_service.py      ← 32 service unit tests
-│   └── api/
-│       └── test_api.py                  ← 37 API integration tests
+│   ├── api/
+│   │   └── test_api.py
+│   └── services/
+│       ├── test_transaction_service.py
+│       ├── test_fraud_case_service.py
+│       └── test_ml_model_service.py
 │
 ├── docs/
-│   └── openapi.json             ← Full OpenAPI 3.1 specification (auto-generated)
+│   └── openapi.json
 │
 ├── conftest.py
 ├── pytest.ini
@@ -52,193 +82,364 @@ Assignment 12/
 
 ### Architecture
 
-The service layer sits between the API (HTTP concerns) and repositories (storage
-concerns). Services:
-- Accept plain Python types as input (not HTTP schemas, not domain entities)
-- Enforce all SentinelPay business rules from the SRD
-- Raise domain exceptions that the API layer maps to HTTP status codes
-- Are injected with a repository interface — storage backend is irrelevant
+The service layer sits between the FastAPI route handlers and the repository layer.
 
+```text
+HTTP Request
+    ↓
+Pydantic Request Schema
+    ↓
+Route Handler
+    ↓
+Service Layer
+    ↓
+Repository Interface
+    ↓
+In-Memory Repository
 ```
-HTTP Request → Pydantic Schema → Route Handler → Service → Repository → Storage
-                                      ↓
-                               HTTP Response ← Pydantic Schema ← Domain Entity
-```
+
+Services are responsible for:
+
+* Accepting plain Python values as input
+* Enforcing business rules
+* Calling repository interfaces
+* Raising domain-specific exceptions
+* Returning domain objects to the API layer
+
+The API layer converts these domain objects into Pydantic response models.
+
+---
+
+## 2. Implemented Services
 
 ### TransactionService
 
-| Method | Business rule enforced | HTTP status |
-|---|---|---|
-| `submit_transaction()` | FR-02 validate(), BR-T2 tokenise_pii() | 201 / 409 / 422 |
-| `apply_fraud_decision()` | FR-07 ensemble weighting + per-tier thresholds | 200 / 409 / 422 |
-| `get_flagged_transactions()` | FR-09 HARD_BLOCK filter for case pipeline | 200 |
+Located at:
+
+```text
+mapping/transaction_service.py
+```
+
+Main responsibilities:
+
+| Method                       | Description                                  |
+| ---------------------------- | -------------------------------------------- |
+| `submit_transaction()`       | Creates and stores a transaction             |
+| `apply_fraud_decision()`     | Applies fraud score, decision, and risk tier |
+| `get_transaction()`          | Retrieves a transaction by ID                |
+| `get_all_transactions()`     | Returns all transactions                     |
+| `get_flagged_transactions()` | Returns HARD_BLOCK transactions              |
+| `get_by_decision()`          | Filters transactions by fraud decision       |
+| `get_by_risk_tier()`         | Filters transactions by risk tier            |
+| `delete_transaction()`       | Deletes a transaction                        |
+
+Business rules covered:
+
+* Duplicate transaction IDs are rejected
+* Invalid transaction channels are rejected
+* Account IDs are tokenised with the `acc_token_` prefix
+* Fraud decisions are applied only once
+* High fraud scores result in `HARD_BLOCK`
+* Medium fraud scores result in `SOFT_DECLINE`
+* Low fraud scores result in `APPROVE`
+
+---
 
 ### FraudCaseService
 
-| Method | Business rule enforced | HTTP status |
-|---|---|---|
-| `create_case()` | FR-09: HIGH/CRITICAL only; one case per transaction | 201 / 409 / 422 |
-| `assign_to_analyst()` | FR-10: case must be OPEN; analyst_id required | 200 / 409 / 422 |
-| `resolve_case()` | BR-FC2: DISMISSED needs note; BR-FC3: CONFIRMED emits label | 200 / 409 / 422 |
-| `get_analyst_queue()` | FR-10: sorted P1 → P2 → P3, SLA breach flagged | 200 |
+Located at:
+
+```text
+mapping/fraud_case_service.py
+```
+
+Main responsibilities:
+
+| Method                | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `create_case()`       | Creates a fraud investigation case              |
+| `assign_to_analyst()` | Assigns an OPEN case to an analyst              |
+| `resolve_case()`      | Resolves a case as CONFIRMED or DISMISSED       |
+| `get_analyst_queue()` | Returns open/in-review cases sorted by priority |
+| `get_by_priority()`   | Filters cases by priority                       |
+| `get_by_status()`     | Filters cases by status                         |
+| `delete_case()`       | Deletes eligible cases                          |
+
+Business rules covered:
+
+* Fraud cases are only created for `HIGH` or `CRITICAL` risk tiers
+* One case is allowed per transaction
+* Case priority is derived from fraud score:
+
+  * `P1` for scores `>= 0.90`
+  * `P2` for scores `>= 0.75`
+  * `P3` for scores `< 0.75`
+* Assigning a case moves it from `OPEN` to `IN_REVIEW`
+* Resolving a `DISMISSED` case requires an analyst note
+* Resolving a `CONFIRMED` case returns a fraud label payload
+* Confirmed cases cannot be deleted
+
+---
 
 ### MLModelService
 
-| Method | Business rule enforced | HTTP status |
-|---|---|---|
-| `register_model()` | FR-13: valid ModelName, unique model_id | 201 / 409 / 422 |
-| `evaluate_model()` | BR-ML1: precision ≥ 0.85 AND recall ≥ 0.80 gate | 200 / 404 |
-| `promote_model()` | FR-13: lifecycle graph; BR-ML1 on PRODUCTION; auto-archive old PRODUCTION | 200 / 409 / 422 |
-| `hot_swap_artifact()` | FR-14: PRODUCTION-only; blank path rejected | 200 / 409 |
+Located at:
 
-### Exception → HTTP Status Mapping
+```text
+mapping/ml_model_service.py
+```
 
-| Exception | HTTP Status | When raised |
-|---|---|---|
-| `EntityNotFoundError` | 404 | Entity not found by ID |
-| `DuplicateEntityError` | 409 | Unique constraint violated |
-| `InvalidStateTransitionError` | 409 | Operation invalid for current state |
-| `BusinessRuleViolationError` | 422 | SRD business rule violated |
-| `PromotionGateFailedError` | 422 | BR-ML1 precision/recall not met |
+Main responsibilities:
+
+| Method                    | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `register_model()`        | Registers a new ML model version         |
+| `evaluate_model()`        | Records model evaluation metrics         |
+| `promote_model()`         | Promotes models through lifecycle stages |
+| `hot_swap_artifact()`     | Replaces production model artifact path  |
+| `get_production_models()` | Returns production models                |
+| `get_by_stage()`          | Filters models by lifecycle stage        |
+| `get_by_model_name()`     | Filters models by model name             |
+| `delete_model()`          | Deletes non-production models            |
+
+Business rules covered:
+
+* Valid model names are enforced
+* Duplicate model IDs are rejected
+* Models start in `TRAINING`
+* Evaluation returns:
+
+  * the updated model
+  * evaluation metrics
+  * promotion gate result
+* Promotion to `PRODUCTION` requires:
+
+  * precision `>= 0.85`
+  * recall `>= 0.80`
+* Only one production model per model name is allowed
+* Previous production model is archived when a new one is promoted
+* Production models cannot be deleted
+* Hot-swap is only allowed for production models
 
 ---
 
-## 2. REST API
+## 3. Exception Mapping
 
-### Running the API
+Exceptions are defined in:
+
+```text
+services/exceptions.py
+```
+
+The API layer maps service exceptions to HTTP responses.
+
+| Exception                     | HTTP Status | Meaning                                         |
+| ----------------------------- | ----------: | ----------------------------------------------- |
+| `EntityNotFoundError`         |         404 | Entity does not exist                           |
+| `DuplicateEntityError`        |         409 | Duplicate entity or unique constraint violation |
+| `InvalidStateTransitionError` |         409 | Operation is invalid for the current state      |
+| `BusinessRuleViolationError`  |         422 | Business rule validation failed                 |
+| `PromotionGateFailedError`    |         422 | ML promotion gate failed                        |
+
+---
+
+## 4. REST API
+
+The FastAPI application is defined in:
+
+```text
+api/main.py
+```
+
+Routes are defined in:
+
+```text
+handlers/routes/
+```
+
+Schemas are defined in:
+
+```text
+config/schemas.py
+```
+
+Dependency injection is defined in:
+
+```text
+config/dependencies.py
+```
+
+---
+
+## 5. Running the API
+
+From the repository root:
 
 ```bash
-# From Assignment 12 root
-pip install fastapi uvicorn httpx
-uvicorn api.main:app --reload --port 8000
+cd "Assignment 12"
+PYTHONPATH=".:../Assignment 10:../Assignment 11" uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Then visit:
-- **Swagger UI:** http://localhost:8000/docs
-- **ReDoc:** http://localhost:8000/redoc
-- **OpenAPI JSON:** http://localhost:8000/openapi.json
-- **Health check:** http://localhost:8000/health
+Then open:
 
-### Endpoint Summary
+```text
+http://localhost:8000/docs
+```
 
-#### Transactions (`/api/transactions`)
+In GitHub Codespaces, open the forwarded port 8000 URL and add:
 
-| Method | Endpoint | Description | Status codes |
-|---|---|---|---|
-| `POST` | `/api/transactions` | Submit transaction for fraud evaluation | 201, 409, 422 |
-| `GET` | `/api/transactions` | Fetch all transactions (filter by decision/risk_tier) | 200, 422 |
-| `GET` | `/api/transactions/flagged` | All HARD_BLOCK transactions (FR-09 pipeline) | 200 |
-| `GET` | `/api/transactions/{id}` | Get transaction by ID | 200, 404 |
-| `POST` | `/api/transactions/{id}/decision` | Apply ML ensemble fraud decision | 200, 404, 409, 422 |
-| `DELETE` | `/api/transactions/{id}` | Delete a transaction | 204, 404 |
+```text
+/docs
+```
 
-#### Fraud Cases (`/api/fraud-cases`)
+Example:
 
-| Method | Endpoint | Description | Status codes |
-|---|---|---|---|
-| `POST` | `/api/fraud-cases` | Create fraud investigation case | 201, 409, 422 |
-| `GET` | `/api/fraud-cases` | Get all cases (filter by status/priority) | 200, 422 |
-| `GET` | `/api/fraud-cases/queue` | Analyst queue sorted P1→P2→P3 | 200 |
-| `GET` | `/api/fraud-cases/{id}` | Get case by ID | 200, 404 |
-| `PATCH` | `/api/fraud-cases/{id}/assign` | Assign case to analyst | 200, 404, 409 |
-| `PATCH` | `/api/fraud-cases/{id}/resolve` | Resolve as CONFIRMED or DISMISSED | 200, 404, 409, 422 |
-| `DELETE` | `/api/fraud-cases/{id}` | Delete dismissed case | 204, 404, 422 |
+```text
+https://<your-codespace>-8000.app.github.dev/docs
+```
 
-#### ML Models (`/api/ml-models`)
+Useful API URLs:
 
-| Method | Endpoint | Description | Status codes |
-|---|---|---|---|
-| `POST` | `/api/ml-models` | Register new model version | 201, 409, 422 |
-| `GET` | `/api/ml-models` | All models (filter by stage/model_name) | 200, 422 |
-| `GET` | `/api/ml-models/production` | All PRODUCTION models (FR-14 hot-swap poll) | 200 |
-| `GET` | `/api/ml-models/{id}` | Get model by ID | 200, 404 |
-| `POST` | `/api/ml-models/{id}/evaluate` | Record evaluation metrics | 200, 404, 409 |
-| `PATCH` | `/api/ml-models/{id}/promote` | Promote through lifecycle stages | 200, 404, 409, 422 |
-| `PATCH` | `/api/ml-models/{id}/hot-swap` | Reload artifact in PRODUCTION | 200, 404, 409 |
-| `DELETE` | `/api/ml-models/{id}` | Delete non-PRODUCTION model | 204, 404, 422 |
-
----
-
-## 3. API Documentation
-
-FastAPI auto-generates the full OpenAPI 3.1 specification from code annotations.
-The exported spec is available at `docs/openapi.json` (16 paths, 18 schemas).
-
-Every endpoint includes:
-- Human-readable `summary` and `description` with FR/business rule references
-- Documented `request body` with field-level validation (`gt`, `ge`, `le`, `min_length`)
-- Complete `responses` dict with per-status-code descriptions and error schemas
-- `tags` grouping endpoints by domain (`Transactions`, `Fraud Cases`, `ML Models`)
-
-**Example — apply decision endpoint documentation:**
-```python
-@router.post(
-    "/{transaction_id}/decision",
-    response_model=TransactionResponse,
-    summary="Apply fraud decision to a transaction",
-    description="FR-07: Applies ML ensemble scores, computes composite fraud_score...",
-    responses={
-        200: {"description": "Decision applied"},
-        404: {"model": ErrorResponse, "description": "Transaction not found"},
-        409: {"model": ErrorResponse, "description": "Decision already applied"},
-        422: {"model": ErrorResponse, "description": "Invalid model scores"},
-    },
-)
+```text
+/               Root API message
+/health         Health check
+/docs           Swagger UI
+/redoc          ReDoc documentation
+/openapi.json   OpenAPI schema
 ```
 
 ---
 
-## 4. Dependency Injection
+## 6. API Endpoints
 
-`api/dependencies.py` wires repositories into services using FastAPI's `Depends`
-system. Switching to a real database backend requires changing only this file —
-all route handlers are untouched:
+### Transactions
 
-```python
-# Current: in-memory (tests / local dev)
-_transaction_repo = InMemoryTransactionRepository()
+Base path:
 
-# Future: swap to database
-_transaction_repo = DatabaseTransactionRepository(connection_string=DATABASE_URL)
-
-def get_transaction_service() -> TransactionService:
-    return TransactionService(_transaction_repo)
+```text
+/api/transactions
 ```
 
-Integration tests override dependencies per test using `app.dependency_overrides`,
-ensuring each test runs with a completely fresh in-memory store.
+| Method   | Endpoint                                      | Description                 |
+| -------- | --------------------------------------------- | --------------------------- |
+| `POST`   | `/api/transactions`                           | Submit a transaction        |
+| `GET`    | `/api/transactions`                           | Get all transactions        |
+| `GET`    | `/api/transactions/flagged`                   | Get HARD_BLOCK transactions |
+| `GET`    | `/api/transactions/{transaction_id}`          | Get transaction by ID       |
+| `POST`   | `/api/transactions/{transaction_id}/decision` | Apply fraud decision        |
+| `DELETE` | `/api/transactions/{transaction_id}`          | Delete transaction          |
 
 ---
 
-## Running the Tests
+### Fraud Cases
+
+Base path:
+
+```text
+/api/fraud-cases
+```
+
+| Method   | Endpoint                             | Description         |
+| -------- | ------------------------------------ | ------------------- |
+| `POST`   | `/api/fraud-cases`                   | Create fraud case   |
+| `GET`    | `/api/fraud-cases`                   | Get all fraud cases |
+| `GET`    | `/api/fraud-cases/queue`             | Get analyst queue   |
+| `GET`    | `/api/fraud-cases/{case_id}`         | Get case by ID      |
+| `PATCH`  | `/api/fraud-cases/{case_id}/assign`  | Assign analyst      |
+| `PATCH`  | `/api/fraud-cases/{case_id}/resolve` | Resolve case        |
+| `DELETE` | `/api/fraud-cases/{case_id}`         | Delete case         |
+
+---
+
+### ML Models
+
+Base path:
+
+```text
+/api/ml-models
+```
+
+| Method   | Endpoint                             | Description             |
+| -------- | ------------------------------------ | ----------------------- |
+| `POST`   | `/api/ml-models`                     | Register model          |
+| `GET`    | `/api/ml-models`                     | Get all models          |
+| `GET`    | `/api/ml-models/production`          | Get production models   |
+| `GET`    | `/api/ml-models/{model_id}`          | Get model by ID         |
+| `POST`   | `/api/ml-models/{model_id}/evaluate` | Evaluate model          |
+| `PATCH`  | `/api/ml-models/{model_id}/promote`  | Promote model           |
+| `PATCH`  | `/api/ml-models/{model_id}/hot-swap` | Hot-swap model artifact |
+| `DELETE` | `/api/ml-models/{model_id}`          | Delete model            |
+
+---
+
+## 7. Running Tests
+
+From the repository root:
 
 ```bash
-pip install fastapi uvicorn httpx pytest pytest-cov
-pytest tests/ -v
-pytest tests/ --cov=services --cov=api --cov-report=term-missing
+PYTHONPATH="Assignment 12:Assignment 10:Assignment 11" pytest "Assignment 12/tests"
 ```
 
-### Test Coverage
+Expected result:
 
-| Module | Tests | Coverage |
-|---|---|---|
-| `services/transaction_service.py` | 20 | 95% |
-| `services/fraud_case_service.py` | 27 | 97% |
-| `services/ml_model_service.py` | 32 | 96% |
-| `api/routes/transactions.py` | (integration) | 91% |
-| `api/routes/fraud_cases.py` | (integration) | 93% |
-| `api/routes/ml_models.py` | (integration) | 92% |
-| **Total — 116 tests** | | **~94%** |
+```text
+116 passed
+```
+
+To run all assignment test suites separately:
+
+```bash
+PYTHONPATH="Assignment 10/FraudRule:Assignment 10:Assignment 10/src" pytest "Assignment 10/tests"
+
+PYTHONPATH="Assignment 11:Assignment 10" pytest "Assignment 11/tests"
+
+PYTHONPATH="Assignment 12:Assignment 10:Assignment 11" pytest "Assignment 12/tests"
+```
 
 ---
 
-## GitHub Issues
+## 8. Linting
 
-- `Close #23: Implement TransactionService with FR-01–FR-08 business rules`
-- `Close #24: Implement FraudCaseService with FR-09–FR-10 + BR-FC2 + BR-FC3`
-- `Close #25: Implement MLModelService with FR-13–FR-14 + BR-ML1 promotion gate`
-- `Close #26: Build Transaction REST API (6 endpoints)`
-- `Close #27: Build FraudCase REST API (7 endpoints)`
-- `Close #28: Build MLModel REST API (8 endpoints)`
-- `Close #29: Export OpenAPI 3.1 spec (16 paths, 18 schemas)`
-- `Close #30: API integration tests with dependency injection overrides`
+Run Ruff from the repository root:
+
+```bash
+ruff check .
+```
+
+Expected result:
+
+```text
+All checks passed!
+```
+
+---
+
+## 9. Notes About Warnings
+
+The test suite currently shows deprecation warnings from FastAPI and Pydantic, mainly related to:
+
+* `example=...` in Pydantic `Field`
+* `example=...` in FastAPI `Query`
+* `datetime.utcnow()`
+
+These warnings do not affect functionality and do not cause tests to fail.
+
+---
+
+## 10. Completion Summary
+
+Assignment 12 delivers:
+
+* Service layer for Transaction, FraudCase, and MLModel
+* REST API endpoints for all three entities
+* Dependency injection using in-memory repositories
+* Pydantic request and response schemas
+* OpenAPI/Swagger documentation
+* Business-rule exception handling
+* Full API and service test coverage
+
+Final test result:
+
+```text
+116 passed
+```

@@ -8,11 +8,13 @@ import pytest
 from repositories.inmemory import InMemoryMLModelRepository
 from services import (
     MLModelService,
-    EntityNotFoundError, DuplicateEntityError,
-    BusinessRuleViolationError, InvalidStateTransitionError,
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
+    InvalidStateTransitionError,
     PromotionGateFailedError,
 )
-from src.models import ModelName, ModelStage
+from src.models import ModelStage
 
 
 @pytest.fixture
@@ -44,7 +46,6 @@ def register_and_pass_gate(service, name="XGBOOST", version="3.1"):
 
 
 class TestRegisterModel:
-
     def test_registers_in_training_stage(self, service):
         model = register(service)
         assert model.stage == ModelStage.TRAINING
@@ -68,7 +69,6 @@ class TestRegisterModel:
 
 
 class TestEvaluateModel:
-
     def test_evaluate_records_metrics(self, service):
         model = register(service)
         model, metrics, gate = service.evaluate_model(
@@ -98,7 +98,6 @@ class TestEvaluateModel:
 
 
 class TestPromoteModel:
-
     def test_training_to_staging(self, service):
         model = register(service)
         model = service.promote_model(model.model_id, "STAGING")
@@ -146,7 +145,6 @@ class TestPromoteModel:
 
 
 class TestHotSwap:
-
     def test_hot_swap_updates_artifact_path(self, service):
         model = register_and_pass_gate(service)
         service.promote_model(model.model_id, "STAGING")
@@ -168,7 +166,6 @@ class TestHotSwap:
 
 
 class TestQueryOperations:
-
     def test_get_production_models(self, service):
         m = register_and_pass_gate(service)
         service.promote_model(m.model_id, "STAGING")

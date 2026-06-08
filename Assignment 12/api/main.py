@@ -10,7 +10,9 @@ OpenAPI docs auto-generated at:
 """
 
 from __future__ import annotations
-import sys, os
+import sys
+import os
+
 for _p in ("../Assignment10", "../Assignment11", "."):
     _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), _p))
     if _abs not in sys.path:
@@ -18,6 +20,7 @@ for _p in ("../Assignment10", "../Assignment11", "."):
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from handlers.routes.transactions import router as transactions_router
 from handlers.routes.fraud_cases import router as fraud_cases_router
@@ -70,11 +73,19 @@ app.include_router(fraud_cases_router)
 app.include_router(ml_models_router)
 
 
+# ── Prometheus instrumentation ─────────────────────────────────────────────────
+Instrumentator().instrument(app).expose(app)
+
+
 # ── Health check ──────────────────────────────────────────────────────────────
 @app.get("/health", tags=["Health"], summary="API health check")
 def health_check():
     """Returns 200 OK when the API is running."""
-    return {"status": "healthy", "service": "SentinelPay Fraud Detection API", "version": "1.0.0"}
+    return {
+        "status": "healthy",
+        "service": "SentinelPay Fraud Detection API",
+        "version": "1.0.0",
+    }
 
 
 # ── Root redirect ─────────────────────────────────────────────────────────────

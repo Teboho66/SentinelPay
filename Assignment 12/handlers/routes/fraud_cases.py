@@ -9,20 +9,30 @@ from __future__ import annotations
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 
-import sys, os
+import sys
+import os
+
 for _p in ("../../Assignment10", "../../Assignment11", ".."):
     _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), _p))
     if _abs not in sys.path:
         sys.path.insert(0, _abs)
 
-from api.schemas import (
-    CreateFraudCaseRequest, AssignAnalystRequest, ResolveCaseRequest,
-    FraudCaseResponse, ResolveCaseResponse, ErrorResponse,
+from config.schemas import (
+    CreateFraudCaseRequest,
+    AssignAnalystRequest,
+    ResolveCaseRequest,
+    FraudCaseResponse,
+    ResolveCaseResponse,
+    ErrorResponse,
 )
-from api.dependencies import get_fraud_case_service
-from services import (
-    FraudCaseService, EntityNotFoundError,
-    DuplicateEntityError, BusinessRuleViolationError,
+from config.dependencies import get_fraud_case_service
+from mapping.fraud_case_service import FraudCaseService
+from api.metrics import fraud_cases_total
+
+from services.exceptions import (
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
     InvalidStateTransitionError,
 )
 
@@ -53,8 +63,14 @@ def _handle_service_errors(exc: Exception) -> HTTPException:
     ),
     responses={
         201: {"description": "Case created and added to analyst queue"},
-        409: {"model": ErrorResponse, "description": "Case already exists for this transaction"},
-        422: {"model": ErrorResponse, "description": "Risk tier must be HIGH or CRITICAL (FR-09)"},
+        409: {
+            "model": ErrorResponse,
+            "description": "Case already exists for this transaction",
+        },
+        422: {
+            "model": ErrorResponse,
+            "description": "Risk tier must be HIGH or CRITICAL (FR-09)",
+        },
     },
 )
 def create_fraud_case(
@@ -69,6 +85,9 @@ def create_fraud_case(
             risk_tier=body.risk_tier,
             shap_report_ref=body.shap_report_ref,
         )
+        # ── Increment metrics ──
+        fraud_cases_total.inc()
+        
         return FraudCaseResponse.from_domain(case)
     except Exception as e:
         raise _handle_service_errors(e)
@@ -167,8 +186,14 @@ def assign_to_analyst(
     responses={
         200: {"description": "Case resolved; fraud_label_payload present if CONFIRMED"},
         404: {"model": ErrorResponse, "description": "Case not found"},
-        409: {"model": ErrorResponse, "description": "Case must be IN_REVIEW to resolve"},
-        422: {"model": ErrorResponse, "description": "DISMISSED requires a note (BR-FC2)"},
+        409: {
+            "model": ErrorResponse,
+            "description": "Case must be IN_REVIEW to resolve",
+        },
+        422: {
+            "model": ErrorResponse,
+            "description": "DISMISSED requires a note (BR-FC2)",
+        },
     },
 )
 def resolve_case(
@@ -193,7 +218,10 @@ def resolve_case(
     description="CONFIRMED cases cannot be deleted — they feed the retraining pipeline.",
     responses={
         404: {"model": ErrorResponse, "description": "Case not found"},
-        422: {"model": ErrorResponse, "description": "CONFIRMED cases cannot be deleted"},
+        422: {
+            "model": ErrorResponse,
+            "description": "CONFIRMED cases cannot be deleted",
+        },
     },
 )
 def delete_case(

@@ -24,22 +24,38 @@ from typing import List, Optional
 from .base import Repository
 
 # ── Import domain entities from Assignment 10 ────────────────────────────────
-import sys, os
-_A10 = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "Assignment10"))
+import sys
+import os
+
+_A10 = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "Assignment10")
+)
 if _A10 not in sys.path:
     sys.path.insert(0, _A10)
 
 from src.models import (
-    Transaction, FraudCase, MLModel, AuditRecord,
-    AccountProfile, CustomerDispute, StepUpChallenge,
-    FraudDecision, RiskTier, CaseStatus, CasePriority,
-    ModelName, ModelStage, DisputeStatus, ChallengeStatus,
+    Transaction,
+    FraudCase,
+    MLModel,
+    AuditRecord,
+    AccountProfile,
+    CustomerDispute,
+    StepUpChallenge,
+    FraudDecision,
+    RiskTier,
+    CaseStatus,
+    CasePriority,
+    ModelName,
+    ModelStage,
+    DisputeStatus,
+    ChallengeStatus,
 )
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TransactionRepository
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class TransactionRepository(Repository[Transaction, str]):
     """
@@ -80,6 +96,7 @@ class TransactionRepository(Repository[Transaction, str]):
 # ══════════════════════════════════════════════════════════════════════════════
 # FraudCaseRepository
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class FraudCaseRepository(Repository[FraudCase, str]):
     """
@@ -129,6 +146,7 @@ class FraudCaseRepository(Repository[FraudCase, str]):
 # MLModelRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class MLModelRepository(Repository[MLModel, str]):
     """
     Entity-specific interface for MLModel persistence.
@@ -158,7 +176,9 @@ class MLModelRepository(Repository[MLModel, str]):
         ...
 
     @abstractmethod
-    def find_by_name_and_stage(self, model_name: ModelName, stage: ModelStage) -> Optional[MLModel]:
+    def find_by_name_and_stage(
+        self, model_name: ModelName, stage: ModelStage
+    ) -> Optional[MLModel]:
         """
         Return the specific model version for a name+stage combination.
         Returns None if no model of that type is in that stage.
@@ -169,6 +189,7 @@ class MLModelRepository(Repository[MLModel, str]):
 # ══════════════════════════════════════════════════════════════════════════════
 # AuditRecordRepository
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class AuditRecordRepository(Repository[AuditRecord, str]):
     """
@@ -206,6 +227,7 @@ class AuditRecordRepository(Repository[AuditRecord, str]):
 # AccountProfileRepository
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 class AccountProfileRepository(Repository[AccountProfile, str]):
     """
     Entity-specific interface for AccountProfile persistence.
@@ -230,6 +252,7 @@ class AccountProfileRepository(Repository[AccountProfile, str]):
 # ══════════════════════════════════════════════════════════════════════════════
 # CustomerDisputeRepository
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class CustomerDisputeRepository(Repository[CustomerDispute, str]):
     """
@@ -259,7 +282,9 @@ class CustomerDisputeRepository(Repository[CustomerDispute, str]):
         ...
 
     @abstractmethod
-    def find_by_customer_id_token(self, customer_id_token: str) -> List[CustomerDispute]:
+    def find_by_customer_id_token(
+        self, customer_id_token: str
+    ) -> List[CustomerDispute]:
         """Return all disputes filed by a specific customer."""
         ...
 
@@ -267,6 +292,7 @@ class CustomerDisputeRepository(Repository[CustomerDispute, str]):
 # ══════════════════════════════════════════════════════════════════════════════
 # StepUpChallengeRepository
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 class StepUpChallengeRepository(Repository[StepUpChallenge, str]):
     """

@@ -19,7 +19,6 @@ from repositories.inmemory import (
 
 
 class TestRepositoryFactory:
-
     def test_get_transaction_repo_memory(self):
         repo = RepositoryFactory.get("Transaction", "MEMORY")
         assert isinstance(repo, InMemoryTransactionRepository)
@@ -70,20 +69,39 @@ class TestRepositoryFactory:
         assert repo1 is not repo2
 
     def test_typed_helpers_return_correct_types(self):
-        assert isinstance(RepositoryFactory.get_transaction_repo(), InMemoryTransactionRepository)
-        assert isinstance(RepositoryFactory.get_fraud_case_repo(), InMemoryFraudCaseRepository)
-        assert isinstance(RepositoryFactory.get_ml_model_repo(), InMemoryMLModelRepository)
-        assert isinstance(RepositoryFactory.get_audit_record_repo(), InMemoryAuditRecordRepository)
-        assert isinstance(RepositoryFactory.get_account_profile_repo(), InMemoryAccountProfileRepository)
-        assert isinstance(RepositoryFactory.get_customer_dispute_repo(), InMemoryCustomerDisputeRepository)
-        assert isinstance(RepositoryFactory.get_step_up_challenge_repo(), InMemoryStepUpChallengeRepository)
+        assert isinstance(
+            RepositoryFactory.get_transaction_repo(), InMemoryTransactionRepository
+        )
+        assert isinstance(
+            RepositoryFactory.get_fraud_case_repo(), InMemoryFraudCaseRepository
+        )
+        assert isinstance(
+            RepositoryFactory.get_ml_model_repo(), InMemoryMLModelRepository
+        )
+        assert isinstance(
+            RepositoryFactory.get_audit_record_repo(), InMemoryAuditRecordRepository
+        )
+        assert isinstance(
+            RepositoryFactory.get_account_profile_repo(),
+            InMemoryAccountProfileRepository,
+        )
+        assert isinstance(
+            RepositoryFactory.get_customer_dispute_repo(),
+            InMemoryCustomerDisputeRepository,
+        )
+        assert isinstance(
+            RepositoryFactory.get_step_up_challenge_repo(),
+            InMemoryStepUpChallengeRepository,
+        )
 
     def test_filesystem_stub_returns_stub_instance(self):
         from stubs.filesystem_repository import FileSystemRepositoryStub
+
         repo = RepositoryFactory.get("Transaction", "FILESYSTEM")
         assert isinstance(repo, FileSystemRepositoryStub)
 
     def test_database_stub_returns_stub_instance(self):
         from stubs.database_repository import DatabaseRepositoryStub
+
         repo = RepositoryFactory.get("Transaction", "DATABASE")
         assert isinstance(repo, DatabaseRepositoryStub)

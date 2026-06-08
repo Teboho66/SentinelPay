@@ -32,12 +32,12 @@ from src.models import (
 
 # ── Abstract products ────────────────────────────────────────────────────────
 
+
 class AlertSummary(ABC):
     """Second product in the family: a formatted case-summary for analysts."""
 
     @abstractmethod
-    def render(self) -> str:
-        ...
+    def render(self) -> str: ...
 
 
 class EmailAlertSummary(AlertSummary):
@@ -74,20 +74,17 @@ class SMSAlertSummary(AlertSummary):
 
 # ── Abstract Factory ─────────────────────────────────────────────────────────
 
+
 class NotificationFactory(ABC):
     """Abstract Factory declaring the two product-creation methods."""
 
     @abstractmethod
     def create_notification(
         self, alert: FraudAlert, recipient: str
-    ) -> Notification:
-        ...
+    ) -> Notification: ...
 
     @abstractmethod
-    def create_summary(
-        self, alert: FraudAlert, recipient: str
-    ) -> AlertSummary:
-        ...
+    def create_summary(self, alert: FraudAlert, recipient: str) -> AlertSummary: ...
 
     def dispatch(self, alert: FraudAlert, recipient: str) -> dict:
         """
@@ -104,10 +101,13 @@ class NotificationFactory(ABC):
 
 # ── Concrete Factories ───────────────────────────────────────────────────────
 
+
 class EmailNotificationFactory(NotificationFactory):
     """Produces email-channel products."""
 
-    def create_notification(self, alert: FraudAlert, recipient: str) -> EmailNotification:
+    def create_notification(
+        self, alert: FraudAlert, recipient: str
+    ) -> EmailNotification:
         subject = f"[SentinelPay] {alert.severity.name} Alert – {alert.alert_type}"
         body = (
             f"A fraud alert has been raised for transaction "
@@ -136,6 +136,7 @@ class SMSNotificationFactory(NotificationFactory):
 
 
 # ── Factory selector helper ──────────────────────────────────────────────────
+
 
 def get_notification_factory(channel: str) -> NotificationFactory:
     """

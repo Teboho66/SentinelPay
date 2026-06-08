@@ -33,12 +33,14 @@ from src.models import (
 
 # ── Product ──────────────────────────────────────────────────────────────────
 
+
 @dataclass
 class FraudCase:
     """
     Aggregate built by FraudCaseBuilder.
     Not intended to be constructed directly.
     """
+
     case_id: str
     transaction: Transaction
     alert: FraudAlert
@@ -46,7 +48,7 @@ class FraudCase:
     audit_trail: list[AuditLog] = field(default_factory=list)
     investigator_notes: str = ""
     escalated: bool = False
-    priority: int = 3          # 1 = Critical … 5 = Low
+    priority: int = 3  # 1 = Critical … 5 = Low
 
     def summarise(self) -> str:
         return (
@@ -62,6 +64,7 @@ class FraudCase:
 
 
 # ── Builder ──────────────────────────────────────────────────────────────────
+
 
 class FraudCaseBuilder:
     """
@@ -145,11 +148,13 @@ class FraudCaseBuilder:
                      has not been set.
         """
         missing = [
-            name for name, val in [
+            name
+            for name, val in [
                 ("transaction", self._transaction),
                 ("alert", self._alert),
                 ("risk_score", self._risk_score),
-            ] if val is None
+            ]
+            if val is None
         ]
         if missing:
             raise ValueError(

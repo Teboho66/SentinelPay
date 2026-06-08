@@ -1,0 +1,19 @@
+# SentinelPay - Python dependencies
+# Used by CI/CD pipeline and local development
+
+# Web framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+prometheus-fastapi-instrumentator
+
+# Testing
+pytest==8.3.3
+pytest-cov==6.0.0
+httpx==0.28.0
+
+# Pydantic (FastAPI dependency)
+pydantic==2.10.3
+
+# Build / packaging (CD pipeline)
+build==1.2.2
+wheel==0.45.1

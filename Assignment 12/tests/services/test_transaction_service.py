@@ -8,19 +8,25 @@ Uses InMemoryTransactionRepository — no HTTP layer involved.
 import pytest
 from decimal import Decimal
 
-import sys, os
+import sys
+import os
+
 for _p in ("../Assignment10", "../Assignment11"):
-    _abs = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../" + _p.lstrip("../")))
+    _abs = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "../../" + _p.lstrip("../"))
+    )
     if _abs not in sys.path:
         sys.path.insert(0, _abs)
 
 from repositories.inmemory import InMemoryTransactionRepository
 from services import (
     TransactionService,
-    EntityNotFoundError, DuplicateEntityError,
-    BusinessRuleViolationError, InvalidStateTransitionError,
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
+    InvalidStateTransitionError,
 )
-from src.models import FraudDecision, RiskTier, TransactionChannel
+from src.models import FraudDecision
 
 
 @pytest.fixture
@@ -33,8 +39,13 @@ def service(repo):
     return TransactionService(repo)
 
 
-def submit(service, txn_id="TXN-001", account="acc_001",
-           amount=Decimal("500.00"), channel="CNP_ONLINE"):
+def submit(
+    service,
+    txn_id="TXN-001",
+    account="acc_001",
+    amount=Decimal("500.00"),
+    channel="CNP_ONLINE",
+):
     return service.submit_transaction(
         transaction_id=txn_id,
         account_id_token=account,
@@ -51,14 +62,28 @@ def submit(service, txn_id="TXN-001", account="acc_001",
 
 
 MODEL_SCORES = [
-    {"model_name": "XGBOOST",          "model_version": "3.1", "raw_score": 0.88, "confidence": 0.92},
-    {"model_name": "ISOLATION_FOREST", "model_version": "2.0", "raw_score": 0.75, "confidence": 0.80},
-    {"model_name": "DISTILBERT",       "model_version": "1.4", "raw_score": 0.70, "confidence": 0.78},
+    {
+        "model_name": "XGBOOST",
+        "model_version": "3.1",
+        "raw_score": 0.88,
+        "confidence": 0.92,
+    },
+    {
+        "model_name": "ISOLATION_FOREST",
+        "model_version": "2.0",
+        "raw_score": 0.75,
+        "confidence": 0.80,
+    },
+    {
+        "model_name": "DISTILBERT",
+        "model_version": "1.4",
+        "raw_score": 0.70,
+        "confidence": 0.78,
+    },
 ]
 
 
 class TestSubmitTransaction:
-
     def test_submit_creates_transaction(self, service):
         txn = submit(service)
         assert txn.transaction_id == "TXN-001"
@@ -87,9 +112,17 @@ class TestSubmitTransaction:
     def test_invalid_currency_raises(self, service):
         with pytest.raises(ValueError):
             service.submit_transaction(
-                "TXN-002", "acc_002", "MER-001", "5411",
-                Decimal("100.00"), "RAND", "CNP_ONLINE",
-                "dfp_abc", "hash_abc", -33.9, 18.4,
+                "TXN-002",
+                "acc_002",
+                "MER-001",
+                "5411",
+                Decimal("100.00"),
+                "RAND",
+                "CNP_ONLINE",
+                "dfp_abc",
+                "hash_abc",
+                -33.9,
+                18.4,
             )
 
     def test_transaction_persisted_in_repo(self, service, repo):
@@ -98,7 +131,6 @@ class TestSubmitTransaction:
 
 
 class TestApplyFraudDecision:
-
     def test_apply_decision_sets_decision(self, service):
         submit(service)
         txn = service.apply_fraud_decision("TXN-001", 0.87, MODEL_SCORES)
@@ -106,22 +138,40 @@ class TestApplyFraudDecision:
 
     def test_high_fraud_score_produces_hard_block(self, service):
         submit(service)
-        scores = [{"model_name": "XGBOOST", "model_version": "3.1",
-                   "raw_score": 0.95, "confidence": 0.98}]
+        scores = [
+            {
+                "model_name": "XGBOOST",
+                "model_version": "3.1",
+                "raw_score": 0.95,
+                "confidence": 0.98,
+            }
+        ]
         txn = service.apply_fraud_decision("TXN-001", 0.95, scores, "STANDARD")
         assert txn.decision == FraudDecision.HARD_BLOCK
 
     def test_low_fraud_score_produces_approve(self, service):
         submit(service)
-        scores = [{"model_name": "XGBOOST", "model_version": "3.1",
-                   "raw_score": 0.10, "confidence": 0.95}]
+        scores = [
+            {
+                "model_name": "XGBOOST",
+                "model_version": "3.1",
+                "raw_score": 0.10,
+                "confidence": 0.95,
+            }
+        ]
         txn = service.apply_fraud_decision("TXN-001", 0.10, scores, "STANDARD")
         assert txn.decision == FraudDecision.APPROVE
 
     def test_mid_fraud_score_produces_soft_decline(self, service):
         submit(service)
-        scores = [{"model_name": "XGBOOST", "model_version": "3.1",
-                   "raw_score": 0.55, "confidence": 0.80}]
+        scores = [
+            {
+                "model_name": "XGBOOST",
+                "model_version": "3.1",
+                "raw_score": 0.55,
+                "confidence": 0.80,
+            }
+        ]
         txn = service.apply_fraud_decision("TXN-001", 0.55, scores, "STANDARD")
         assert txn.decision == FraudDecision.SOFT_DECLINE
 
@@ -137,7 +187,6 @@ class TestApplyFraudDecision:
 
 
 class TestQueryOperations:
-
     def test_get_transaction_returns_entity(self, service):
         submit(service)
         txn = service.get_transaction("TXN-001")
@@ -155,10 +204,22 @@ class TestQueryOperations:
     def test_get_flagged_returns_hard_blocks_only(self, service):
         submit(service, "TXN-001")
         submit(service, "TXN-002")
-        scores_high = [{"model_name": "XGBOOST", "model_version": "3.1",
-                        "raw_score": 0.95, "confidence": 0.98}]
-        scores_low  = [{"model_name": "XGBOOST", "model_version": "3.1",
-                        "raw_score": 0.05, "confidence": 0.99}]
+        scores_high = [
+            {
+                "model_name": "XGBOOST",
+                "model_version": "3.1",
+                "raw_score": 0.95,
+                "confidence": 0.98,
+            }
+        ]
+        scores_low = [
+            {
+                "model_name": "XGBOOST",
+                "model_version": "3.1",
+                "raw_score": 0.05,
+                "confidence": 0.99,
+            }
+        ]
         service.apply_fraud_decision("TXN-001", 0.95, scores_high)
         service.apply_fraud_decision("TXN-002", 0.05, scores_low)
         flagged = service.get_flagged_transactions()

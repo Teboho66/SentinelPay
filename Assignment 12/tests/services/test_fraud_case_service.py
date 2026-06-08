@@ -8,10 +8,12 @@ import pytest
 from repositories.inmemory import InMemoryFraudCaseRepository
 from services import (
     FraudCaseService,
-    EntityNotFoundError, DuplicateEntityError,
-    BusinessRuleViolationError, InvalidStateTransitionError,
+    EntityNotFoundError,
+    DuplicateEntityError,
+    BusinessRuleViolationError,
+    InvalidStateTransitionError,
 )
-from src.models import CaseStatus, CasePriority, RiskTier
+from src.models import CaseStatus, CasePriority
 
 
 @pytest.fixture
@@ -34,7 +36,6 @@ def create(service, txn_id="TXN-001", fraud_score=0.93, risk_tier="CRITICAL"):
 
 
 class TestCreateCase:
-
     def test_creates_case_for_critical_tier(self, service):
         case = create(service, risk_tier="CRITICAL")
         assert case is not None
@@ -78,7 +79,6 @@ class TestCreateCase:
 
 
 class TestAssignToAnalyst:
-
     def test_assign_moves_to_in_review(self, service):
         case = create(service)
         case = service.assign_to_analyst(case.case_id, "j.mokoena")
@@ -107,7 +107,6 @@ class TestAssignToAnalyst:
 
 
 class TestResolveCase:
-
     def _get_in_review_case(self, service):
         case = create(service)
         service.assign_to_analyst(case.case_id, "j.mokoena")
@@ -115,7 +114,9 @@ class TestResolveCase:
 
     def test_resolve_confirmed_sets_status(self, service):
         case = self._get_in_review_case(service)
-        resolved, _ = service.resolve_case(case.case_id, "CONFIRMED", "Fraud confirmed.")
+        resolved, _ = service.resolve_case(
+            case.case_id, "CONFIRMED", "Fraud confirmed."
+        )
         assert resolved.status == CaseStatus.CONFIRMED
 
     def test_confirmed_returns_fraud_label_payload(self, service):
@@ -146,11 +147,10 @@ class TestResolveCase:
 
 
 class TestQueryOperations:
-
     def test_get_analyst_queue_sorted_p1_first(self, service):
-        create(service, "TXN-001", fraud_score=0.65, risk_tier="HIGH")   # P3
+        create(service, "TXN-001", fraud_score=0.65, risk_tier="HIGH")  # P3
         create(service, "TXN-002", fraud_score=0.95, risk_tier="CRITICAL")  # P1
-        create(service, "TXN-003", fraud_score=0.80, risk_tier="HIGH")   # P2
+        create(service, "TXN-003", fraud_score=0.80, risk_tier="HIGH")  # P2
         queue = service.get_analyst_queue()
         assert queue[0].priority == CasePriority.P1
         assert queue[1].priority == CasePriority.P2
@@ -165,7 +165,9 @@ class TestQueryOperations:
     def test_delete_dismissed_case(self, service):
         case = create(service)
         service.assign_to_analyst(case.case_id, "j.mokoena")
-        service.resolve_case(case.case_id, "DISMISSED", "False positive — customer verified.")
+        service.resolve_case(
+            case.case_id, "DISMISSED", "False positive — customer verified."
+        )
         service.delete_case(case.case_id)
         with pytest.raises(EntityNotFoundError):
             service.get_case(case.case_id)

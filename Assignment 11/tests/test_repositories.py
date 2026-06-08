@@ -19,11 +19,22 @@ from repositories.inmemory import (
     InMemoryStepUpChallengeRepository,
 )
 from src.models import (
-    Transaction, FraudCase, MLModel, AuditRecord,
-    AccountProfile, CustomerDispute, StepUpChallenge,
-    GeoPoint, TransactionChannel, FraudDecision,
-    RiskTier, CaseStatus, CasePriority,
-    ModelName, ModelStage, DisputeStatus, ChallengeStatus,
+    Transaction,
+    FraudCase,
+    MLModel,
+    AccountProfile,
+    CustomerDispute,
+    StepUpChallenge,
+    GeoPoint,
+    TransactionChannel,
+    FraudDecision,
+    RiskTier,
+    CaseStatus,
+    CasePriority,
+    ModelName,
+    ModelStage,
+    DisputeStatus,
+    ChallengeStatus,
     AuditService,
 )
 
@@ -32,13 +43,20 @@ from src.models import (
 # Fixtures
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 @pytest.fixture
 def geo():
     return GeoPoint(-33.9249, 18.4241)
 
 
-def make_transaction(txn_id: str, account_token: str, decision: FraudDecision,
-                     risk_tier: RiskTier, geo: GeoPoint, amount: Decimal = Decimal("500.00")) -> Transaction:
+def make_transaction(
+    txn_id: str,
+    account_token: str,
+    decision: FraudDecision,
+    risk_tier: RiskTier,
+    geo: GeoPoint,
+    amount: Decimal = Decimal("500.00"),
+) -> Transaction:
     txn = Transaction(
         transaction_id=txn_id,
         account_id_token=account_token,
@@ -60,45 +78,79 @@ def make_transaction(txn_id: str, account_token: str, decision: FraudDecision,
 
 @pytest.fixture
 def txn_approved(geo):
-    return make_transaction("TXN-APPROVED", "acc_001", FraudDecision.APPROVE, RiskTier.LOW, geo)
+    return make_transaction(
+        "TXN-APPROVED", "acc_001", FraudDecision.APPROVE, RiskTier.LOW, geo
+    )
 
 
 @pytest.fixture
 def txn_blocked(geo):
-    return make_transaction("TXN-BLOCKED", "acc_002", FraudDecision.HARD_BLOCK, RiskTier.CRITICAL, geo)
+    return make_transaction(
+        "TXN-BLOCKED", "acc_002", FraudDecision.HARD_BLOCK, RiskTier.CRITICAL, geo
+    )
 
 
 @pytest.fixture
 def txn_soft(geo):
-    return make_transaction("TXN-SOFT", "acc_001", FraudDecision.SOFT_DECLINE, RiskTier.MEDIUM, geo)
+    return make_transaction(
+        "TXN-SOFT", "acc_001", FraudDecision.SOFT_DECLINE, RiskTier.MEDIUM, geo
+    )
 
 
 @pytest.fixture
 def fraud_case_p1():
-    return FraudCase("TXN-BLOCKED", "acc_002", fraud_score=0.93, risk_tier=RiskTier.CRITICAL)
+    return FraudCase(
+        "TXN-BLOCKED", "acc_002", fraud_score=0.93, risk_tier=RiskTier.CRITICAL
+    )
 
 
 @pytest.fixture
 def fraud_case_p3():
-    return FraudCase("TXN-OTHER", "acc_003", fraud_score=0.60, risk_tier=RiskTier.MEDIUM)
+    return FraudCase(
+        "TXN-OTHER", "acc_003", fraud_score=0.60, risk_tier=RiskTier.MEDIUM
+    )
 
 
 @pytest.fixture
 def xgb_model():
-    return MLModel("xgb-3.1", ModelName.XGBOOST, "3.1", "mlflow://xgb/3.1", "tabular-v3",
-                   precision=0.91, recall=0.87, stage=ModelStage.PRODUCTION)
+    return MLModel(
+        "xgb-3.1",
+        ModelName.XGBOOST,
+        "3.1",
+        "mlflow://xgb/3.1",
+        "tabular-v3",
+        precision=0.91,
+        recall=0.87,
+        stage=ModelStage.PRODUCTION,
+    )
 
 
 @pytest.fixture
 def iso_model():
-    return MLModel("iso-2.0", ModelName.ISOLATION_FOREST, "2.0", "mlflow://iso/2.0",
-                   "tabular-v2", precision=0.86, recall=0.82, stage=ModelStage.PRODUCTION)
+    return MLModel(
+        "iso-2.0",
+        ModelName.ISOLATION_FOREST,
+        "2.0",
+        "mlflow://iso/2.0",
+        "tabular-v2",
+        precision=0.86,
+        recall=0.82,
+        stage=ModelStage.PRODUCTION,
+    )
 
 
 @pytest.fixture
 def staging_model():
-    return MLModel("xgb-4.0", ModelName.XGBOOST, "4.0", "mlflow://xgb/4.0", "tabular-v3",
-                   precision=0.88, recall=0.84, stage=ModelStage.STAGING)
+    return MLModel(
+        "xgb-4.0",
+        ModelName.XGBOOST,
+        "4.0",
+        "mlflow://xgb/4.0",
+        "tabular-v3",
+        precision=0.88,
+        recall=0.84,
+        stage=ModelStage.STAGING,
+    )
 
 
 @pytest.fixture
@@ -109,12 +161,16 @@ def audit_record(txn_blocked):
 
 @pytest.fixture
 def account_profile_new():
-    return AccountProfile("acc_token_new", avg_amount_30d=Decimal("0"), transaction_count=3)
+    return AccountProfile(
+        "acc_token_new", avg_amount_30d=Decimal("0"), transaction_count=3
+    )
 
 
 @pytest.fixture
 def account_profile_established():
-    return AccountProfile("acc_token_est", avg_amount_30d=Decimal("1200.00"), transaction_count=45)
+    return AccountProfile(
+        "acc_token_est", avg_amount_30d=Decimal("1200.00"), transaction_count=45
+    )
 
 
 @pytest.fixture
@@ -138,8 +194,8 @@ def challenge():
 # TransactionRepository Tests
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestInMemoryTransactionRepository:
 
+class TestInMemoryTransactionRepository:
     def setup_method(self):
         self.repo = InMemoryTransactionRepository()
 
@@ -168,7 +224,7 @@ class TestInMemoryTransactionRepository:
         assert self.repo.find_by_id("TXN-APPROVED") is None
 
     def test_delete_is_idempotent(self):
-        self.repo.delete("DOES-NOT-EXIST")   # should not raise
+        self.repo.delete("DOES-NOT-EXIST")  # should not raise
 
     def test_count_reflects_saved_entities(self, txn_approved, txn_blocked):
         self.repo.save(txn_approved)
@@ -184,7 +240,9 @@ class TestInMemoryTransactionRepository:
 
     def test_save_overwrites_existing(self, txn_approved, geo):
         self.repo.save(txn_approved)
-        updated = make_transaction("TXN-APPROVED", "acc_001", FraudDecision.HARD_BLOCK, RiskTier.HIGH, geo)
+        updated = make_transaction(
+            "TXN-APPROVED", "acc_001", FraudDecision.HARD_BLOCK, RiskTier.HIGH, geo
+        )
         self.repo.save(updated)
         assert self.repo.find_by_id("TXN-APPROVED").decision == FraudDecision.HARD_BLOCK
 
@@ -192,7 +250,7 @@ class TestInMemoryTransactionRepository:
         for t in [txn_approved, txn_soft, txn_blocked]:
             self.repo.save(t)
         result = self.repo.find_by_account_id_token("acc_001")
-        assert len(result) == 2   # txn_approved and txn_soft both have acc_001
+        assert len(result) == 2  # txn_approved and txn_soft both have acc_001
 
     def test_find_by_decision_hard_block(self, txn_approved, txn_blocked):
         self.repo.save(txn_approved)
@@ -207,7 +265,9 @@ class TestInMemoryTransactionRepository:
         result = self.repo.find_by_risk_tier(RiskTier.CRITICAL)
         assert len(result) == 1
 
-    def test_find_flagged_returns_hard_block_only(self, txn_approved, txn_blocked, txn_soft):
+    def test_find_flagged_returns_hard_block_only(
+        self, txn_approved, txn_blocked, txn_soft
+    ):
         for t in [txn_approved, txn_blocked, txn_soft]:
             self.repo.save(t)
         result = self.repo.find_flagged()
@@ -218,8 +278,8 @@ class TestInMemoryTransactionRepository:
 # FraudCaseRepository Tests
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestInMemoryFraudCaseRepository:
 
+class TestInMemoryFraudCaseRepository:
     def setup_method(self):
         self.repo = InMemoryFraudCaseRepository()
 
@@ -239,7 +299,7 @@ class TestInMemoryFraudCaseRepository:
     def test_find_by_status_open(self, fraud_case_p1, fraud_case_p3):
         self.repo.save(fraud_case_p1)
         self.repo.save(fraud_case_p3)
-        fraud_case_p3.assign_to_analyst("analyst_001")   # moves to IN_REVIEW
+        fraud_case_p3.assign_to_analyst("analyst_001")  # moves to IN_REVIEW
         result = self.repo.find_by_status(CaseStatus.OPEN)
         assert any(c.case_id == fraud_case_p1.case_id for c in result)
 
@@ -274,8 +334,8 @@ class TestInMemoryFraudCaseRepository:
 # MLModelRepository Tests
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestInMemoryMLModelRepository:
 
+class TestInMemoryMLModelRepository:
     def setup_method(self):
         self.repo = InMemoryMLModelRepository()
 
@@ -294,7 +354,7 @@ class TestInMemoryMLModelRepository:
         for m in [xgb_model, staging_model, iso_model]:
             self.repo.save(m)
         result = self.repo.find_by_model_name(ModelName.XGBOOST)
-        assert len(result) == 2   # xgb-3.1 and xgb-4.0
+        assert len(result) == 2  # xgb-3.1 and xgb-4.0
 
     def test_find_by_stage_staging(self, xgb_model, staging_model):
         self.repo.save(xgb_model)
@@ -306,12 +366,16 @@ class TestInMemoryMLModelRepository:
     def test_find_by_name_and_stage(self, xgb_model, staging_model):
         self.repo.save(xgb_model)
         self.repo.save(staging_model)
-        result = self.repo.find_by_name_and_stage(ModelName.XGBOOST, ModelStage.PRODUCTION)
+        result = self.repo.find_by_name_and_stage(
+            ModelName.XGBOOST, ModelStage.PRODUCTION
+        )
         assert result is xgb_model
 
     def test_find_by_name_and_stage_returns_none_when_missing(self, xgb_model):
         self.repo.save(xgb_model)
-        result = self.repo.find_by_name_and_stage(ModelName.DISTILBERT, ModelStage.PRODUCTION)
+        result = self.repo.find_by_name_and_stage(
+            ModelName.DISTILBERT, ModelStage.PRODUCTION
+        )
         assert result is None
 
     def test_count(self, xgb_model, iso_model):
@@ -324,8 +388,8 @@ class TestInMemoryMLModelRepository:
 # AuditRecordRepository Tests
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestInMemoryAuditRecordRepository:
 
+class TestInMemoryAuditRecordRepository:
     def setup_method(self):
         self.repo = InMemoryAuditRecordRepository()
 
@@ -357,7 +421,9 @@ class TestInMemoryAuditRecordRepository:
     def test_find_tampered_detects_corrupted_record(self, audit_record):
         self.repo.save(audit_record)
         # Corrupt the stored hash to simulate tampering
-        audit_record._record_hash = "0000000000000000000000000000000000000000000000000000000000000000"
+        audit_record._record_hash = (
+            "0000000000000000000000000000000000000000000000000000000000000000"
+        )
         tampered = self.repo.find_tampered("test-signing-key")
         assert len(tampered) == 1
 
@@ -366,8 +432,8 @@ class TestInMemoryAuditRecordRepository:
 # AccountProfileRepository Tests
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestInMemoryAccountProfileRepository:
 
+class TestInMemoryAccountProfileRepository:
     def setup_method(self):
         self.repo = InMemoryAccountProfileRepository()
 
@@ -397,8 +463,8 @@ class TestInMemoryAccountProfileRepository:
 # CustomerDisputeRepository Tests
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestInMemoryCustomerDisputeRepository:
 
+class TestInMemoryCustomerDisputeRepository:
     def setup_method(self):
         self.repo = InMemoryCustomerDisputeRepository()
 
@@ -443,8 +509,8 @@ class TestInMemoryCustomerDisputeRepository:
 # StepUpChallengeRepository Tests
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestInMemoryStepUpChallengeRepository:
 
+class TestInMemoryStepUpChallengeRepository:
     def setup_method(self):
         self.repo = InMemoryStepUpChallengeRepository()
 

@@ -1,0 +1,370 @@
+# Merged Pull Requests - Assignment 15
+
+**Author:** Teboho Mokoni | SentinelPay
+
+---
+
+## Summary
+
+| PR                                                                 | Repository                                                                                                                              | Type                                                    | Status   |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------- |
+| [PR #1](#pr-1--tailorfit-api-key-schemas)                          | [TailorFit](https://github.com/znxos/TailorFit)                                                                                         | `feature-request`, `REST API`, `good-first-issue`       | ✅ Merged |
+| [PR #2](#pr-2--clinicease-operational-reports-documentation)       | [ClinicEase Online Doctor Appointment Booking System](https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System) | `user-story`, `documentation`, `should-have`            | ✅ Merged |
+| [PR #3](#pr-3--manga-book-store-openapi-and-swagger-documentation) | [Manga Book Store System](https://github.com/Vanessa-Ndomba/manga-book-store-system)                                                    | `documentation`, `OpenAPI`, `Swagger`                   | ✅ Merged |
+| [PR #4](#pr-4--carwash-field-level-validation-error-responses)     | [Carwash Booking Queue System](https://github.com/ongeziwe17/carwash-booking-queue-system)                                              | `validation`, `REST API`, `testing`, `backend`          | ✅ Merged |
+| [PR #5](#pr-5--campusfind1-pagination-for-list-endpoints)          | [CampusFind1](https://github.com/MissDidiza/campusfind1)                                                                                | `good-first-issue`, `REST API`, `pagination`, `testing` | ✅ Merged |
+
+---
+
+## PR #1 - TailorFit API Key Schemas
+
+**Repository:** `https://github.com/znxos/TailorFit`
+**PR Link:** `https://github.com/znxos/TailorFit/pull/44`
+**Issue addressed:** `#40 - API Parameters - 4`
+**Branch:** `feature/api-key-schemas`
+**Status:** ✅ Merged
+
+### What I changed
+
+Added two new Pydantic schemas to `api/schemas.py` for API key validation support:
+
+* `APIKeyCreate`
+
+  * Defines the request body for submitting an API key.
+  * Adds validation for `key_string` with `min_length=1` and `max_length=256`.
+
+* `APIKeyResponse`
+
+  * Defines the response body for API key validation results.
+  * Includes `is_valid` to indicate whether the key passed validation.
+  * Includes `provider`, defaulting to `"Unknown"`.
+
+This was a schema-only change. It did not modify existing routes, services, repositories, or test logic.
+
+### Why it was needed
+
+Closes #40
+
+Issue #40 requested API key request and response schemas so the project can support future API key validation or authentication endpoints.
+
+Previously, the project did not have a dedicated request model for receiving an API key string or a response model for returning whether the key is valid. Adding these schemas provides a clean, typed foundation for future API-key-related endpoints while keeping the current application behavior unchanged.
+
+### CI result
+
+All existing tests passed locally.
+
+Commands run:
+
+```bash
+python -m compileall api
+pytest
+```
+
+Result:
+
+```text
+32 passed, 1 warning
+```
+
+---
+
+## PR #2 - ClinicEase Operational Reports Documentation
+
+**Repository:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System`
+**PR Link:** `https://github.com/222618698/ClinicEase-Online-Doctor-Appointment-Booking-System/pull/20`
+**Issue addressed:** `#13 - [US-013] Admin generates operational reports`
+**Branch:** `docs/us-013-operational-reports`
+**Status:** ✅ Merged
+
+### What I changed
+
+Added a detailed documentation file for **US-013: Admin generates operational reports**.
+
+The new file was added at:
+
+```text
+docs/user-stories/US-013-operational-reports.md
+```
+
+The document expands the original user story into a deeper implementation guide. It explains the purpose of operational reports, business value, stakeholder impact, expected report metrics, date range filtering, no-show rate calculation, CSV/PDF export expectations, suggested API behaviour, validation rules, edge cases, suggested test scenarios, and a clear definition of done.
+
+This was a documentation-only contribution. I did not modify services, repositories, API routes, tests, or application logic.
+
+### Why it was needed
+
+Closes #13
+
+The issue already had a user story and acceptance criteria, but the implementation details needed more depth so future contributors could build the feature with less confusion.
+
+Operational reports are important because clinic administrators need a reliable way to monitor clinic performance. The documentation now explains how reports should calculate appointment totals, no-show rates, appointments per doctor, and no-data scenarios. It also explains how the feature could later support CSV and PDF downloads.
+
+This makes the user story more complete, easier to implement, easier to test, and easier for the maintainer to review in future development work.
+
+### CI result
+
+All existing checks passed locally.
+
+Commands run:
+
+```bash
+python -m compileall api services repositories src
+pytest
+```
+
+Result:
+
+```text
+188 passed, 1 warning
+```
+
+The single warning was an existing Starlette/FastAPI test client deprecation warning and was unrelated to my documentation-only change.
+
+---
+
+## PR #3 - Manga Book Store OpenAPI and Swagger Documentation
+
+**Repository:** `https://github.com/Vanessa-Ndomba/manga-book-store-system`
+**PR Link:** `https://github.com/Vanessa-Ndomba/manga-book-store-system/pull/22`
+**Issue addressed:** `#12 - Add OpenAPI JSON + Swagger screenshot to docs/`
+**Branch:** `docs/openapi-swagger-evidence`
+**Status:** ✅ Merged
+
+### What I changed
+
+For my third cross-project contribution, I worked on the **Manga Book Store System** repository. I selected **Issue #12**, which requested that the project’s OpenAPI JSON file and Swagger UI screenshot be saved inside the `docs/` folder.
+
+I added the following two files:
+
+```text
+docs/openapi.json
+docs/swagger-ui.png
+```
+
+The `openapi.json` file was generated directly from the FastAPI application. This file captures the current API specification, including the available Manga, Orders, Users, and root endpoints.
+
+The `swagger-ui.png` file provides a visual screenshot of the Swagger UI page. It shows the API documentation interface and makes it easier for contributors to quickly understand the available routes without needing to run the project first.
+
+This was a documentation-focused contribution. I did not change business logic, services, repositories, schemas, routes, or tests.
+
+### Why it was needed
+
+Closes #12
+
+The issue requested API documentation evidence to be committed inside the `docs/` folder. Before this contribution, the repository had some screenshots, but the issue specifically asked for clearly named documentation files:
+
+```text
+docs/openapi.json
+docs/swagger-ui.png
+```
+
+Adding these files improves the project because API documentation is one of the first things future contributors look for when trying to understand a backend system. The OpenAPI JSON provides a machine-readable API contract, while the Swagger screenshot provides a human-readable visual reference.
+
+This makes the project more contributor-friendly and helps future developers understand the current backend structure more quickly.
+
+### CI result
+
+I ran the available checks locally before submitting the pull request.
+
+Commands run:
+
+```bash
+python -m compileall api services repositories src
+pytest
+```
+
+Result:
+
+```text
+59 passed, 1 warning
+```
+
+The single warning was an existing Starlette/FastAPI test client deprecation warning and was unrelated to this documentation-only change.
+
+---
+
+## PR #4 - Carwash Field-Level Validation Error Responses
+
+**Repository:** `https://github.com/ongeziwe17/carwash-booking-queue-system`
+**PR Link:** `https://github.com/ongeziwe17/carwash-booking-queue-system/pull/78`
+**Issue addressed:** `#76 - Contr-005: Improve validation error responses with field-level messages`
+**Branch:** `feature/field-level-validation-errors`
+**Status:** ✅ Merged
+
+### What I changed
+
+Improved request validation error handling in the Spring Boot API.
+
+The change adds a dedicated handler for `MethodArgumentNotValidException` so validation failures return clearer field-level messages instead of relying on the generic bad-request handler.
+
+I also updated booking request validation by adding validation annotations to `CreateBookingRequest`, including:
+
+```text
+@NotBlank
+@NotNull
+@Future
+```
+
+In `BookingController`, I enabled validation by adding `@Valid` to booking create and update request bodies.
+
+I also added an integration test that sends an invalid booking request and verifies that the API returns HTTP `400` with field-level validation details in the response body.
+
+### Why it was needed
+
+Closes #76
+
+The existing global exception handler grouped `MethodArgumentNotValidException` with other bad-request exceptions and returned `ex.getMessage()`. This made validation errors harder for API consumers to understand.
+
+The new response is clearer because it identifies which fields failed validation and explains why.
+
+### CI result
+
+All tests passed locally after switching the Codespace to Java 21.
+
+Commands run:
+
+```bash
+java -version
+javac -version
+./mvnw test
+```
+
+Result:
+
+```text
+Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+Screenshot evidence should be saved under:
+
+```text
+Assignment 15/docs/screenshots/fourth-peer-contribution/
+```
+
+---
+
+## PR #5 - CampusFind1 Pagination for List Endpoints
+
+**Repository:** `https://github.com/MissDidiza/campusfind1`
+**PR Link:** `https://github.com/MissDidiza/campusfind1/pull/11`
+**Issue addressed:** `#1 - Add pagination to list endpoints`
+**Branch:** `feature/add-pagination-list-endpoints`
+**Status:** ✅ Merged
+
+### What I changed
+
+Added pagination support to existing FastAPI list endpoints using `page` and `limit` query parameters.
+
+Files changed:
+
+```text
+api/routers/users.py
+api/routers/matches.py
+api/routers/reports.py
+tests/api/test_api.py
+```
+
+The updated endpoints now support paginated responses while keeping validation rules safe:
+
+```text
+page >= 1
+limit >= 1
+limit <= 100
+```
+
+I added pagination support to user, report, and match list endpoints. I also added API tests for paginated users, paginated reports, and invalid pagination values.
+
+### Why it was needed
+
+Closes #1
+
+The issue requested pagination for list endpoints. Without pagination, API clients always receive full result sets. That can become inefficient as data grows.
+
+Pagination improves API usability, scalability, and client-side control while keeping the existing service and repository layers unchanged.
+
+### CI result
+
+All available checks passed locally.
+
+Because the repository did not include a requirements file, I installed the local test dependencies manually:
+
+```bash
+pip install fastapi uvicorn httpx pytest pydantic
+```
+
+Commands run:
+
+```bash
+python -m compileall api services repositories src
+pytest
+```
+
+Result:
+
+```text
+123 passed, 443 warnings
+```
+
+The warnings were existing deprecation warnings and were unrelated to this pagination change.
+
+### Evidence
+
+Screenshot evidence should be saved under:
+
+```text
+Assignment 15/docs/screenshots/fifth-peer-contribution/
+```
+
+---
+
+## How to submit a PR to a classmate's repo
+
+```bash
+# 1. Fork their repo on GitHub
+
+# 2. Clone your fork
+git clone https://github.com/YOUR_USERNAME/their-repo.git
+cd their-repo
+
+# 3. Create a branch
+git checkout -b fix/your-description
+
+# 4. Make your change, then commit
+git add .
+git commit -m "fix: resolve missing import in conftest.py (Closes #12)"
+
+# 5. Push to your fork
+git push origin fix/your-description
+
+# 6. Open a PR on GitHub
+# Go to their repo -> Pull requests -> New pull request
+# Set base: main, compare: your-fork/fix/your-description
+```
+
+---
+
+## PR description template to copy-paste
+
+```md
+## Summary
+
+Brief description of what this PR does.
+
+## Related Issue
+
+Closes #[issue-number]
+
+## Changes Made
+
+- [specific change 1]
+- [specific change 2]
+
+## Testing
+
+- All existing tests pass
+- [any new tests added]
+
+## Screenshots
+
+[paste CI passing screenshot if applicable]
+```
