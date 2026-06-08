@@ -38,6 +38,9 @@ from services.exceptions import (
     BusinessRuleViolationError,
     InvalidStateTransitionError,
 )
+from api.logging_config import get_logger
+
+logger = get_logger("sentinelpay.transactions")
 
 router = APIRouter(prefix="/api/transactions", tags=["Transactions"])
 
@@ -51,6 +54,7 @@ def _handle_service_errors(exc: Exception) -> HTTPException:
         return HTTPException(status_code=422, detail=str(exc))
     if isinstance(exc, InvalidStateTransitionError):
         return HTTPException(status_code=409, detail=str(exc))
+    logger.error("unhandled_error", error=str(exc), exc_info=True)
     return HTTPException(status_code=500, detail=f"Internal error: {exc}")
 
 
@@ -90,6 +94,12 @@ def submit_transaction(
             latitude=body.latitude,
             longitude=body.longitude,
             is_international=body.is_international,
+        )
+        logger.info(
+            "transaction_submitted",
+            transaction_id=str(txn.transaction_id),
+            amount=body.amount,
+            currency=body.currency,
         )
         # ── Increment metrics ──
         transactions_total.labels(channel=body.channel).inc()
@@ -181,6 +191,11 @@ def apply_decision(
             fraud_score=body.fraud_score,
             model_scores=[s.model_dump() for s in body.model_scores],
             account_tier=body.account_tier,
+        )
+        logger.info(
+            "fraud_decision_applied",
+            transaction_id=transaction_id,
+            fraud_score=body.fraud_score,
         )
         return TransactionResponse.from_domain(txn)
     except Exception as e:
