@@ -1,4 +1,4 @@
-# Merged Pull Requests — Assignment 15
+# Merged Pull Requests - Assignment 15
 
 **Author:** Teboho Mokoni | SentinelPay
 
