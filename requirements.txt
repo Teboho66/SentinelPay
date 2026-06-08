@@ -16,4 +16,4 @@ pydantic==2.10.3
 
 # Build / packaging (CD pipeline)
 build==1.2.2
-wheel==0.45.1
+wheel==0.45.1structlog
