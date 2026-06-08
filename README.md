@@ -456,17 +456,7 @@ docker compose down -v
 
 ---
 
-## 📊 Requirements At a Glance
 
-| Category | Count |
-|---|---|
-| Stakeholders identified | 8 |
-| Functional Requirements | 15 |
-| Non-Functional Requirements | 18 (across 6 categories) |
-| C4 Architecture Levels | 4 |
-| Architecture Decision Records | 4 |
-
----
 
 ## 📄 Assignment Index
 
